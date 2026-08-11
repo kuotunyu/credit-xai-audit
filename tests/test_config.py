@@ -23,6 +23,12 @@ def test_config_hash_is_stable_and_sensitive(tmp_path) -> None:
     assert c.config_hash != a.config_hash
 
 
+def test_full_config_hash_is_platform_independent() -> None:
+    cfg = load_config(REPO_ROOT / "configs" / "full.yaml")
+
+    assert cfg.config_hash == "187eaca767435ddf08bcf1eacfb159d70396dea6c28eb3ab5bef6011cdeb479b"
+
+
 def test_bad_split_rejected(tmp_path) -> None:
     with pytest.raises(ValidationError, match="sum to 1.0"):
         make_config(tmp_path, data={"split": {"train": 0.5, "val": 0.1, "test": 0.1}})

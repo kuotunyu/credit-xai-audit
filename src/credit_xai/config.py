@@ -158,7 +158,7 @@ class Config(_Frozen):
 
     @property
     def config_hash(self) -> str:
-        payload = canonical_json(self.model_dump(mode="json"))
+        payload = canonical_json(_portable_hash_payload(self.model_dump(mode="python")))
         return hashlib.sha256(payload.encode("utf-8")).hexdigest()
 
     # Frequently used derived paths
@@ -174,6 +174,17 @@ class Config(_Frozen):
 def canonical_json(obj: Any) -> str:
     """Deterministic JSON encoding (sorted keys, compact separators)."""
     return json.dumps(obj, sort_keys=True, separators=(",", ":"), default=str)
+
+
+def _portable_hash_payload(obj: Any) -> Any:
+    """Normalize paths before hashing so one YAML has one hash on every OS."""
+    if isinstance(obj, Path):
+        return obj.as_posix()
+    if isinstance(obj, dict):
+        return {key: _portable_hash_payload(value) for key, value in obj.items()}
+    if isinstance(obj, (list, tuple)):
+        return [_portable_hash_payload(value) for value in obj]
+    return obj
 
 
 def load_config(path: str | Path) -> Config:
