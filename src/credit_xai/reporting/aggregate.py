@@ -7,7 +7,6 @@ from __future__ import annotations
 
 import logging
 import platform
-from datetime import UTC, datetime
 from pathlib import Path
 from typing import Any
 
@@ -37,12 +36,19 @@ class AggregationError(RuntimeError):
 def build_summary(cfg: Config) -> dict[str, Any]:
     raw = Path(cfg.raw_results_dir)
     provenance: list[dict[str, str]] = []
+    artifact_timestamps: list[str] = []
 
     def load(path: Path) -> Any:
         if not path.exists():
             raise AggregationError(f"missing raw artifact: {path} — run the pipeline first")
         provenance.append({"path": path.as_posix(), "sha256": sha256_file(path)})
-        return read_json(path) if path.suffix == ".json" else path
+        if path.suffix != ".json":
+            return path
+        artifact = read_json(path)
+        generated_at = artifact.get("generated_at") if isinstance(artifact, dict) else None
+        if isinstance(generated_at, str):
+            artifact_timestamps.append(generated_at)
+        return artifact
 
     prepare_meta = load(raw / "data" / "prepare_meta.json")
     ci_level = cfg.evaluation.bootstrap.ci_level
@@ -128,7 +134,7 @@ def build_summary(cfg: Config) -> dict[str, Any]:
 
     summary = {
         "schema_version": SCHEMA_VERSION,
-        "generated_at": datetime.now(UTC).isoformat(),
+        "generated_at": max(artifact_timestamps),
         "disclaimer": (
             "Historical 2005 educational audit. Not for lending decisions. Not financial advice."
         ),

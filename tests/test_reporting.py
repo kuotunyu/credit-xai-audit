@@ -55,6 +55,13 @@ def test_summary_is_complete_and_consistent(full_run_config) -> None:
     assert "C:\\" not in json.dumps(summary)
 
 
+def test_summary_is_deterministic_for_identical_raw_artifacts(full_run_config) -> None:
+    first = build_summary(full_run_config)
+    second = build_summary(full_run_config)
+
+    assert first == second
+
+
 def test_report_writes_summary_tables_figures_and_injects(full_run_config, tmp_path) -> None:
     readme_dir = tmp_path / "docs"
     readme_dir.mkdir()
