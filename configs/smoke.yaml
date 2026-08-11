@@ -1,0 +1,49 @@
+# Smoke config: fast end-to-end run on the full dataset with reduced
+# bootstrap/refit/SHAP budgets. Target: < ~10 min on a laptop CPU.
+# Historical 2005 educational audit. Not for lending decisions. Not financial advice.
+
+run:
+  name: smoke
+  seed: 42
+
+data:
+  source: uci_static          # uci_static | ucimlrepo | synthetic
+  split: {train: 0.70, val: 0.15, test: 0.15}
+  synthetic_rows: 4000        # only used when source == synthetic (CI/tests)
+  local_cases_per_class: 3    # fixed local-explanation cases per target class
+
+models:
+  logistic: {C: 1.0, max_iter: 2000}
+  ebm: {max_bins: 64, interactions: 0, outer_bags: 4, max_rounds: 500}
+  lightgbm:
+    n_estimators: 200
+    num_leaves: 31
+    learning_rate: 0.05
+    min_child_samples: 20
+    early_stopping_rounds: 20
+    num_threads: 4
+
+calibration:
+  methods: [sigmoid, isotonic]
+  selection_metric: log_loss  # selected on VALIDATION only
+
+evaluation:
+  bootstrap: {n_iterations: 200, checkpoint_every: 25, ci_level: 0.95}
+  ece_bins: 15
+  latency: {n_warmup: 3, n_repeats: 3, per_row_samples: 200}
+
+explain:
+  shap: {background_size: 200, test_sample_size: 500}
+  top_k: 10
+  rank_stability: {n_refits: 5, n_resamples: 50}
+  faithfulness: {n_instances: 300, n_draws: 5}
+
+fairness:
+  sex_column: SEX
+  age_bins: [[21, 29], [30, 39], [40, 49], [50, 59], [60, null]]
+  small_cell_min: 20
+
+serve:
+  model: lightgbm
+  host: 127.0.0.1
+  port: 8000

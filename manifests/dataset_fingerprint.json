@@ -1,0 +1,7 @@
+{
+  "content_sha256": "f6c131c25f5ea6716c1439d986550832a5ba1ed218fbbfc3013bb92bb78dcee2",
+  "pinned_at": "2026-07-20T06:02:33.767814+00:00",
+  "source": "uci_static",
+  "url": "https://archive.ics.uci.edu/static/public/350/default+of+credit+card+clients.zip",
+  "zip_sha256": "56c885f84457f6680f8438f02bfcdac9579323d8a94465ee5f26e32baa727602"
+}

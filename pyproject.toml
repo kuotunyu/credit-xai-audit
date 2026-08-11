@@ -1,0 +1,65 @@
+[project]
+name = "credit-xai-audit"
+version = "0.1.0"
+description = "Historical 2005 educational XAI audit of the UCI Default of Credit Card Clients dataset. Not for lending decisions. Not financial advice."
+readme = "README.md"
+license = { file = "LICENSE" }
+requires-python = ">=3.11,<3.13"
+dependencies = [
+    "numpy>=1.26,<2.3",
+    "pandas>=2.1,<3",
+    "scikit-learn>=1.6,<1.8",
+    "shap>=0.46,<0.49",
+    "matplotlib>=3.8",
+    "pydantic>=2.7,<3",
+    "pyyaml>=6.0",
+    "xlrd>=2.0,<3",
+    "joblib>=1.3",
+    "pyarrow>=15",
+    "requests>=2.31",
+    "ucimlrepo>=0.0.7",
+]
+
+[project.optional-dependencies]
+ebm = ["interpret-core>=0.6.10,<0.8"]
+lightgbm = ["lightgbm>=4.3,<5"]
+serve = [
+    "fastapi>=0.115,<1",
+    "uvicorn[standard]>=0.29",
+    "gradio>=4.44,<6",
+]
+
+[dependency-groups]
+dev = [
+    "pytest>=8.0",
+    "httpx>=0.27",
+    "ruff>=0.6",
+]
+
+[project.scripts]
+credit-xai = "credit_xai.cli:main"
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/credit_xai"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+addopts = "-m 'not network' -q"
+markers = [
+    "network: tests that download the real UCI dataset (excluded by default)",
+    "slow: long-running tests",
+]
+
+[tool.ruff]
+line-length = 100
+target-version = "py311"
+src = ["src", "tests", "app"]
+extend-exclude = ["notebooks"]  # thin wrappers with Colab shell magics
+
+[tool.ruff.lint]
+select = ["E", "F", "W", "I", "UP", "B"]
+ignore = ["B008"]  # FastAPI Depends() in defaults

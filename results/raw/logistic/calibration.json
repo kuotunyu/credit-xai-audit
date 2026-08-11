@@ -1,0 +1,39 @@
+{
+  "generated_at": "2026-07-26T07:41:34.947174+00:00",
+  "config_hash": "187eaca767435ddf08bcf1eacfb159d70396dea6c28eb3ab5bef6011cdeb479b",
+  "run_name": "full",
+  "model_name": "logistic",
+  "methods": [
+    "sigmoid",
+    "isotonic"
+  ],
+  "selection_metric": "log_loss",
+  "selection_split": "val",
+  "per_method_val": {
+    "uncalibrated": {
+      "roc_auc": 0.7381621373629919,
+      "pr_auc": 0.5106780509585305,
+      "log_loss": 0.45960252230566745,
+      "brier": 0.14356029157468,
+      "ece": 0.050195963227726306
+    },
+    "sigmoid": {
+      "roc_auc": 0.7381621373629919,
+      "pr_auc": 0.5106780509585305,
+      "log_loss": 0.45941222293485207,
+      "brier": 0.1431995680181529,
+      "ece": 0.04864743166109897
+    },
+    "isotonic": {
+      "roc_auc": 0.7440092043670563,
+      "pr_auc": 0.5040093533042791,
+      "log_loss": 0.4405050802535348,
+      "brier": 0.13751853087680874,
+      "ece": 2.63462091649242e-17
+    }
+  },
+  "selected_method": "isotonic",
+  "threshold_policy": "quantile of calibrated validation probabilities at (1 - validation base rate); frozen before any test evaluation",
+  "threshold": 0.21779141104294478,
+  "val_base_rate": 0.22111111111111112
+}

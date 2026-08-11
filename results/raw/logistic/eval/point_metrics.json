@@ -1,0 +1,50 @@
+{
+  "generated_at": "2026-07-26T07:41:40.803433+00:00",
+  "config_hash": "187eaca767435ddf08bcf1eacfb159d70396dea6c28eb3ab5bef6011cdeb479b",
+  "run_name": "full",
+  "model_name": "logistic",
+  "n_test_rows": 4500,
+  "calibration_method": "isotonic",
+  "threshold": 0.21779141104294478,
+  "uncalibrated": {
+    "roc_auc": 0.722520161434849,
+    "pr_auc": 0.5146412634630239,
+    "log_loss": 0.46432196034273215,
+    "brier": 0.14415851419133402,
+    "ece": 0.05706562079823821
+  },
+  "calibrated": {
+    "roc_auc": 0.7271745317170732,
+    "pr_auc": 0.4899704827568615,
+    "log_loss": 0.45382593170125973,
+    "brier": 0.1403209097548436,
+    "ece": 0.009791476883626282
+  },
+  "rates_at_threshold": {
+    "selection_rate": 0.276,
+    "fpr": 0.192867332382311,
+    "fnr": 0.4311557788944724
+  },
+  "latency": {
+    "batch_ms_per_1k_rows": {
+      "median": 1.977934999994583,
+      "min": 1.754295777775244,
+      "max": 2.495747111109065,
+      "n_repeats": 10,
+      "batch_rows": 4500
+    },
+    "per_row_ms": {
+      "median": 5.393494534999945,
+      "min": 3.853695995000237,
+      "max": 5.86508834,
+      "n_repeats": 10,
+      "sampled_rows": 200
+    },
+    "environment": {
+      "platform": "Linux-6.6.122+-x86_64-with-glibc2.35",
+      "processor": "x86_64",
+      "python": "3.11.15",
+      "omp_num_threads": null
+    }
+  }
+}

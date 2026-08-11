@@ -1,0 +1,23 @@
+{
+  "generated_at": "2026-07-26T07:41:21.202375+00:00",
+  "config_hash": "187eaca767435ddf08bcf1eacfb159d70396dea6c28eb3ab5bef6011cdeb479b",
+  "run_name": "full",
+  "model_name": "ebm",
+  "estimator_class": "ExplainableBoostingClassifier",
+  "is_fallback": false,
+  "params": {
+    "max_bins": 256,
+    "interactions": 10,
+    "outer_bags": 8,
+    "max_rounds": 5000
+  },
+  "n_train_rows": 21000,
+  "fit_seconds": 35.81541645300001,
+  "val_point_metrics_uncalibrated": {
+    "roc_auc": 0.7788913182173349,
+    "pr_auc": 0.5459650714447908,
+    "log_loss": 0.4303117540847465,
+    "brier": 0.1349028971554173,
+    "ece": 0.015534992858104897
+  }
+}

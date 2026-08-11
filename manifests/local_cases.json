@@ -1,0 +1,16 @@
+{
+  "selection_rule": "deterministic label-stratified draw from the validation split; 3 cases per class; seed derived from (seed, 'local_cases')",
+  "split": "val",
+  "indices_by_class": {
+    "0": [
+      10443,
+      11460,
+      21213
+    ],
+    "1": [
+      13044,
+      16801,
+      19149
+    ]
+  }
+}

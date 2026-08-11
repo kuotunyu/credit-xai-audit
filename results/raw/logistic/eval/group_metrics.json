@@ -1,0 +1,79 @@
+{
+  "generated_at": "2026-07-26T07:42:10.720874+00:00",
+  "config_hash": "187eaca767435ddf08bcf1eacfb159d70396dea6c28eb3ab5bef6011cdeb479b",
+  "model_name": "logistic",
+  "threshold": 0.21779141104294478,
+  "note": "Descriptive snapshot of model behavior on 2005 historical data. Not evidence of discrimination; supports no conclusions about individuals or lending practices.",
+  "groups": {
+    "sex=1_male": {
+      "n": 1790,
+      "n_positive": 421,
+      "prevalence": 0.23519553072625698,
+      "auc": 0.7206336785524049,
+      "selection_rate": 0.3486033519553073,
+      "fpr": 0.2702702702702703,
+      "fnr": 0.39667458432304037,
+      "small_cell": false
+    },
+    "sex=2_female": {
+      "n": 2710,
+      "n_positive": 574,
+      "prevalence": 0.2118081180811808,
+      "auc": 0.7274285844784611,
+      "selection_rate": 0.22804428044280442,
+      "fpr": 0.14325842696629212,
+      "fnr": 0.4564459930313589,
+      "small_cell": false
+    },
+    "age=21-29": {
+      "n": 1408,
+      "n_positive": 324,
+      "prevalence": 0.23011363636363635,
+      "auc": 0.7433345861236389,
+      "selection_rate": 0.24857954545454544,
+      "fpr": 0.1522140221402214,
+      "fnr": 0.42901234567901236,
+      "small_cell": false
+    },
+    "age=30-39": {
+      "n": 1718,
+      "n_positive": 330,
+      "prevalence": 0.1920838183934808,
+      "auc": 0.7116016068465635,
+      "selection_rate": 0.23923166472642607,
+      "fpr": 0.17146974063400577,
+      "fnr": 0.47575757575757577,
+      "small_cell": false
+    },
+    "age=40-49": {
+      "n": 991,
+      "n_positive": 248,
+      "prevalence": 0.25025227043390513,
+      "auc": 0.716927886076499,
+      "selection_rate": 0.3249243188698285,
+      "fpr": 0.23822341857335128,
+      "fnr": 0.4153225806451613,
+      "small_cell": false
+    },
+    "age=50-59": {
+      "n": 331,
+      "n_positive": 78,
+      "prevalence": 0.23564954682779457,
+      "auc": 0.7842049255092735,
+      "selection_rate": 0.4169184290030212,
+      "fpr": 0.3241106719367589,
+      "fnr": 0.28205128205128205,
+      "small_cell": false
+    },
+    "age=60+": {
+      "n": 52,
+      "n_positive": 15,
+      "prevalence": 0.28846153846153844,
+      "auc": 0.5540540540540541,
+      "selection_rate": 0.40384615384615385,
+      "fpr": 0.3783783783783784,
+      "fnr": 0.5333333333333333,
+      "small_cell": true
+    }
+  }
+}

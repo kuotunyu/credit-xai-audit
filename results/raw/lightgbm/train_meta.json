@@ -1,0 +1,25 @@
+{
+  "generated_at": "2026-07-26T07:41:30.714268+00:00",
+  "config_hash": "187eaca767435ddf08bcf1eacfb159d70396dea6c28eb3ab5bef6011cdeb479b",
+  "run_name": "full",
+  "model_name": "lightgbm",
+  "estimator_class": "LGBMClassifier",
+  "is_fallback": false,
+  "params": {
+    "n_estimators": 2000,
+    "num_leaves": 31,
+    "learning_rate": 0.03,
+    "min_child_samples": 50,
+    "early_stopping_rounds": 100,
+    "num_threads": 4
+  },
+  "n_train_rows": 21000,
+  "fit_seconds": 4.092054872999995,
+  "val_point_metrics_uncalibrated": {
+    "roc_auc": 0.7837531451838364,
+    "pr_auc": 0.5597117063602824,
+    "log_loss": 0.4273906592060529,
+    "brier": 0.1340685696196352,
+    "ece": 0.0198357225095673
+  }
+}

@@ -1,0 +1,34 @@
+# CPU-only. `docker compose up api` serves the API (mount your locally trained
+# models/); `docker compose --profile smoke run smoke` proves the full pipeline
+# on synthetic data with no network and no real dataset.
+
+services:
+  api:
+    build: .
+    image: credit-xai-audit:latest
+    ports:
+      - "8000:8000"
+    environment:
+      CREDIT_XAI_CONFIG: configs/smoke.yaml
+    volumes:
+      - ./models:/app/models:ro
+      - ./manifests:/app/manifests:ro
+
+  smoke:
+    profiles: ["smoke"]
+    build: .
+    image: credit-xai-audit:latest
+    command:
+      - bash
+      - -c
+      - >-
+        set -e;
+        python -m credit_xai.cli data prepare --config configs/ci.yaml &&
+        python -m credit_xai.cli train --model logistic --config configs/ci.yaml &&
+        python -m credit_xai.cli train --model ebm --config configs/ci.yaml &&
+        python -m credit_xai.cli train --model lightgbm --config configs/ci.yaml &&
+        python -m credit_xai.cli calibrate --config configs/ci.yaml &&
+        python -m credit_xai.cli evaluate --config configs/ci.yaml &&
+        python -m credit_xai.cli explain --config configs/ci.yaml &&
+        python -m credit_xai.cli report --config configs/ci.yaml &&
+        echo "CPU smoke pipeline OK"

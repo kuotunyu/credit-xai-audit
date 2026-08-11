@@ -1,0 +1,50 @@
+{
+  "generated_at": "2026-07-26T07:43:16.360023+00:00",
+  "config_hash": "187eaca767435ddf08bcf1eacfb159d70396dea6c28eb3ab5bef6011cdeb479b",
+  "run_name": "full",
+  "model_name": "lightgbm",
+  "n_test_rows": 4500,
+  "calibration_method": "isotonic",
+  "threshold": 0.35374149659863946,
+  "uncalibrated": {
+    "roc_auc": 0.7813068194037234,
+    "pr_auc": 0.5621455227718334,
+    "log_loss": 0.42681671270279214,
+    "brier": 0.13362054593044936,
+    "ece": 0.02084895337316993
+  },
+  "calibrated": {
+    "roc_auc": 0.7810514770715202,
+    "pr_auc": 0.5396933248611089,
+    "log_loss": 0.4408266451137235,
+    "brier": 0.1345704911646529,
+    "ece": 0.02029158959787805
+  },
+  "rates_at_threshold": {
+    "selection_rate": 0.22066666666666668,
+    "fpr": 0.13009985734664764,
+    "fnr": 0.46030150753768845
+  },
+  "latency": {
+    "batch_ms_per_1k_rows": {
+      "median": 10.594171444444733,
+      "min": 10.334098666665644,
+      "max": 11.043498444450961,
+      "n_repeats": 10,
+      "batch_rows": 4500
+    },
+    "per_row_ms": {
+      "median": 5.475261004999936,
+      "min": 4.128378475000147,
+      "max": 6.352758845000039,
+      "n_repeats": 10,
+      "sampled_rows": 200
+    },
+    "environment": {
+      "platform": "Linux-6.6.122+-x86_64-with-glibc2.35",
+      "processor": "x86_64",
+      "python": "3.11.15",
+      "omp_num_threads": null
+    }
+  }
+}

@@ -1,0 +1,21 @@
+{
+  "generated_at": "2026-07-26T07:40:39.486095+00:00",
+  "config_hash": "187eaca767435ddf08bcf1eacfb159d70396dea6c28eb3ab5bef6011cdeb479b",
+  "run_name": "full",
+  "model_name": "logistic",
+  "estimator_class": "Pipeline",
+  "is_fallback": false,
+  "params": {
+    "C": 1.0,
+    "max_iter": 2000
+  },
+  "n_train_rows": 21000,
+  "fit_seconds": 0.4425535620000005,
+  "val_point_metrics_uncalibrated": {
+    "roc_auc": 0.7381621373629919,
+    "pr_auc": 0.5106780509585305,
+    "log_loss": 0.45960252230566745,
+    "brier": 0.14356029157468,
+    "ece": 0.050195963227726306
+  }
+}

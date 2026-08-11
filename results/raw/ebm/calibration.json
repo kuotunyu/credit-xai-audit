@@ -1,0 +1,39 @@
+{
+  "generated_at": "2026-07-26T07:41:35.246455+00:00",
+  "config_hash": "187eaca767435ddf08bcf1eacfb159d70396dea6c28eb3ab5bef6011cdeb479b",
+  "run_name": "full",
+  "model_name": "ebm",
+  "methods": [
+    "sigmoid",
+    "isotonic"
+  ],
+  "selection_metric": "log_loss",
+  "selection_split": "val",
+  "per_method_val": {
+    "uncalibrated": {
+      "roc_auc": 0.7788913182173349,
+      "pr_auc": 0.5459650714447908,
+      "log_loss": 0.4303117540847465,
+      "brier": 0.1349028971554173,
+      "ece": 0.015534992858104897
+    },
+    "sigmoid": {
+      "roc_auc": 0.7788913182173349,
+      "pr_auc": 0.5459650714447908,
+      "log_loss": 0.43028415679995324,
+      "brier": 0.13491049199589492,
+      "ece": 0.01469058999171945
+    },
+    "isotonic": {
+      "roc_auc": 0.7831183019233113,
+      "pr_auc": 0.5439159716199675,
+      "log_loss": 0.4253347428129778,
+      "brier": 0.13328814513761988,
+      "ece": 3.0969054481349505e-17
+    }
+  },
+  "selected_method": "isotonic",
+  "threshold_policy": "quantile of calibrated validation probabilities at (1 - validation base rate); frozen before any test evaluation",
+  "threshold": 0.3392857142857143,
+  "val_base_rate": 0.22111111111111112
+}

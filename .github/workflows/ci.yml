@@ -1,0 +1,53 @@
+name: ci
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+  workflow_dispatch:
+
+jobs:
+  lint:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: astral-sh/setup-uv@v5
+        with:
+          enable-cache: true
+      - run: uv sync --all-extras
+      - run: uv run ruff check
+      - run: uv run ruff format --check
+      - name: forbid local absolute paths in committed artifacts
+        run: |
+          ! grep -rIl 'C:\\Users' manifests results configs src tests || \
+            (echo 'committed files contain local absolute paths' && exit 1)
+
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: astral-sh/setup-uv@v5
+        with:
+          enable-cache: true
+      - run: uv sync --all-extras
+      # network-marked tests are excluded by default: CI never downloads the
+      # real UCI dataset; the end-to-end tests run on the synthetic source
+      - run: uv run pytest
+
+  docker:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: build image
+        run: docker compose build api
+      - name: CPU smoke pipeline on synthetic data (no network, no dataset)
+        run: docker compose --profile smoke run --rm smoke
+      - name: start API and check /health
+        run: |
+          docker compose up -d api
+          for i in $(seq 1 30); do
+            if curl -fsS http://127.0.0.1:8000/health; then ok=1; break; fi
+            sleep 2
+          done
+          [ "${ok:-0}" = "1" ] || (docker compose logs api && exit 1)
+          docker compose down

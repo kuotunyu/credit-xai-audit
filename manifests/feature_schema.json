@@ -1,0 +1,166 @@
+{
+  "schema_version": 1,
+  "features": {
+    "LIMIT_BAL": {
+      "dtype": "int64",
+      "kind": "numeric",
+      "observed_min": 10000,
+      "observed_max": 1000000
+    },
+    "SEX": {
+      "dtype": "int64",
+      "kind": "categorical",
+      "observed_min": 1,
+      "observed_max": 2,
+      "allowed_values": [
+        1,
+        2
+      ]
+    },
+    "EDUCATION": {
+      "dtype": "int64",
+      "kind": "categorical",
+      "observed_min": 1,
+      "observed_max": 4,
+      "allowed_values": [
+        1,
+        2,
+        3,
+        4
+      ]
+    },
+    "MARRIAGE": {
+      "dtype": "int64",
+      "kind": "categorical",
+      "observed_min": 1,
+      "observed_max": 3,
+      "allowed_values": [
+        1,
+        2,
+        3
+      ]
+    },
+    "AGE": {
+      "dtype": "int64",
+      "kind": "numeric",
+      "observed_min": 21,
+      "observed_max": 79
+    },
+    "PAY_0": {
+      "dtype": "int64",
+      "kind": "numeric",
+      "observed_min": -2,
+      "observed_max": 8
+    },
+    "PAY_2": {
+      "dtype": "int64",
+      "kind": "numeric",
+      "observed_min": -2,
+      "observed_max": 8
+    },
+    "PAY_3": {
+      "dtype": "int64",
+      "kind": "numeric",
+      "observed_min": -2,
+      "observed_max": 8
+    },
+    "PAY_4": {
+      "dtype": "int64",
+      "kind": "numeric",
+      "observed_min": -2,
+      "observed_max": 8
+    },
+    "PAY_5": {
+      "dtype": "int64",
+      "kind": "numeric",
+      "observed_min": -2,
+      "observed_max": 8
+    },
+    "PAY_6": {
+      "dtype": "int64",
+      "kind": "numeric",
+      "observed_min": -2,
+      "observed_max": 8
+    },
+    "BILL_AMT1": {
+      "dtype": "int64",
+      "kind": "numeric",
+      "observed_min": -165580,
+      "observed_max": 964511
+    },
+    "BILL_AMT2": {
+      "dtype": "int64",
+      "kind": "numeric",
+      "observed_min": -69777,
+      "observed_max": 983931
+    },
+    "BILL_AMT3": {
+      "dtype": "int64",
+      "kind": "numeric",
+      "observed_min": -157264,
+      "observed_max": 1664089
+    },
+    "BILL_AMT4": {
+      "dtype": "int64",
+      "kind": "numeric",
+      "observed_min": -170000,
+      "observed_max": 891586
+    },
+    "BILL_AMT5": {
+      "dtype": "int64",
+      "kind": "numeric",
+      "observed_min": -81334,
+      "observed_max": 927171
+    },
+    "BILL_AMT6": {
+      "dtype": "int64",
+      "kind": "numeric",
+      "observed_min": -339603,
+      "observed_max": 961664
+    },
+    "PAY_AMT1": {
+      "dtype": "int64",
+      "kind": "numeric",
+      "observed_min": 0,
+      "observed_max": 873552
+    },
+    "PAY_AMT2": {
+      "dtype": "int64",
+      "kind": "numeric",
+      "observed_min": 0,
+      "observed_max": 1684259
+    },
+    "PAY_AMT3": {
+      "dtype": "int64",
+      "kind": "numeric",
+      "observed_min": 0,
+      "observed_max": 896040
+    },
+    "PAY_AMT4": {
+      "dtype": "int64",
+      "kind": "numeric",
+      "observed_min": 0,
+      "observed_max": 621000
+    },
+    "PAY_AMT5": {
+      "dtype": "int64",
+      "kind": "numeric",
+      "observed_min": 0,
+      "observed_max": 426529
+    },
+    "PAY_AMT6": {
+      "dtype": "int64",
+      "kind": "numeric",
+      "observed_min": 0,
+      "observed_max": 528666
+    }
+  },
+  "target": {
+    "name": "default",
+    "original_name": "default payment next month",
+    "values": [
+      0,
+      1
+    ]
+  }
+}

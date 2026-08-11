@@ -1,0 +1,70 @@
+{
+  "generated_at": "2026-07-26T07:40:32.230031+00:00",
+  "config_hash": "187eaca767435ddf08bcf1eacfb159d70396dea6c28eb3ab5bef6011cdeb479b",
+  "run_name": "full",
+  "uci_dataset_id": 350,
+  "acquisition": {
+    "source": "uci_static",
+    "url": "https://archive.ics.uci.edu/static/public/350/default+of+credit+card+clients.zip",
+    "zip_sha256": "56c885f84457f6680f8438f02bfcdac9579323d8a94465ee5f26e32baa727602"
+  },
+  "dataset_content_sha256": "f6c131c25f5ea6716c1439d986550832a5ba1ed218fbbfc3013bb92bb78dcee2",
+  "cleaning": {
+    "n_rows": 30000,
+    "dropped_columns": [
+      "ID"
+    ],
+    "education_recoded": {
+      "0": 14,
+      "5": 280,
+      "6": 51
+    },
+    "education_recode_map": {
+      "0": 4,
+      "5": 4,
+      "6": 4
+    },
+    "marriage_recoded": {
+      "0": 54
+    },
+    "marriage_recode_map": {
+      "0": 3
+    }
+  },
+  "splits": {
+    "train": {
+      "n": 21000,
+      "positives": 4646
+    },
+    "val": {
+      "n": 4500,
+      "positives": 995
+    },
+    "test": {
+      "n": 4500,
+      "positives": 995
+    }
+  },
+  "local_cases": {
+    "0": [
+      6209,
+      10441,
+      11458,
+      13267,
+      17753,
+      20155,
+      21192,
+      23509
+    ],
+    "1": [
+      323,
+      4803,
+      6767,
+      7219,
+      12234,
+      15421,
+      17931,
+      24992
+    ]
+  }
+}

@@ -1,0 +1,54 @@
+# Synthetic-data config for CI and the Docker smoke profile: no network, no real
+# dataset, small budgets, all outputs under gitignored tmp/ci/.
+# Historical 2005 educational audit. Not for lending decisions. Not financial advice.
+
+run:
+  name: ci
+  seed: 42
+  results_dir: tmp/ci/results
+  models_dir: tmp/ci/models
+  manifests_dir: tmp/ci/manifests
+
+data:
+  source: synthetic
+  cache_dir: tmp/ci/data/raw
+  processed_dir: tmp/ci/data/processed
+  split: {train: 0.70, val: 0.15, test: 0.15}
+  synthetic_rows: 2000
+  local_cases_per_class: 2
+
+models:
+  logistic: {C: 1.0, max_iter: 1000}
+  ebm: {max_bins: 32, interactions: 0, outer_bags: 2, max_rounds: 100}
+  lightgbm:
+    n_estimators: 60
+    num_leaves: 15
+    learning_rate: 0.1
+    min_child_samples: 10
+    early_stopping_rounds: 10
+    num_threads: 2
+
+calibration:
+  methods: [sigmoid, isotonic]
+  selection_metric: log_loss
+
+evaluation:
+  bootstrap: {n_iterations: 50, checkpoint_every: 10, ci_level: 0.95}
+  ece_bins: 10
+  latency: {n_warmup: 1, n_repeats: 2, per_row_samples: 20}
+
+explain:
+  shap: {background_size: 50, test_sample_size: 100}
+  top_k: 10
+  rank_stability: {n_refits: 2, n_resamples: 10}
+  faithfulness: {n_instances: 50, n_draws: 3}
+
+fairness:
+  sex_column: SEX
+  age_bins: [[21, 29], [30, 39], [40, 49], [50, 59], [60, null]]
+  small_cell_min: 10
+
+serve:
+  model: lightgbm
+  host: 0.0.0.0
+  port: 8000
