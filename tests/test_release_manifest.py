@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+import shutil
 from pathlib import Path
 
 from credit_xai.release.manifest import SOURCE_SNAPSHOT, build_release_manifest
@@ -41,3 +42,17 @@ def test_release_manifest_contains_no_excluded_paths() -> None:
     assert not any("progress" in path or path.startswith("notebooks/") for path in paths)
     assert not any(path.startswith("data/") for path in paths)
     assert not any(path.startswith("models/") and path != "models/.gitkeep" for path in paths)
+
+
+def test_release_manifest_builds_without_git_metadata(tmp_path: Path) -> None:
+    configs = tmp_path / "configs"
+    configs.mkdir()
+    shutil.copyfile(PROJECT_ROOT / "configs" / "full.yaml", configs / "full.yaml")
+    (tmp_path / "README.md").write_text("public candidate\n", encoding="utf-8")
+
+    manifest = build_release_manifest(tmp_path)
+
+    assert [entry["path"] for entry in manifest["files"]] == [
+        "README.md",
+        "configs/full.yaml",
+    ]

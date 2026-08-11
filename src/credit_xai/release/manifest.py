@@ -33,6 +33,8 @@ _LOCAL_ONLY_PARTS = {
 
 
 def _tracked_paths(root: Path) -> list[str]:
+    if not (root / ".git").exists():
+        return sorted(_actual_public_paths(root))
     completed = subprocess.run(
         ["git", "ls-files", "-z"],
         cwd=root,
