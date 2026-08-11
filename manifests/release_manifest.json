@@ -175,7 +175,7 @@
     {
       "path": "docs/release/VERIFICATION.md",
       "bytes": 4750,
-      "sha256": "f9196fd8b5f2a0e067fc5f832c03e72067c9358cfb4e4330e177f4849104d3e0"
+      "sha256": "afb3018c07e1327b48ba780ef7522457d9782bcc13658cbceb9cd223c7d6d059"
     },
     {
       "path": "docs/superpowers/plans/2026-08-12-credit-xai-release-candidate.md",
@@ -709,8 +709,8 @@
     },
     {
       "path": "src/credit_xai/release/manifest.py",
-      "bytes": 5314,
-      "sha256": "3c3995efa66b5786e2b7a3d103d680809dc4a32b63f1f063eae29967c2ac970c"
+      "bytes": 5401,
+      "sha256": "6bb40940927973b3bf3d458d4065774e0979b9b85f94b521f537b9ce62ad4dcf"
     },
     {
       "path": "src/credit_xai/release/privacy.py",
@@ -914,8 +914,8 @@
     },
     {
       "path": "tests/test_release_manifest.py",
-      "bytes": 1815,
-      "sha256": "bb2a951a9b0daf2a7d68aa72b9507eaa7761faa6b8aa95fec3438822a126ca57"
+      "bytes": 2297,
+      "sha256": "052159230640c271bfc51d9d950b2fb08623af0279cea3ece4a55ef46199750a"
     },
     {
       "path": "tests/test_release_privacy.py",

@@ -20,7 +20,7 @@ The final source-level run completed with:
 - `ruff check src app tests`: pass
 - `ruff format --check src app tests`: pass (88 files)
 - `mypy --strict src app`: pass (64 source files)
-- `pytest`: 109 passed, 5 third-party deprecation warnings
+- `pytest`: 110 passed, 5 third-party deprecation warnings
 - `credit_xai.release.verify claims`: pass
 - `credit_xai.release.verify privacy`: pass
 
