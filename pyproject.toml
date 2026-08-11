@@ -50,6 +50,25 @@ build-backend = "hatchling.build"
 [tool.hatch.build.targets.wheel]
 packages = ["src/credit_xai"]
 
+[tool.hatch.build.targets.sdist]
+include = [
+    "/src",
+    "/app",
+    "/configs",
+    "/manifests",
+    "/scripts",
+    "/CHANGELOG.md",
+    "/CITATION.cff",
+    "/DATA_CARD.md",
+    "/LICENSE",
+    "/MODEL_CARD.md",
+    "/README.md",
+    "/README_zh-TW.md",
+    "/SECURITY.md",
+    "/pyproject.toml",
+    "/uv.lock",
+]
+
 [tool.pytest.ini_options]
 testpaths = ["tests"]
 addopts = "-m 'not network' -q"
