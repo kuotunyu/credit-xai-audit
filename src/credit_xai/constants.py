@@ -3,6 +3,10 @@
 from __future__ import annotations
 
 DISCLAIMER = "Historical 2005 educational audit. Not for lending decisions. Not financial advice."
+DEMO_SCOPE = (
+    "Historical model replay for education only; not a decision, recommendation, "
+    "or real-world risk assessment."
+)
 
 # Raw UCI column names (after the header=1 quirk is handled in data.load).
 ID_COLUMN = "ID"

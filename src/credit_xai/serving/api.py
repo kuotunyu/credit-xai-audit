@@ -14,7 +14,7 @@ from pydantic import BaseModel, Field
 
 from credit_xai import __version__
 from credit_xai.config import Config
-from credit_xai.constants import DISCLAIMER, FEATURES
+from credit_xai.constants import DEMO_SCOPE, DISCLAIMER, FEATURES
 from credit_xai.data.schema import SchemaError
 from credit_xai.serving.service import PredictionService, ServiceError
 
@@ -58,7 +58,7 @@ def create_app(cfg: Config, model_name: str | None = None) -> FastAPI:
     app = FastAPI(
         title="credit-xai-audit API",
         version=__version__,
-        description=DISCLAIMER,
+        description=f"{DISCLAIMER} {DEMO_SCOPE}",
     )
     state: dict[str, Any] = {"service": None, "error": None}
     try:
@@ -87,6 +87,7 @@ def create_app(cfg: Config, model_name: str | None = None) -> FastAPI:
             "model": cfg.serve.model if model_name is None else model_name,
             "load_error": state["error"],
             "disclaimer": DISCLAIMER,
+            "scope": DEMO_SCOPE,
         }
 
     @app.post("/predict")
@@ -95,7 +96,7 @@ def create_app(cfg: Config, model_name: str | None = None) -> FastAPI:
             result = _service().predict(payload.features)
         except (ServiceError, SchemaError) as exc:
             raise HTTPException(status_code=422, detail=str(exc)) from exc
-        return {**result, "disclaimer": DISCLAIMER}
+        return {**result, "disclaimer": DISCLAIMER, "scope": DEMO_SCOPE}
 
     @app.post("/explain")
     def explain(payload: FeaturesPayload) -> dict[str, Any]:
@@ -103,7 +104,7 @@ def create_app(cfg: Config, model_name: str | None = None) -> FastAPI:
             result = _service().explain(payload.features)
         except (ServiceError, SchemaError) as exc:
             raise HTTPException(status_code=422, detail=str(exc)) from exc
-        return {**result, "disclaimer": DISCLAIMER}
+        return {**result, "disclaimer": DISCLAIMER, "scope": DEMO_SCOPE}
 
     @app.get("/model-card", response_class=PlainTextResponse)
     def model_card() -> str:

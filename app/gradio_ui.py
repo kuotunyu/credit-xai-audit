@@ -10,7 +10,7 @@ import gradio as gr
 import pandas as pd
 
 from credit_xai.config import Config
-from credit_xai.constants import DISCLAIMER, FEATURES, TARGET
+from credit_xai.constants import DEMO_SCOPE, DISCLAIMER, FEATURES, TARGET
 from credit_xai.serving.service import PredictionService
 
 logger = logging.getLogger(__name__)
@@ -67,10 +67,10 @@ def build_ui(cfg: Config) -> gr.Blocks:
             return f"**Input error:** {exc}", pd.DataFrame()
         prob = result["probability_calibrated"]
         text = (
-            f"### Calibrated default probability: **{prob:.1%}**\n"
+            f"### Historical model replay probability: **{prob:.1%}**\n"
             f"(uncalibrated {result['probability_uncalibrated']:.1%}; model "
             f"`{result['model']}`, calibration `{result['calibration_method']}`, "
-            f"explainer `{result['method']}`)\n\n> {DISCLAIMER}"
+            f"explainer `{result['method']}`)\n\n> {DISCLAIMER} {DEMO_SCOPE}"
         )
         table = pd.DataFrame(result["top_attributions"]).round(4)
         return text, table
@@ -84,7 +84,7 @@ def build_ui(cfg: Config) -> gr.Blocks:
         return values, f"Loaded test case {index} (recorded outcome: {int(row[TARGET])})."
 
     with gr.Blocks(title="credit-xai-audit") as demo:
-        gr.Markdown(f"# credit-xai-audit\n> **{DISCLAIMER}**")
+        gr.Markdown(f"# credit-xai-audit\n> **{DISCLAIMER}**\n\n{DEMO_SCOPE}")
         with gr.Row():
             case_index = gr.Number(value=0, precision=0, label="Test case index")
             load_btn = gr.Button("Browse dataset case")
@@ -96,11 +96,11 @@ def build_ui(cfg: Config) -> gr.Blocks:
             row_count=(1, "fixed"),
             label="Features (edit manually or load a dataset case)",
         )
-        analyze_btn = gr.Button("Predict + explain", variant="primary")
+        analyze_btn = gr.Button("Run historical audit", variant="primary")
         result_md = gr.Markdown()
         attribution_table = gr.Dataframe(label="Top attributions (link scale)")
 
         load_btn.click(load_case, inputs=[case_index], outputs=[grid, case_note])
         analyze_btn.click(analyze, inputs=[grid], outputs=[result_md, attribution_table])
-        gr.Markdown(f"---\n{DISCLAIMER}")
+        gr.Markdown(f"---\n{DISCLAIMER} {DEMO_SCOPE}")
     return demo

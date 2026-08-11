@@ -74,6 +74,7 @@ class PredictionService:
         p_cal = float(self.calibrator.predict(np.array([p_unc]))[0])
         return {
             "model": self.model_name,
+            "output_type": "historical_model_replay",
             "probability_calibrated": p_cal,
             "probability_uncalibrated": p_unc,
             "calibration_method": getattr(self.calibrator, "method", "unknown"),
