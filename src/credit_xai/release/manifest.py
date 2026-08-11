@@ -39,25 +39,22 @@ def _tracked_paths(root: Path) -> list[str]:
         check=True,
         capture_output=True,
     )
+    return sorted(
+        path
+        for path in completed.stdout.decode("utf-8").split("\0")
+        if path and path != RELEASE_MANIFEST_PATH.as_posix()
+    )
 
 
 def _actual_public_paths(root: Path) -> set[str]:
     paths: set[str] = set()
     for path in root.rglob("*"):
         relative = path.relative_to(root)
-        if any(
-            part in _LOCAL_ONLY_PARTS or part.startswith(".venv")
-            for part in relative.parts
-        ):
+        if any(part in _LOCAL_ONLY_PARTS or part.startswith(".venv") for part in relative.parts):
             continue
         if path.is_file() and relative != RELEASE_MANIFEST_PATH:
             paths.add(relative.as_posix())
     return paths
-    return sorted(
-        path
-        for path in completed.stdout.decode("utf-8").split("\0")
-        if path and path != RELEASE_MANIFEST_PATH.as_posix()
-    )
 
 
 def build_release_manifest(root: str | Path) -> dict[str, Any]:
