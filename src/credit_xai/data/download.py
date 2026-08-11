@@ -25,11 +25,31 @@ ZIP_FILENAME = "default_of_credit_card_clients.zip"
 _UA = {"User-Agent": "credit-xai-audit/0.1 (educational research; requests)"}
 
 
-def download_zip(cache_dir: str | Path, url: str = UCI_STATIC_ZIP_URL, timeout: int = 120) -> Path:
+class DatasetChecksumError(RawDataError):
+    """The official archive bytes do not match the committed fingerprint."""
+
+
+def _verify_zip_checksum(path: Path, expected_sha256: str | None) -> None:
+    if expected_sha256 is None:
+        return
+    actual = sha256_file(path)
+    if actual != expected_sha256:
+        raise DatasetChecksumError(
+            f"{path}: sha256 mismatch ({actual[:12]}... != {expected_sha256[:12]}...)"
+        )
+
+
+def download_zip(
+    cache_dir: str | Path,
+    url: str = UCI_STATIC_ZIP_URL,
+    timeout: int = 120,
+    expected_sha256: str | None = None,
+) -> Path:
     """Download the static zip to the cache (skipped if already present)."""
     cache_dir = ensure_dir(cache_dir)
     zip_path = cache_dir / ZIP_FILENAME
     if zip_path.exists() and zip_path.stat().st_size > 0:
+        _verify_zip_checksum(zip_path, expected_sha256)
         logger.info("using cached dataset zip: %s", zip_path)
         return zip_path
     logger.info("downloading %s", url)
@@ -40,6 +60,7 @@ def download_zip(cache_dir: str | Path, url: str = UCI_STATIC_ZIP_URL, timeout: 
             with os.fdopen(fd, "wb") as fh:
                 for chunk in resp.iter_content(chunk_size=1 << 20):
                     fh.write(chunk)
+            _verify_zip_checksum(Path(tmp_name), expected_sha256)
             os.replace(tmp_name, zip_path)
         except BaseException:
             try:
@@ -67,8 +88,10 @@ def extract_xls(zip_path: str | Path, cache_dir: str | Path) -> Path:
     return xls_path
 
 
-def fetch_uci_static(cache_dir: str | Path) -> tuple[pd.DataFrame, dict]:
-    zip_path = download_zip(cache_dir)
+def fetch_uci_static(
+    cache_dir: str | Path, expected_zip_sha256: str | None = None
+) -> tuple[pd.DataFrame, dict]:
+    zip_path = download_zip(cache_dir, expected_sha256=expected_zip_sha256)
     xls_path = extract_xls(zip_path, cache_dir)
     frame = load_xls(xls_path)
     meta = {
@@ -90,11 +113,15 @@ def fetch_ucimlrepo(dataset_id: int = 350) -> tuple[pd.DataFrame, dict]:
     return frame, meta
 
 
-def fetch_real_dataset(source: str, cache_dir: str | Path) -> tuple[pd.DataFrame, dict]:
+def fetch_real_dataset(
+    source: str, cache_dir: str | Path, expected_zip_sha256: str | None = None
+) -> tuple[pd.DataFrame, dict]:
     """Primary/fallback chain for the two real sources."""
     if source == "uci_static":
         try:
-            return fetch_uci_static(cache_dir)
+            return fetch_uci_static(cache_dir, expected_zip_sha256)
+        except DatasetChecksumError:
+            raise
         except (requests.RequestException, zipfile.BadZipFile, RawDataError) as exc:
             logger.warning("uci_static failed (%s); falling back to ucimlrepo", exc)
             return fetch_ucimlrepo()

@@ -145,7 +145,22 @@ class JsonlCheckpoint:
         return records
 
     def completed_indices(self) -> set[int]:
-        return {int(r["iter"]) for r in self.records()}
+        records = self.records()
+        try:
+            iterations = [int(record["iter"]) for record in records]
+        except (KeyError, TypeError, ValueError) as exc:
+            raise CheckpointError(
+                f"{self.jsonl_path}: every record must contain an integer iteration id"
+            ) from exc
+        if len(iterations) != len(set(iterations)):
+            raise CheckpointError(f"{self.jsonl_path}: duplicate iteration ids")
+        outside = sorted(i for i in iterations if i < 0 or i >= self.n_iterations)
+        if outside:
+            raise CheckpointError(
+                f"{self.jsonl_path}: iteration ids outside 0..{self.n_iterations - 1}: "
+                f"{outside[:5]}"
+            )
+        return set(iterations)
 
     def is_complete(self) -> bool:
         if not self.meta_path.exists():
@@ -173,4 +188,12 @@ def require_complete(directory: str | Path, name: str) -> list[dict[str, Any]]:
             f"{meta.get('status')!r}; refusing to aggregate partial results"
         )
     store = JsonlCheckpoint(directory, name, int(meta["n_iterations"]), str(meta["config_hash"]))
-    return store.records()
+    records = store.records()
+    completed = store.completed_indices()
+    expected = set(range(store.n_iterations))
+    if completed != expected or len(records) != store.n_iterations:
+        raise CheckpointError(
+            f"checkpoint '{name}' in {directory} must contain exactly "
+            f"{store.n_iterations} unique iterations"
+        )
+    return records

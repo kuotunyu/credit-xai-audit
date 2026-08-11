@@ -46,16 +46,22 @@ def run(cfg: Config, force: bool = False) -> None:
     processed_dir = ensure_dir(cfg.data.processed_dir)
     raw_results_dir = ensure_dir(cfg.raw_results_dir / "data")
 
+    fingerprint_path = manifests_dir / FINGERPRINT_NAME
+    expected_zip_sha256 = None
+    if cfg.data.source == "uci_static" and fingerprint_path.exists():
+        expected_zip_sha256 = read_json(fingerprint_path).get("zip_sha256")
+
     # 1. Acquire the raw frame.
     if cfg.data.source == "synthetic":
         raw = generate_synthetic(cfg.data.synthetic_rows, cfg.run.seed)
         source_meta: dict[str, Any] = {"source": "synthetic", "n_rows": len(raw)}
     else:
-        raw, source_meta = fetch_real_dataset(cfg.data.source, cfg.data.cache_dir)
+        raw, source_meta = fetch_real_dataset(
+            cfg.data.source, cfg.data.cache_dir, expected_zip_sha256
+        )
 
     # 2. Fingerprint (pin on first run, verify afterwards).
     content_sha = canonical_content_hash(raw)
-    fingerprint_path = manifests_dir / FINGERPRINT_NAME
     _pin_or_verify_fingerprint(fingerprint_path, content_sha, source_meta, force)
 
     # 3. Clean.

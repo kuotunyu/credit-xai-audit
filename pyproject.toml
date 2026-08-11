@@ -52,6 +52,7 @@ addopts = "-m 'not network' -q"
 markers = [
     "network: tests that download the real UCI dataset (excluded by default)",
     "slow: long-running tests",
+    "installation: creates an isolated environment to verify packaging portability",
 ]
 
 [tool.ruff]

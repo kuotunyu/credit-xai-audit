@@ -1,7 +1,11 @@
 from __future__ import annotations
 
+import hashlib
+
 import pytest
 
+from credit_xai.data.download import ZIP_FILENAME, download_zip
+from credit_xai.data.load import RawDataError
 from credit_xai.data.prepare import (
     FINGERPRINT_NAME,
     LOCAL_CASES_NAME,
@@ -54,3 +58,14 @@ def test_prepare_is_idempotent_and_verifies_fingerprint(test_config) -> None:
 def test_load_processed_without_prepare_raises(test_config) -> None:
     with pytest.raises(PrepareError, match="data prepare"):
         load_processed(test_config)
+
+
+def test_cached_uci_zip_must_match_pinned_checksum(tmp_path) -> None:
+    payload = b"official archive fixture"
+    zip_path = tmp_path / ZIP_FILENAME
+    zip_path.write_bytes(payload)
+    expected = hashlib.sha256(payload).hexdigest()
+
+    assert download_zip(tmp_path, expected_sha256=expected) == zip_path
+    with pytest.raises(RawDataError, match="sha256"):
+        download_zip(tmp_path, expected_sha256="0" * 64)

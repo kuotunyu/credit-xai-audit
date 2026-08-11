@@ -104,3 +104,39 @@ def test_require_complete_rejects_running(tmp_path: Path) -> None:
     store.close()  # never marked complete
     with pytest.raises(CheckpointError, match="partial"):
         require_complete(tmp_path, "boot")
+
+
+def test_finish_rejects_duplicate_iteration_ids(tmp_path: Path) -> None:
+    store = JsonlCheckpoint(tmp_path, "boot", 2, HASH_A)
+    store.begin()
+    store.append({"iter": 0})
+    store.append({"iter": 0})
+    store.append({"iter": 1})
+
+    with pytest.raises(CheckpointError, match="duplicate"):
+        store.finish()
+
+
+def test_finish_rejects_out_of_range_iteration_ids(tmp_path: Path) -> None:
+    store = JsonlCheckpoint(tmp_path, "boot", 2, HASH_A)
+    store.begin()
+    store.append({"iter": 0})
+    store.append({"iter": 1})
+    store.append({"iter": 2})
+
+    with pytest.raises(CheckpointError, match="outside"):
+        store.finish()
+
+
+def test_require_complete_rejects_wrong_record_count(tmp_path: Path) -> None:
+    store = JsonlCheckpoint(tmp_path, "boot", 2, HASH_A)
+    store.begin()
+    store.append({"iter": 0})
+    store.close()
+    store.meta_path.write_text(
+        '{"n_iterations": 2, "config_hash": "' + HASH_A + '", "status": "complete"}\n',
+        encoding="utf-8",
+    )
+
+    with pytest.raises(CheckpointError, match="exactly 2"):
+        require_complete(tmp_path, "boot")
