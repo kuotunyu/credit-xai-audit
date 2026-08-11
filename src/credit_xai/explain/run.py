@@ -19,6 +19,7 @@ from credit_xai.explain.faithfulness import run_faithfulness
 from credit_xai.explain.stability import run_stability
 from credit_xai.models.persistence import PersistenceError, load_calibrator, load_model
 from credit_xai.models.registry import get_adapter
+from credit_xai.types import Array
 from credit_xai.utils.io import atomic_write_json, ensure_dir
 from credit_xai.utils.sampling import stratified_sample
 from credit_xai.utils.seeding import rng
@@ -89,7 +90,7 @@ def run(cfg: Config, model_name: str, resume: bool = False, force: bool = False)
     X_cases = case_rows[FEATURES].reset_index(drop=True)
     case_matrix = attributor.attributions(X_cases)
     p_unc = adapter.predict_proba(estimator, X_cases)
-    p_cal: np.ndarray | None = None
+    p_cal: Array | None = None
     try:
         calibrator = load_calibrator(cfg, model_name)
         p_cal = calibrator.predict(p_unc)

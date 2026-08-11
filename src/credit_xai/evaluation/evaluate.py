@@ -26,6 +26,7 @@ from credit_xai.metrics.core import ece_quantile, point_metrics, rate_metrics
 from credit_xai.metrics.latency import measure_latency
 from credit_xai.models.persistence import load_calibrator, load_model
 from credit_xai.models.registry import get_adapter
+from credit_xai.types import Array
 from credit_xai.utils.io import atomic_write_json, ensure_dir, read_json
 from credit_xai.utils.seeding import rng
 
@@ -44,7 +45,7 @@ def run(cfg: Config, model_name: str, resume: bool = False, force: bool = False)
     y_test = splits["test"][TARGET].to_numpy()
 
     p_unc = adapter.predict_proba(estimator, X_test)
-    p_cal = calibrator.predict(p_unc)
+    p_cal = np.asarray(calibrator.predict(p_unc), dtype=float)
     y_hat = p_cal >= threshold
 
     eval_dir = ensure_dir(cfg.raw_results_dir / model_name / "eval")
@@ -78,8 +79,8 @@ def run(cfg: Config, model_name: str, resume: bool = False, force: bool = False)
     atomic_write_json(eval_dir / "reliability_bins.json", reliability)
 
     # -- latency (full serving path: model + calibrator) ----------------------
-    def _predict(frame) -> np.ndarray:
-        return calibrator.predict(adapter.predict_proba(estimator, frame))
+    def _predict(frame: pd.DataFrame) -> Array:
+        return np.asarray(calibrator.predict(adapter.predict_proba(estimator, frame)), dtype=float)
 
     point["latency"] = measure_latency(_predict, X_test, cfg.evaluation.latency, cfg.run.seed)
     atomic_write_json(eval_dir / "point_metrics.json", point)
@@ -101,8 +102,8 @@ def run(cfg: Config, model_name: str, resume: bool = False, force: bool = False)
         for prefix, p_b in (("unc", unc_b), ("cal", cal_b)):
             for key, value in point_metrics(y_b, p_b, ece_bins).items():
                 record[f"{prefix}_{key}"] = value
-        for key, value in rate_metrics(y_b, cal_b >= threshold).items():
-            record[f"cal_{key}"] = value
+        for key, rate_value in rate_metrics(y_b, cal_b >= threshold).items():
+            record[f"cal_{key}"] = rate_value
         return record
 
     run_checkpointed_bootstrap(

@@ -16,7 +16,7 @@ def ensure_dir(path: str | Path) -> Path:
     return path
 
 
-def atomic_write_json(path: str | Path, obj: Any, indent: int = 2) -> None:
+def atomic_write_json(path: str | Path, obj: Any, indent: int | None = 2) -> None:
     """Write JSON via a temp file + os.replace so readers never see partial files."""
     path = Path(path)
     ensure_dir(path.parent)

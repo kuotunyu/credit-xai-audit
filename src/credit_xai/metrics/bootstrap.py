@@ -17,12 +17,13 @@ from typing import Any
 
 import numpy as np
 
+from credit_xai.types import Array
 from credit_xai.utils.checkpoints import JsonlCheckpoint
 
 logger = logging.getLogger(__name__)
 
 
-def stratified_indices(y: np.ndarray, g: np.random.Generator) -> np.ndarray:
+def stratified_indices(y: Array, g: np.random.Generator) -> Array:
     """Within-class resample with replacement, preserving class counts."""
     y = np.asarray(y)
     parts = []
@@ -64,7 +65,7 @@ def run_checkpointed_bootstrap(
     return records
 
 
-def percentile_ci(values: np.ndarray, ci_level: float) -> tuple[float, float]:
+def percentile_ci(values: Array, ci_level: float) -> tuple[float, float]:
     alpha = (1.0 - ci_level) / 2.0
     low, high = np.percentile(np.asarray(values, dtype=float), [alpha * 100, (1 - alpha) * 100])
     return float(low), float(high)

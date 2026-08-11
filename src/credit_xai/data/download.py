@@ -11,6 +11,7 @@ import os
 import tempfile
 import zipfile
 from pathlib import Path
+from typing import Any
 
 import pandas as pd
 import requests
@@ -46,8 +47,8 @@ def download_zip(
     expected_sha256: str | None = None,
 ) -> Path:
     """Download the static zip to the cache (skipped if already present)."""
-    cache_dir = ensure_dir(cache_dir)
-    zip_path = cache_dir / ZIP_FILENAME
+    cache_path = ensure_dir(cache_dir)
+    zip_path = cache_path / ZIP_FILENAME
     if zip_path.exists() and zip_path.stat().st_size > 0:
         _verify_zip_checksum(zip_path, expected_sha256)
         logger.info("using cached dataset zip: %s", zip_path)
@@ -55,7 +56,7 @@ def download_zip(
     logger.info("downloading %s", url)
     with requests.get(url, headers=_UA, stream=True, timeout=timeout) as resp:
         resp.raise_for_status()
-        fd, tmp_name = tempfile.mkstemp(dir=cache_dir, suffix=".part")
+        fd, tmp_name = tempfile.mkstemp(dir=cache_path, suffix=".part")
         try:
             with os.fdopen(fd, "wb") as fh:
                 for chunk in resp.iter_content(chunk_size=1 << 20):
@@ -73,8 +74,8 @@ def download_zip(
 
 
 def extract_xls(zip_path: str | Path, cache_dir: str | Path) -> Path:
-    cache_dir = ensure_dir(cache_dir)
-    xls_path = cache_dir / UCI_XLS_NAME
+    cache_path = ensure_dir(cache_dir)
+    xls_path = cache_path / UCI_XLS_NAME
     if xls_path.exists():
         return xls_path
     with zipfile.ZipFile(zip_path) as zf:
@@ -90,7 +91,7 @@ def extract_xls(zip_path: str | Path, cache_dir: str | Path) -> Path:
 
 def fetch_uci_static(
     cache_dir: str | Path, expected_zip_sha256: str | None = None
-) -> tuple[pd.DataFrame, dict]:
+) -> tuple[pd.DataFrame, dict[str, Any]]:
     zip_path = download_zip(cache_dir, expected_sha256=expected_zip_sha256)
     xls_path = extract_xls(zip_path, cache_dir)
     frame = load_xls(xls_path)
@@ -102,7 +103,7 @@ def fetch_uci_static(
     return frame, meta
 
 
-def fetch_ucimlrepo(dataset_id: int = 350) -> tuple[pd.DataFrame, dict]:
+def fetch_ucimlrepo(dataset_id: int = 350) -> tuple[pd.DataFrame, dict[str, Any]]:
     from ucimlrepo import fetch_ucirepo
 
     logger.info("fetching dataset id=%d via ucimlrepo", dataset_id)
@@ -115,7 +116,7 @@ def fetch_ucimlrepo(dataset_id: int = 350) -> tuple[pd.DataFrame, dict]:
 
 def fetch_real_dataset(
     source: str, cache_dir: str | Path, expected_zip_sha256: str | None = None
-) -> tuple[pd.DataFrame, dict]:
+) -> tuple[pd.DataFrame, dict[str, Any]]:
     """Primary/fallback chain for the two real sources."""
     if source == "uci_static":
         try:

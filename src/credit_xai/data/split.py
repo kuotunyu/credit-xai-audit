@@ -10,7 +10,7 @@ from __future__ import annotations
 
 import logging
 from pathlib import Path
-from typing import Any
+from typing import Any, cast
 
 import numpy as np
 import pandas as pd
@@ -19,6 +19,7 @@ from sklearn.model_selection import train_test_split
 
 from credit_xai.config import Config, canonical_json
 from credit_xai.constants import STEP_LOCAL_CASES, STEP_SPLIT
+from credit_xai.types import Array
 from credit_xai.utils.io import atomic_write_json, read_json, sha256_text
 from credit_xai.utils.seeding import rng, seed_int
 
@@ -31,7 +32,7 @@ class SplitError(ValueError):
     pass
 
 
-def compute_split(y: pd.Series, cfg: Config) -> dict[str, np.ndarray]:
+def compute_split(y: pd.Series, cfg: Config) -> dict[str, Array]:
     """Two-stage stratified split on the target; returns positional indices."""
     fractions = cfg.data.split
     seed = seed_int(cfg.run.seed, STEP_SPLIT)
@@ -83,7 +84,7 @@ def write_split_manifest(path: str | Path, manifest: dict[str, Any]) -> None:
 
 
 def load_split_manifest(path: str | Path) -> dict[str, Any]:
-    manifest = read_json(path)
+    manifest = cast(dict[str, Any], read_json(path))
     if _indices_hash(manifest["indices"]) != manifest["indices_sha256"]:
         raise SplitError(f"{path}: indices_sha256 does not match indices (manifest edited?)")
     return manifest
@@ -137,7 +138,7 @@ def _indices_hash(indices: dict[str, list[int]]) -> str:
     return sha256_text(canonical_json({k: list(map(int, v)) for k, v in indices.items()}))
 
 
-def _check_partition(indices: dict[str, np.ndarray], n_rows: int) -> None:
+def _check_partition(indices: dict[str, Array], n_rows: int) -> None:
     all_idx = np.concatenate([indices[name] for name in SPLIT_NAMES])
     if len(all_idx) != n_rows or len(np.unique(all_idx)) != n_rows:
         raise SplitError("split indices do not form a partition of the dataset rows")

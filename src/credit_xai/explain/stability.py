@@ -25,6 +25,7 @@ from credit_xai.constants import FEATURES, TARGET, step_rank_stability
 from credit_xai.explain.explainers import build_attributor, global_importance, top_k_features
 from credit_xai.metrics.bootstrap import run_checkpointed_bootstrap, stratified_indices
 from credit_xai.models.base import ModelAdapter
+from credit_xai.types import Array
 from credit_xai.utils.seeding import rng
 
 logger = logging.getLogger(__name__)
@@ -44,7 +45,7 @@ def run_stability(
     X_explain: pd.DataFrame,
     background: pd.DataFrame,
     reference_importance: dict[str, float],
-    reference_matrix: np.ndarray,
+    reference_matrix: Array,
     local_case_rows: pd.DataFrame,
     out_dir: Any,
     resume: bool,

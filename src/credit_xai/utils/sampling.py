@@ -4,11 +4,13 @@ from __future__ import annotations
 
 import numpy as np
 
+from credit_xai.types import Array
 
-def stratified_sample(y: np.ndarray, size: int, g: np.random.Generator) -> np.ndarray:
+
+def stratified_sample(y: Array, size: int, g: np.random.Generator) -> Array:
     """Proportional without-replacement class-stratified sample of row positions."""
     size = min(size, len(y))
-    positions: list[np.ndarray] = []
+    positions: list[Array] = []
     for label in np.unique(y):
         pool = np.flatnonzero(y == label)
         take = max(1, round(size * len(pool) / len(y)))

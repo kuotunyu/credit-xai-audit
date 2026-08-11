@@ -47,7 +47,14 @@ class LightGBMAdapter(ModelAdapter):
     def prepare_features(self, X: pd.DataFrame) -> pd.DataFrame:
         return _as_categorical(X)
 
-    def fit(self, estimator, X_train, y_train, X_val, y_val):
+    def fit(
+        self,
+        estimator: Any,
+        X_train: pd.DataFrame,
+        y_train: pd.Series,
+        X_val: pd.DataFrame,
+        y_val: pd.Series,
+    ) -> Any:
         import lightgbm as lgb
 
         stopping = estimator.get_params().get("n_estimators", 100)

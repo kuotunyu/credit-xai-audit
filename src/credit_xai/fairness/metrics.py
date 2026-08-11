@@ -10,19 +10,20 @@ import numpy as np
 from sklearn.metrics import roc_auc_score
 
 from credit_xai.metrics.core import rate_metrics
+from credit_xai.types import Array
 
 
-def group_auc(y: np.ndarray, p: np.ndarray) -> float | None:
+def group_auc(y: Array, p: Array) -> float | None:
     if len(np.unique(y)) < 2:
         return None
     return float(roc_auc_score(y, p))
 
 
 def group_snapshot(
-    y: np.ndarray,
-    p: np.ndarray,
-    y_hat: np.ndarray,
-    masks: dict[str, np.ndarray],
+    y: Array,
+    p: Array,
+    y_hat: Array,
+    masks: dict[str, Array],
     small_cell_min: int,
 ) -> dict[str, dict[str, Any]]:
     """Point estimates per group; groups with fewer than ``small_cell_min``

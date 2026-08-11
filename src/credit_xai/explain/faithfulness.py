@@ -23,6 +23,7 @@ from credit_xai.config import Config
 from credit_xai.constants import FEATURES, step_faithfulness
 from credit_xai.metrics.bootstrap import run_checkpointed_bootstrap
 from credit_xai.models.base import ModelAdapter
+from credit_xai.types import Array
 from credit_xai.utils.seeding import rng
 
 logger = logging.getLogger(__name__)
@@ -34,7 +35,7 @@ def run_faithfulness(
     adapter: ModelAdapter,
     estimator: Any,
     X_explain: pd.DataFrame,
-    attribution_matrix: np.ndarray,
+    attribution_matrix: Array,
     X_val: pd.DataFrame,
     out_dir: Any,
     resume: bool,

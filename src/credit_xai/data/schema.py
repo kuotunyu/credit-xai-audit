@@ -4,7 +4,7 @@ validate frames downstream (serving inputs, tests)."""
 from __future__ import annotations
 
 from pathlib import Path
-from typing import Any
+from typing import Any, cast
 
 import pandas as pd
 
@@ -72,7 +72,7 @@ def write_schema(path: str | Path, schema: dict[str, Any]) -> None:
 
 
 def load_schema(path: str | Path) -> dict[str, Any]:
-    schema = read_json(path)
+    schema = cast(dict[str, Any], read_json(path))
     if schema.get("schema_version") != SCHEMA_VERSION:
         raise SchemaError(
             f"schema version mismatch: file has {schema.get('schema_version')}, "

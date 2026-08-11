@@ -43,6 +43,10 @@ def inject(readme_path: str | Path, tables: dict[str, str], run_label: str) -> N
         pattern = _marker_pattern(section)
         if not pattern.search(text):
             raise RenderError(f"{path}: missing AUTOGEN markers for section {section}")
-        text = pattern.sub(lambda _m, r=replacement: r, text, count=1)
+
+        def replace_marker(_match: re.Match[str], replacement_value: str = replacement) -> str:
+            return replacement_value
+
+        text = pattern.sub(replace_marker, text, count=1)
     path.write_text(text, encoding="utf-8", newline="\n")
     logger.info("injected %d sections into %s", len(SECTIONS), path)

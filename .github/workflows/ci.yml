@@ -14,13 +14,12 @@ jobs:
       - uses: astral-sh/setup-uv@v5
         with:
           enable-cache: true
-      - run: uv sync --all-extras
-      - run: uv run ruff check
-      - run: uv run ruff format --check
-      - name: forbid local absolute paths in committed artifacts
-        run: |
-          ! grep -rIl 'C:\\Users' manifests results configs src tests || \
-            (echo 'committed files contain local absolute paths' && exit 1)
+      - run: python scripts/setup_environment.py
+      - run: uv run --no-sync ruff check src app tests
+      - run: uv run --no-sync ruff format --check src app tests
+      - run: uv run --no-sync mypy --strict src app
+      - run: uv run --no-sync python -m credit_xai.release.verify all
+      - run: uv run --no-sync python -m build
 
   test:
     runs-on: ubuntu-latest
@@ -29,10 +28,10 @@ jobs:
       - uses: astral-sh/setup-uv@v5
         with:
           enable-cache: true
-      - run: uv sync --all-extras
+      - run: python scripts/setup_environment.py
       # network-marked tests are excluded by default: CI never downloads the
       # real UCI dataset; the end-to-end tests run on the synthetic source
-      - run: uv run pytest
+      - run: uv run --no-sync pytest
 
   docker:
     runs-on: ubuntu-latest

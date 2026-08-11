@@ -165,7 +165,7 @@ class JsonlCheckpoint:
     def is_complete(self) -> bool:
         if not self.meta_path.exists():
             return False
-        return read_json(self.meta_path).get("status") == "complete"
+        return bool(read_json(self.meta_path).get("status") == "complete")
 
     # -- internals -----------------------------------------------------------
     def _wipe(self) -> None:

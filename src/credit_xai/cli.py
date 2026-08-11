@@ -16,6 +16,8 @@ from __future__ import annotations
 import argparse
 import logging
 import sys
+from collections.abc import Callable
+from typing import cast
 
 from credit_xai import __version__
 from credit_xai.config import Config, load_config
@@ -173,7 +175,8 @@ def main(argv: list[str] | None = None) -> int:
     parser = build_parser()
     args = parser.parse_args(argv)
     try:
-        return args.func(args)
+        handler = cast(Callable[[argparse.Namespace], int], args.func)
+        return handler(args)
     except KeyboardInterrupt:
         logger.warning("interrupted — checkpointed steps can be resumed with --resume")
         return 130

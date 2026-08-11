@@ -4,15 +4,18 @@ from __future__ import annotations
 
 import hashlib
 import json
+import os
 from pathlib import Path
 from typing import Any
 
 import yaml
 
-from credit_xai.config import canonical_json
+from credit_xai.config import canonical_json, load_config
 from credit_xai.constants import MODEL_NAMES, UCI_STATIC_ZIP_URL
+from credit_xai.reporting.aggregate import AggregationError, build_summary
 from credit_xai.reporting.render import SECTIONS, _marker_pattern, render_block
 from credit_xai.reporting.tables import all_tables
+from credit_xai.utils.checkpoints import CheckpointError
 
 
 def _read_json(path: Path) -> dict[str, Any]:
@@ -210,6 +213,16 @@ def _verify_generated_outputs(root: Path, errors: list[str]) -> None:
     summary_relative = Path("results") / "derived" / "summary.json"
     try:
         summary = _read_json(root / summary_relative)
+        previous_directory = Path.cwd()
+        try:
+            os.chdir(root)
+            rebuilt = build_summary(load_config("configs/full.yaml"))
+        finally:
+            os.chdir(previous_directory)
+        if summary != rebuilt:
+            errors.append(
+                f"{summary_relative.as_posix()}: content differs from rebuilt raw artifacts"
+            )
         for record in summary["provenance"]:
             artifact_relative = Path(record["path"])
             artifact_path = root / artifact_relative
@@ -233,5 +246,13 @@ def _verify_generated_outputs(root: Path, errors: list[str]) -> None:
                 expected = render_block(section, tables[section.lower()], run_label)
                 if match is None or match.group(0) != expected:
                     errors.append(f"{readme_name}: AUTOGEN {section} differs from summary")
-    except (FileNotFoundError, KeyError, TypeError, ValueError, json.JSONDecodeError) as exc:
+    except (
+        AggregationError,
+        CheckpointError,
+        FileNotFoundError,
+        KeyError,
+        TypeError,
+        ValueError,
+        json.JSONDecodeError,
+    ) as exc:
         errors.append(f"{summary_relative.as_posix()}: cannot verify generated outputs: {exc}")

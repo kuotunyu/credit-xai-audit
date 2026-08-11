@@ -4,6 +4,7 @@ from __future__ import annotations
 
 import logging
 from pathlib import Path
+from typing import Any
 
 import numpy as np
 import pandas as pd
@@ -35,7 +36,7 @@ def load_xls(path: str | Path) -> pd.DataFrame:
     return _finalize(frame)
 
 
-def from_ucimlrepo_frames(features: pd.DataFrame, targets: pd.DataFrame, ids) -> pd.DataFrame:
+def from_ucimlrepo_frames(features: pd.DataFrame, targets: pd.DataFrame, ids: Any) -> pd.DataFrame:
     """Assemble the canonical raw frame from ucimlrepo's fetch result parts."""
     frame = features.copy()
     frame[targets.columns[0]] = targets.iloc[:, 0]

@@ -31,6 +31,7 @@ from credit_xai.data.prepare import load_processed
 from credit_xai.metrics.core import clip_probs, point_metrics
 from credit_xai.models.persistence import load_model, save_calibrator
 from credit_xai.models.registry import get_adapter
+from credit_xai.types import Array
 from credit_xai.utils.io import atomic_write_json, ensure_dir
 
 logger = logging.getLogger(__name__)
@@ -39,18 +40,18 @@ logger = logging.getLogger(__name__)
 class Calibrator(Protocol):
     method: str
 
-    def fit(self, p: np.ndarray, y: np.ndarray) -> Calibrator: ...
+    def fit(self, p: Array, y: Array) -> Calibrator: ...
 
-    def predict(self, p: np.ndarray) -> np.ndarray: ...
+    def predict(self, p: Array) -> Array: ...
 
 
 class IdentityCalibrator:
     method = "none"
 
-    def fit(self, p: np.ndarray, y: np.ndarray) -> IdentityCalibrator:
+    def fit(self, p: Array, y: Array) -> IdentityCalibrator:
         return self
 
-    def predict(self, p: np.ndarray) -> np.ndarray:
+    def predict(self, p: Array) -> Array:
         return np.asarray(p, dtype=float)
 
 
@@ -62,14 +63,14 @@ class PlattCalibrator:
     def __init__(self) -> None:
         self._lr = LogisticRegression(C=1e10, solver="lbfgs", max_iter=1000)
 
-    def fit(self, p: np.ndarray, y: np.ndarray) -> PlattCalibrator:
+    def fit(self, p: Array, y: Array) -> PlattCalibrator:
         z = logit(clip_probs(p)).reshape(-1, 1)
         self._lr.fit(z, np.asarray(y))
         return self
 
-    def predict(self, p: np.ndarray) -> np.ndarray:
+    def predict(self, p: Array) -> Array:
         z = logit(clip_probs(p)).reshape(-1, 1)
-        return self._lr.predict_proba(z)[:, 1]
+        return np.asarray(self._lr.predict_proba(z)[:, 1], dtype=float)
 
 
 class IsotonicCalibrator:
@@ -78,11 +79,11 @@ class IsotonicCalibrator:
     def __init__(self) -> None:
         self._iso = IsotonicRegression(y_min=0.0, y_max=1.0, out_of_bounds="clip")
 
-    def fit(self, p: np.ndarray, y: np.ndarray) -> IsotonicCalibrator:
+    def fit(self, p: Array, y: Array) -> IsotonicCalibrator:
         self._iso.fit(np.asarray(p, dtype=float), np.asarray(y, dtype=float))
         return self
 
-    def predict(self, p: np.ndarray) -> np.ndarray:
+    def predict(self, p: Array) -> Array:
         return np.asarray(self._iso.predict(np.asarray(p, dtype=float)), dtype=float)
 
 
@@ -93,7 +94,7 @@ _CALIBRATORS: dict[str, type] = {
 
 
 def fit_and_select(
-    p_val: np.ndarray, y_val: np.ndarray, methods: tuple[str, ...], ece_bins: int
+    p_val: Array, y_val: Array, methods: tuple[str, ...], ece_bins: int
 ) -> tuple[dict[str, Any], dict[str, Any]]:
     """Fit each requested method on validation arrays; select by val log loss.
 
@@ -112,7 +113,7 @@ def fit_and_select(
     return fitted, {"per_method_val": val_metrics, "selected_method": selected}
 
 
-def base_rate_threshold(p_cal_val: np.ndarray, y_val: np.ndarray) -> tuple[float, float]:
+def base_rate_threshold(p_cal_val: Array, y_val: Array) -> tuple[float, float]:
     """Threshold at which the validation flag rate equals the validation base rate."""
     base_rate = float(np.asarray(y_val).mean())
     threshold = float(np.quantile(np.asarray(p_cal_val, dtype=float), 1.0 - base_rate))

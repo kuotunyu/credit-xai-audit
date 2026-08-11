@@ -12,14 +12,16 @@ from typing import Any
 import numpy as np
 from sklearn.metrics import average_precision_score, brier_score_loss, log_loss, roc_auc_score
 
+from credit_xai.types import Array
+
 PROB_EPS = 1e-6
 
 
-def clip_probs(p: np.ndarray) -> np.ndarray:
+def clip_probs(p: Array) -> Array:
     return np.clip(np.asarray(p, dtype=float), PROB_EPS, 1 - PROB_EPS)
 
 
-def ece_quantile(y: np.ndarray, p: np.ndarray, n_bins: int) -> tuple[float, dict[str, Any]]:
+def ece_quantile(y: Array, p: Array, n_bins: int) -> tuple[float, dict[str, Any]]:
     """Expected calibration error with equal-frequency bins.
 
     ECE = sum_b (n_b / N) * | mean(p in b) - mean(y in b) |
@@ -50,7 +52,7 @@ def ece_quantile(y: np.ndarray, p: np.ndarray, n_bins: int) -> tuple[float, dict
     return float(ece), detail
 
 
-def point_metrics(y: np.ndarray, p: np.ndarray, ece_bins: int) -> dict[str, float]:
+def point_metrics(y: Array, p: Array, ece_bins: int) -> dict[str, float]:
     """The five probability-quality metrics on one (y, p) pair."""
     y = np.asarray(y)
     p = np.asarray(p, dtype=float)
@@ -66,7 +68,7 @@ def point_metrics(y: np.ndarray, p: np.ndarray, ece_bins: int) -> dict[str, floa
     }
 
 
-def rate_metrics(y: np.ndarray, y_hat: np.ndarray) -> dict[str, float | None]:
+def rate_metrics(y: Array, y_hat: Array) -> dict[str, float | None]:
     """Threshold-based rates. FPR/FNR are None when undefined for a slice."""
     y = np.asarray(y).astype(bool)
     y_hat = np.asarray(y_hat).astype(bool)

@@ -5,6 +5,7 @@ from __future__ import annotations
 
 import logging
 from pathlib import Path
+from typing import Any, cast
 
 import gradio as gr
 import pandas as pd
@@ -58,7 +59,7 @@ def build_ui(cfg: Config) -> gr.Blocks:
         row = values.iloc[0]
         return {f: int(row[f]) for f in FEATURES}
 
-    def analyze(values: pd.DataFrame):
+    def analyze(values: pd.DataFrame) -> tuple[str, pd.DataFrame]:
         if service is None:
             return f"**Model not loaded.** {load_error}", pd.DataFrame()
         try:
@@ -75,7 +76,7 @@ def build_ui(cfg: Config) -> gr.Blocks:
         table = pd.DataFrame(result["top_attributions"]).round(4)
         return text, table
 
-    def load_case(index: int):
+    def load_case(index: int) -> tuple[Any, str]:
         if test_cases is None:
             return gr.skip(), "No processed dataset available (run `data prepare`)."
         index = int(index) % len(test_cases)
@@ -103,4 +104,4 @@ def build_ui(cfg: Config) -> gr.Blocks:
         load_btn.click(load_case, inputs=[case_index], outputs=[grid, case_note])
         analyze_btn.click(analyze, inputs=[grid], outputs=[result_md, attribution_table])
         gr.Markdown(f"---\n{DISCLAIMER} {DEMO_SCOPE}")
-    return demo
+    return cast(gr.Blocks, demo)

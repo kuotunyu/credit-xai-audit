@@ -7,10 +7,10 @@ are never tuned against results.
 
 from __future__ import annotations
 
-import numpy as np
 import pandas as pd
 
 from credit_xai.config import Config
+from credit_xai.types import Array
 
 SEX_LABELS = {1: "sex=1_male", 2: "sex=2_female"}
 
@@ -19,9 +19,9 @@ def age_bin_label(lo: int, hi: int | None) -> str:
     return f"age={lo}-{hi}" if hi is not None else f"age={lo}+"
 
 
-def group_masks(frame: pd.DataFrame, cfg: Config) -> dict[str, np.ndarray]:
+def group_masks(frame: pd.DataFrame, cfg: Config) -> dict[str, Array]:
     """Ordered mapping group_id -> boolean mask over the frame's rows."""
-    masks: dict[str, np.ndarray] = {}
+    masks: dict[str, Array] = {}
     sex = frame[cfg.fairness.sex_column].to_numpy()
     for code, label in SEX_LABELS.items():
         masks[label] = sex == code

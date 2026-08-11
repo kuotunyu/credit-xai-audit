@@ -14,6 +14,7 @@ import numpy as np
 import pandas as pd
 
 from credit_xai.config import Config
+from credit_xai.types import Array
 
 
 class ModelUnavailableError(RuntimeError):
@@ -49,7 +50,7 @@ class ModelAdapter(ABC):
         estimator.fit(self.prepare_features(X_train), y_train)
         return estimator
 
-    def predict_proba(self, estimator: Any, X: pd.DataFrame) -> np.ndarray:
+    def predict_proba(self, estimator: Any, X: pd.DataFrame) -> Array:
         """P(default=1) as a 1-D array."""
         proba = estimator.predict_proba(self.prepare_features(X))
         return np.asarray(proba)[:, 1]

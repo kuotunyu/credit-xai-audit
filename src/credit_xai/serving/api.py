@@ -68,7 +68,8 @@ def create_app(cfg: Config, model_name: str | None = None) -> FastAPI:
         logger.warning("model not loaded: %s", state["error"])
 
     def _service() -> PredictionService:
-        if state["service"] is None:
+        service = state["service"]
+        if service is None:
             raise HTTPException(
                 status_code=503,
                 detail=(
@@ -76,7 +77,9 @@ def create_app(cfg: Config, model_name: str | None = None) -> FastAPI:
                     f"models/ directory. Reason: {state['error']}"
                 ),
             )
-        return state["service"]
+        if not isinstance(service, PredictionService):
+            raise HTTPException(status_code=503, detail="invalid in-memory service state")
+        return service
 
     @app.get("/health")
     def health() -> dict[str, Any]:

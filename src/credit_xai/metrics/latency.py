@@ -15,6 +15,7 @@ import numpy as np
 import pandas as pd
 
 from credit_xai.config import LatencyConfig
+from credit_xai.types import Array
 from credit_xai.utils.seeding import rng
 from credit_xai.utils.timing import timed_calls
 
@@ -22,7 +23,7 @@ STEP_LATENCY = "eval/latency"
 
 
 def measure_latency(
-    predict_fn: Callable[[pd.DataFrame], np.ndarray],
+    predict_fn: Callable[[pd.DataFrame], Array],
     X: pd.DataFrame,
     settings: LatencyConfig,
     global_seed: int,

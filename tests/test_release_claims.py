@@ -174,3 +174,15 @@ def test_claim_verifier_rejects_summary_calibration_boundary_drift(tmp_path: Pat
     errors = verify_claims(root)
 
     assert any("summary" in error and "validation" in error for error in errors)
+
+
+def test_claim_verifier_rejects_summary_not_rebuilt_from_raw_artifacts(tmp_path: Path) -> None:
+    root = _candidate_copy(tmp_path)
+    summary_path = root / "results" / "derived" / "summary.json"
+    summary = _read_json(summary_path)
+    summary["generated_at"] = "2099-01-01T00:00:00+00:00"
+    _write_json(summary_path, summary)
+
+    errors = verify_claims(root)
+
+    assert any("summary.json" in error and "rebuilt raw artifacts" in error for error in errors)

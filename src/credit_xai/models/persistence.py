@@ -14,7 +14,7 @@ from __future__ import annotations
 import logging
 from datetime import UTC, datetime
 from pathlib import Path
-from typing import Any
+from typing import Any, cast
 
 import joblib
 import numpy as np
@@ -123,7 +123,7 @@ def load_manifest(cfg: Config, model_name: str) -> dict[str, Any]:
             f"model bundle for {model_name!r} not found at {manifest_path.parent}; "
             "run `train` first"
         )
-    return read_json(manifest_path)
+    return cast(dict[str, Any], read_json(manifest_path))
 
 
 def load_model(cfg: Config, model_name: str, expect_config_hash: bool = True) -> Any:

@@ -14,7 +14,7 @@ from __future__ import annotations
 
 import logging
 from abc import ABC, abstractmethod
-from typing import Any
+from typing import Any, cast
 
 import numpy as np
 import pandas as pd
@@ -22,6 +22,7 @@ import pandas as pd
 from credit_xai.constants import FEATURES
 from credit_xai.models.base import ModelAdapter
 from credit_xai.models.logistic import LogisticAdapter
+from credit_xai.types import Array
 
 logger = logging.getLogger(__name__)
 
@@ -30,10 +31,11 @@ class Attributor(ABC):
     """Uniform local-attribution interface: (n, 23) matrix on the link scale."""
 
     method: str
+    base_value: float
     detail: dict[str, Any]
 
     @abstractmethod
-    def attributions(self, X: pd.DataFrame) -> np.ndarray: ...
+    def attributions(self, X: pd.DataFrame) -> Array: ...
 
 
 class LinearShapAttributor(Attributor):
@@ -58,7 +60,7 @@ class LinearShapAttributor(Attributor):
             "background_rows": int(len(background)),
         }
 
-    def attributions(self, X: pd.DataFrame) -> np.ndarray:
+    def attributions(self, X: pd.DataFrame) -> Array:
         Z = np.asarray(self._adapter.transform(self._estimator, X), dtype=float)
         phi_transformed = (Z - self._mu) * self._w  # (n, n_transformed)
         out = np.zeros((len(X), len(FEATURES)))
@@ -103,7 +105,7 @@ class TreeShapAttributor(Attributor):
             self.base_value = float("nan")  # set on first attribution call
         self.detail = {"feature_perturbation": mode, "background_rows": int(len(background))}
 
-    def attributions(self, X: pd.DataFrame) -> np.ndarray:
+    def attributions(self, X: pd.DataFrame) -> Array:
         prepared = self._adapter.prepare_features(X)
         if self._explainer is not None:
             values = self._explainer.shap_values(prepared)
@@ -116,7 +118,7 @@ class TreeShapAttributor(Attributor):
         return contrib[:, :-1]  # last column is the expected value
 
     @staticmethod
-    def _normalize(values: Any, n_rows: int) -> np.ndarray:
+    def _normalize(values: Any, n_rows: int) -> Array:
         """shap returns (n, m), [neg, pos] lists, or (n, m, 2) depending on version."""
         if isinstance(values, list):
             values = values[-1]
@@ -125,7 +127,7 @@ class TreeShapAttributor(Attributor):
             values = values[:, :, -1]
         if values.shape != (n_rows, len(FEATURES)):
             raise ValueError(f"unexpected SHAP output shape {values.shape}")
-        return values
+        return cast(Array, values)
 
 
 class EbmNativeAttributor(Attributor):
@@ -144,7 +146,7 @@ class EbmNativeAttributor(Attributor):
             "n_terms": len(estimator.term_features_),
         }
 
-    def attributions(self, X: pd.DataFrame) -> np.ndarray:
+    def attributions(self, X: pd.DataFrame) -> Array:
         contributions = np.asarray(self._estimator.eval_terms(X), dtype=float)  # (n, n_terms)
         out = np.zeros((len(X), len(FEATURES)))
         for t, feature_idx in enumerate(self._estimator.term_features_):
@@ -166,7 +168,7 @@ def build_attributor(adapter: ModelAdapter, estimator: Any, background: pd.DataF
     raise ValueError(f"unknown explainer kind {kind!r}")
 
 
-def global_importance(attribution_matrix: np.ndarray) -> dict[str, float]:
+def global_importance(attribution_matrix: Array) -> dict[str, float]:
     """Mean |attribution| per feature over the explained sample (uniform
     definition across all three models)."""
     means = np.abs(attribution_matrix).mean(axis=0)

@@ -6,7 +6,7 @@ from __future__ import annotations
 import logging
 from datetime import UTC, datetime
 from pathlib import Path
-from typing import Any
+from typing import Any, cast
 
 import pandas as pd
 
@@ -130,11 +130,11 @@ def load_processed(cfg: Config) -> dict[str, pd.DataFrame]:
 def canonical_content_hash_cleaned(cfg: Config) -> str:
     """The fingerprint the split manifest was built against (raw content hash)."""
     fingerprint = read_json(Path(cfg.run.manifests_dir) / FINGERPRINT_NAME)
-    return fingerprint["content_sha256"]
+    return str(fingerprint["content_sha256"])
 
 
 def load_local_cases(cfg: Config) -> dict[str, Any]:
-    return read_json(Path(cfg.run.manifests_dir) / LOCAL_CASES_NAME)
+    return cast(dict[str, Any], read_json(Path(cfg.run.manifests_dir) / LOCAL_CASES_NAME))
 
 
 def _pin_or_verify_fingerprint(

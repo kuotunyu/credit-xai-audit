@@ -13,6 +13,7 @@ matplotlib.use("Agg")
 import matplotlib.pyplot as plt  # noqa: E402
 import numpy as np  # noqa: E402
 import pandas as pd  # noqa: E402
+from matplotlib.figure import Figure  # noqa: E402
 from sklearn.metrics import precision_recall_curve, roc_curve  # noqa: E402
 
 from credit_xai.config import Config  # noqa: E402
@@ -24,7 +25,7 @@ logger = logging.getLogger(__name__)
 _COLORS = {"logistic": "#4477AA", "ebm": "#EE6677", "lightgbm": "#228833"}
 
 
-def _finish(fig: plt.Figure, path: Path) -> None:
+def _finish(fig: Figure, path: Path) -> None:
     fig.text(0.5, 0.005, DISCLAIMER, ha="center", fontsize=7, color="0.4")
     fig.savefig(path, dpi=150, bbox_inches="tight")
     plt.close(fig)
@@ -200,11 +201,11 @@ def group_auc_plot(summary: dict[str, Any], assets_dir: Path) -> None:
 
 
 def render_all(cfg: Config, summary: dict[str, Any], assets_dir: str | Path) -> list[str]:
-    assets_dir = ensure_dir(assets_dir)
-    roc_pr_curves(cfg, assets_dir)
-    reliability_diagram(cfg, summary, assets_dir)
-    global_importance_bars(summary, assets_dir)
-    ebm_shape_grid(cfg, assets_dir)
-    faithfulness_bars(summary, assets_dir)
-    group_auc_plot(summary, assets_dir)
-    return [p.name for p in sorted(Path(assets_dir).glob("*.png"))]
+    assets_path = ensure_dir(assets_dir)
+    roc_pr_curves(cfg, assets_path)
+    reliability_diagram(cfg, summary, assets_path)
+    global_importance_bars(summary, assets_path)
+    ebm_shape_grid(cfg, assets_path)
+    faithfulness_bars(summary, assets_path)
+    group_auc_plot(summary, assets_path)
+    return [p.name for p in sorted(assets_path.glob("*.png"))]
