@@ -1,0 +1,28 @@
+cff-version: 1.2.0
+message: "If you use this educational audit, cite the software and the UCI dataset."
+title: "credit-xai-audit"
+type: software
+authors:
+  - name: "kuotunyu"
+version: 0.1.0
+license: MIT
+abstract: >-
+  CPU-only portfolio audit of calibration, bootstrap uncertainty, explanation
+  stability, faithfulness, and descriptive group metrics on a historical 2005
+  UCI dataset. Not for lending decisions or financial advice.
+keywords:
+  - explainable artificial intelligence
+  - trustworthy machine learning
+  - calibration
+  - reproducibility
+  - model audit
+references:
+  - type: dataset
+    title: "Default of Credit Card Clients"
+    authors:
+      - family-names: Yeh
+        given-names: I-Cheng
+    year: 2009
+    doi: 10.24432/C55S3H
+    publisher:
+      name: UCI Machine Learning Repository

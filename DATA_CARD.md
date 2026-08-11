@@ -9,12 +9,13 @@
 | Name | Default of Credit Card Clients |
 | Source | [UCI Machine Learning Repository, id=350](https://archive.ics.uci.edu/dataset/350/default+of+credit+card+clients) |
 | Creator | Yeh, I-Cheng (2016 donation; data from a Taiwanese bank, April–September 2005) |
-| Citation | Yeh, I. C., & Lien, C. H. (2009). *The comparisons of data mining techniques for the predictive accuracy of probability of default of credit card clients.* Expert Systems with Applications, 36(2), 2473–2480. |
+| Dataset citation | Yeh, I. (2009). *Default of Credit Card Clients* [Dataset]. UCI Machine Learning Repository. [doi:10.24432/C55S3H](https://doi.org/10.24432/C55S3H). |
+| Associated paper | Yeh, I. C., & Lien, C. H. (2009). *The comparisons of data mining techniques for the predictive accuracy of probability of default of credit card clients.* Expert Systems with Applications, 36(2), 2473–2480. |
 | License | CC BY 4.0 (per UCI dataset page) |
 | Rows | 30,000 |
 | Features | 23 (X1–X23) + binary target (`default payment next month`, renamed internally to `default`) |
 | Positive rate | ≈ 22.1% |
-| Acquisition | Primary: official static zip from `archive.ics.uci.edu` (sha256 of the zip and of the canonical CSV content pinned in [`manifests/dataset_fingerprint.json`](manifests/dataset_fingerprint.json)). Fallback: the `ucimlrepo` package (content hash verified). The raw file is cached in gitignored `data/raw/` and **never committed**. |
+| Acquisition | Primary: official static zip from `archive.ics.uci.edu` (ZIP sha256 and canonical-content sha256 pinned in [`manifests/dataset_fingerprint.json`](manifests/dataset_fingerprint.json) and verified before extraction/processing). Fallback for transport/parsing failures: UCI's documented `ucimlrepo` client, followed by the same canonical-content check. A pinned ZIP checksum mismatch fails closed and never triggers fallback. Raw files are cached in gitignored `data/raw/` and **never committed**. |
 
 The original `.xls` has a known quirk: its first row holds X1..X23 placeholder
 labels and the real header is the second row (`header=1` in `data/load.py`).

@@ -152,24 +152,26 @@ Descriptive snapshot of model behavior on 2005 historical data, by SEX (UCI codi
 
 ## 快速開始
 
-需要 Python 3.11+ 與 [uv](https://docs.astral.sh/uv/)。
+需要 Python 3.11+ 與 [uv](https://docs.astral.sh/uv/)。setup 使用 non-editable
+安裝，避免 Windows 非 ASCII checkout 路徑下 editable `.pth` 的 locale 解碼問題。
 
 ```bash
-uv sync --all-extras            # 含 optional extras：ebm、lightgbm、serve
+python scripts/setup_environment.py
 
-uv run python -m credit_xai.cli data prepare --config configs/smoke.yaml
-uv run python -m credit_xai.cli train --model logistic --config configs/smoke.yaml
-uv run python -m credit_xai.cli train --model ebm      --config configs/smoke.yaml
-uv run python -m credit_xai.cli train --model lightgbm --config configs/smoke.yaml
-uv run python -m credit_xai.cli calibrate --config configs/smoke.yaml
-uv run python -m credit_xai.cli evaluate  --config configs/smoke.yaml
-uv run python -m credit_xai.cli explain   --config configs/smoke.yaml
-uv run python -m credit_xai.cli report    --config configs/smoke.yaml
-uv run python -m credit_xai.cli serve     --config configs/smoke.yaml   # FastAPI + Gradio /ui
+uv run --no-sync python -m credit_xai.cli data prepare --config configs/smoke.yaml
+uv run --no-sync python -m credit_xai.cli train --model logistic --config configs/smoke.yaml
+uv run --no-sync python -m credit_xai.cli train --model ebm      --config configs/smoke.yaml
+uv run --no-sync python -m credit_xai.cli train --model lightgbm --config configs/smoke.yaml
+uv run --no-sync python -m credit_xai.cli calibrate --config configs/smoke.yaml
+uv run --no-sync python -m credit_xai.cli evaluate  --config configs/smoke.yaml
+uv run --no-sync python -m credit_xai.cli explain   --config configs/smoke.yaml
+uv run --no-sync python -m credit_xai.cli report    --config configs/smoke.yaml
+uv run --no-sync python -m credit_xai.cli serve     --config configs/smoke.yaml  # API + /ui
 ```
 
 `configs/smoke.yaml` 在筆電 CPU 上數分鐘內完成；`configs/full.yaml` 提高所有
-運算預算（1,000 bootstrap、20 refits、全 test set SHAP），CPU 上約數小時。
+運算預算（1,000 bootstrap、20 refits、全 test set SHAP）；已接受的 full run
+在 Colab CPU 實測約 4.5 小時，實際時間依硬體與 BLAS 而異。
 長任務逐 iteration checkpoint，中斷後以 `--resume` 續跑；未帶 `--resume` 遇到
 部分結果會直接報錯。全程不需 GPU。
 
@@ -179,6 +181,10 @@ Docker（CPU-only）：
 docker compose up api                      # 於 :8000 提供 API（掛載你訓練好的 models/）
 docker compose --profile smoke run smoke   # 容器內以 synthetic 資料跑完整 pipeline
 ```
+
+本候選不發布 model bundle。未掛載本機訓練且 hash 驗證的 bundle 時，API health
+仍可用，但 prediction/explanation endpoint 會回傳 503；有 bundle 時，輸出會明示
+為歷史教育用途 model replay，不是決策或現實風險評估。
 
 ## 方法摘要
 
@@ -204,8 +210,20 @@ docker compose --profile smoke run smoke   # 容器內以 synthetic 資料跑完
   **請勿**將這些模型或數字用於任何真實決策。
 - 歸因數值取決於各 explainer 的假設，描述的是模型行為，不是真實世界的原因。
 - 環境相容性 fallback 與偏差記錄於 [FAILURES.md](FAILURES.md)。
+- 可重現性以 lockfile、種子衍生方式與相同 platform/BLAS 為界；latency 依主機而異，
+  不宣稱跨作業系統 bitwise 相同。
+
+## 發布驗證與公開邊界
+
+候選保留精簡的機器產生證據，但排除 UCI 原始列、serialized models、環境、private
+progress/handoff 資料與 private archive 的 Git history。詳見
+[PUBLIC_BOUNDARY.md](docs/release/PUBLIC_BOUNDARY.md)、機器生成的
+[`release_manifest.json`](manifests/release_manifest.json) 與
+[VERIFICATION.md](docs/release/VERIFICATION.md)。
 
 ## 授權
 
-程式碼採 MIT（見 [LICENSE](LICENSE)）。UCI 資料集由原作者以 CC BY 4.0 發佈
-（Yeh, I-C., 2016）；資料集本身絕不進入本 repository 版控。
+程式碼採 MIT（見 [LICENSE](LICENSE)）。UCI 資料集採 CC BY 4.0：Yeh, I.
+（2009），*Default of Credit Card Clients*，UCI Machine Learning Repository，
+[doi:10.24432/C55S3H](https://doi.org/10.24432/C55S3H)。UCI 於 2016 年收到
+此資料集，觀測資料來自 2005 年；資料集本身絕不進入本 repository 版控。

@@ -2,7 +2,7 @@
 
 > **Historical 2005 educational audit. Not for lending decisions. Not financial advice.**
 
-An educational, fully reproducible explainability (XAI) audit of the
+An educational, reproducible explainability (XAI) audit of the
 [UCI Default of Credit Card Clients](https://archive.ics.uci.edu/dataset/350/default+of+credit+card+clients)
 dataset (Taiwan, 2005; 30,000 clients, 23 features). Three model families —
 logistic regression, Explainable Boosting Machine (EBM), and LightGBM — are
@@ -154,23 +154,24 @@ Descriptive snapshot of model behavior on 2005 historical data, by SEX (UCI codi
 Requires Python 3.11+ and [uv](https://docs.astral.sh/uv/).
 
 ```bash
-uv sync --all-extras            # includes optional extras: ebm, lightgbm, serve
+python scripts/setup_environment.py  # pinned, CPU-only, non-editable install
 
 # full pipeline (downloads the UCI dataset to data/raw/, gitignored)
-uv run python -m credit_xai.cli data prepare --config configs/smoke.yaml
-uv run python -m credit_xai.cli train --model logistic --config configs/smoke.yaml
-uv run python -m credit_xai.cli train --model ebm      --config configs/smoke.yaml
-uv run python -m credit_xai.cli train --model lightgbm --config configs/smoke.yaml
-uv run python -m credit_xai.cli calibrate --config configs/smoke.yaml
-uv run python -m credit_xai.cli evaluate  --config configs/smoke.yaml
-uv run python -m credit_xai.cli explain   --config configs/smoke.yaml
-uv run python -m credit_xai.cli report    --config configs/smoke.yaml
-uv run python -m credit_xai.cli serve     --config configs/smoke.yaml   # FastAPI + Gradio at /ui
+uv run --no-sync python -m credit_xai.cli data prepare --config configs/smoke.yaml
+uv run --no-sync python -m credit_xai.cli train --model logistic --config configs/smoke.yaml
+uv run --no-sync python -m credit_xai.cli train --model ebm      --config configs/smoke.yaml
+uv run --no-sync python -m credit_xai.cli train --model lightgbm --config configs/smoke.yaml
+uv run --no-sync python -m credit_xai.cli calibrate --config configs/smoke.yaml
+uv run --no-sync python -m credit_xai.cli evaluate  --config configs/smoke.yaml
+uv run --no-sync python -m credit_xai.cli explain   --config configs/smoke.yaml
+uv run --no-sync python -m credit_xai.cli report    --config configs/smoke.yaml
+uv run --no-sync python -m credit_xai.cli serve     --config configs/smoke.yaml  # API + /ui
 ```
 
 `configs/smoke.yaml` finishes in minutes on a laptop CPU; `configs/full.yaml`
-raises every budget (1,000 bootstrap replicates, 20 refits, full-test SHAP) and
-runs in a few hours on CPU. Long steps checkpoint each iteration and support
+raises every budget (1,000 bootstrap replicates, 20 refits, full-test SHAP).
+The accepted full run took approximately 4.5 hours on Colab CPU; hardware and
+BLAS differences change runtime. Long steps checkpoint each iteration and support
 `--resume` after interruption; partial results without `--resume` fail fast.
 No GPU is used anywhere.
 
@@ -180,6 +181,11 @@ Docker (CPU-only):
 docker compose up api                      # serves the API on :8000 (mount your trained models/)
 docker compose --profile smoke run smoke   # full pipeline on synthetic data inside the container
 ```
+
+No model bundle is published. Without a locally trained, hash-checked bundle,
+the API remains healthy but prediction/explanation endpoints return 503. When a
+bundle is present, outputs are labeled as a historical educational model replay,
+not a decision or real-world risk assessment.
 
 ## Repository layout
 
@@ -232,10 +238,24 @@ notebooks/        thin wrappers only — logic lives in src/
   decomposition for EBM); they describe model behavior, not real-world causes.
 - Known environment fallbacks and deviations are logged in
   [FAILURES.md](FAILURES.md).
+- Reproducibility is tied to the committed lockfile, seed derivation, and
+  platform/BLAS. Latency is host-specific; bitwise equivalence across operating
+  systems is not claimed.
+
+## Release verification and public boundary
+
+The candidate retains compact machine-produced evidence but excludes the raw
+UCI rows, serialized models, environments, private progress/handoff material,
+and the private archive's Git history. See
+[PUBLIC_BOUNDARY.md](docs/release/PUBLIC_BOUNDARY.md) and the generated
+[`release_manifest.json`](manifests/release_manifest.json). Claim, privacy,
+package, API, and archive gates are described in
+[VERIFICATION.md](docs/release/VERIFICATION.md).
 
 ## License
 
 Code: MIT — see [LICENSE](LICENSE). The underlying UCI dataset is distributed
-by its creators under CC BY 4.0 (Yeh, I-C., "Default of Credit Card Clients",
-UCI Machine Learning Repository, 2016). The dataset itself is never committed
-to this repository.
+under CC BY 4.0: Yeh, I. (2009), *Default of Credit Card Clients*, UCI Machine
+Learning Repository, [doi:10.24432/C55S3H](https://doi.org/10.24432/C55S3H).
+The repository received the dataset in 2016; the observations are from 2005.
+The dataset itself is never committed to this repository. See [CITATION.cff](CITATION.cff).

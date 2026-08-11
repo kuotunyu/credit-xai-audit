@@ -125,6 +125,22 @@ is auditable too.
 - **Note**: this is a Colab-vs-subprocess environment issue, not a package
   incompatibility; no dependency pin changed and no fallback was needed.
 
+## 10. Windows non-ASCII checkout × editable `.pth` decoding — FIXED
+
+- **Environment**: Windows, Python 3.11, Traditional Chinese system locale,
+  repository path containing non-ASCII characters.
+- **Symptom**: the default editable `uv sync` succeeds, but Python then fails
+  during `site` initialization with `UnicodeDecodeError` before project code can
+  run. The editable `.pth` contains a UTF-8 source path while Python 3.11 reads
+  it with the active legacy locale codec.
+- **Fix**: `scripts/setup_environment.py` performs a pinned non-editable wheel
+  install (`uv sync --frozen --no-editable`) and verifies import. The release
+  test copies the project to a Unicode checkout, confirms no source-path `.pth`
+  exists, and imports the installed package from outside the repository.
+- **Scope**: no user name, drive, or machine path is hard-coded. Development
+  commands use `uv run --no-sync`; source-tree tests explicitly set a relative
+  `PYTHONPATH=src`, while isolated wheel tests exercise the installed artifact.
+
 ## Residual nondeterminism notes
 
 - LightGBM runs with `deterministic=true, force_row_wise=true` and a fixed

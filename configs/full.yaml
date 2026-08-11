@@ -1,4 +1,4 @@
-# Full config: publication-quality budgets. Expected ~2-3 h on Colab CPU;
+# Full config: publication-quality budgets. Measured ~4.5 h on Colab CPU;
 # all long loops are checkpointed and resumable (--resume).
 # Historical 2005 educational audit. Not for lending decisions. Not financial advice.
 

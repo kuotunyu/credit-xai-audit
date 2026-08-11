@@ -6,7 +6,8 @@ Served verbatim by the API at `GET /model-card`.
 
 ## Intended use
 
-Education and methods demonstration only: how to audit tabular credit-risk
+Education and methods demonstration only: how to audit historical tabular
+default-prediction
 models for calibration, explanation stability, and explanation faithfulness on
 a historical public dataset. **Out of scope:** any lending, credit-scoring, or
 individual-level decision; any claim about present-day populations; any causal
@@ -29,7 +30,7 @@ Documented fallbacks (triggered automatically, recorded in artifacts and
 install hint (other models unaffected); `lightgbm` unavailable → sklearn
 `HistGradientBoostingClassifier` stand-in.
 
-## Calibration and decision threshold
+## Calibration and reporting threshold
 
 Platt (sigmoid) and isotonic calibrators are fit on **validation** predictions
 only; the winner is selected by validation log loss. The reporting threshold is
@@ -69,11 +70,14 @@ across models. They describe **model behavior**, not real-world causes.
 ## Serialization and serving
 
 Models are stored as local joblib bundles with sha256-verified manifests
-(`models/`, gitignored) and are only ever loaded from that hash-checked local
-directory — never from untrusted sources. The FastAPI service exposes
+(`models/`, gitignored). A colocated hash detects accidental change relative to
+that manifest; it does **not** authenticate who produced either file. Python
+pickle/joblib loading can execute code, so only owner-produced local bundles
+may be loaded. The FastAPI service exposes
 `/health`, `/predict`, `/explain`, `/model-card`; every prediction and
-explanation response carries the fixed disclaimer. A Gradio UI is mounted at
-`/ui`.
+explanation response carries the fixed disclaimer and historical-replay scope.
+A Gradio UI is mounted at `/ui`. Neither interface provides a decision,
+recommendation, eligibility assessment, or production control.
 
 ## Ethical notes and wording constraints
 
