@@ -34,8 +34,8 @@
     },
     {
       "path": ".gitattributes",
-      "bytes": 213,
-      "sha256": "e48b4b6ad9b26bf8ab5e0d1d21aedc74fcb570028b77fe07aae6f9db1585854f"
+      "bytes": 220,
+      "sha256": "163479c00154b6d7ed844fd2ceb3590a06bd34456cee9a566865eca68732bfbd"
     },
     {
       "path": ".github/workflows/ci.yml",
