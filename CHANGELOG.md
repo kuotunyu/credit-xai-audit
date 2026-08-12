@@ -33,9 +33,10 @@ been published or tagged.
 - Calibrated probability and model metadata now share a responsive facts band,
   reducing the verified desktop workspace by 104px and post-action blank space
   from 113px to 9px without changing the mobile reading order.
-- The case workspace now uses one alignment grid: status and case controls
-  share a baseline, tabs divide the available width equally, and compact
-  feature inputs use consistent three- or two-column tracks without clipping.
+- The case workspace now separates navigation from data rhythm: status and case
+  controls share a baseline, the compact group index stays left-aligned, and
+  feature inputs form one shared-rule ledger with consistent 5/6-, three-, or
+  two-column tracks and an action aligned to the active track.
 - Repeated container chrome was removed from statuses, KPIs, tabs, case
   selection, numeric fields, and evidence groups. One-pixel transition rules,
   underlined controls, a compact desktop primary action, and the single tonal

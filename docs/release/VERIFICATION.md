@@ -396,6 +396,29 @@ actual container boundary:
   were removed. No container references the retained test image, and no
   committed result, model, dataset, request, or response was changed.
 
+### Field-ledger rhythm
+
+- A 1,908px real-browser RED contract measured the mismatch directly: the four
+  full-width group tabs consumed 100% of the input plane while five active
+  fields used a different center rhythm. Field labels and values were centered,
+  the group had no shared top or bottom rule, its cells had no separators, and
+  each input instead carried a disconnected bottom line.
+- The exact GREEN contract reduced the group index to 68.8% of the input-plane
+  width, kept the five active-cell widths within 0.02px, left-aligned labels and
+  values, and established one-pixel shared boundaries and internal hairlines.
+  The basic-group action matched its 158.19px ledger track.
+- Real-browser checks covered all four groups at 1,714px, 1,280px, 768px, and
+  390px. Desktop groups used five or six equal cells, compact layouts used
+  three, and phones used two. The action matched one active desktop or compact
+  track and became full width only on phones. There was no page overflow,
+  clipped label, or browser exception.
+- The CPU-only synthetic LightGBM UI succeeded at desktop and phone widths with
+  `isotonic`, `TreeSHAP`, and 11 visible attribution rows. It exposed no
+  financial-action language and changed no accepted artifact.
+- The focused Gradio/presenter suite passed all 36 tests. Ruff format/check,
+  strict Mypy for `app`, the Impeccable layout detector, and `git diff --check`
+  also passed.
+
 Feature Freeze is renewed after this owner-approved, UI-only change. It changed
 no model, formal metric, accepted result, API schema, pipeline, dependency,
 Docker policy, or decision scope.
