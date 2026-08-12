@@ -203,6 +203,30 @@ Linux daemon with the following fresh evidence:
   metrics, or write runtime data into the public tree. The focused Gradio and
   presenter suite passed all 36 tests, and the layout detector returned no
   findings.
+- The current visual-code state was rebuilt as `credit-xai-audit:latest` in
+  168.164 seconds. Image ID
+  `sha256:a52605f19a33f2283ce33d912050b4b3968b863625f1cc688828d30b00fd5d349`
+  measured 814,560,518 bytes and ran as `appuser`/UID 1000 on Linux/amd64.
+  Its non-third-party `/app` content scan covered 79 files and found no raw-data
+  payload, model bundle, result payload, `.env`, private note, or credential.
+- The refreshed image passed a second CPU-only synthetic full pipeline in
+  22.014 seconds with `network=none`, two CPUs, two GB of memory, empty
+  `CUDA_VISIBLE_DEVICES`, and `NVIDIA_VISIBLE_DEVICES=void`. It regenerated all
+  three training, validation-only calibration, evaluation, explanation, and
+  report paths entirely inside the disposable container; the accepted public
+  artifacts were not mounted or changed.
+- The refreshed image's model-absent API was healthy with `/health` 200 and
+  `model_loaded=false`. Because the pre-existing host service still owned port
+  8000, a separately named disposable container exposed the same image on
+  127.0.0.1:18080 for the browser gate. At 1280px and 390px, `/ui/` returned
+  200, all six targeted redundant border sides measured 0px, the feature form
+  was transparent, the honest no-bundle state was present, and neither overflow
+  nor browser exceptions occurred. The unrelated port-8000 process was left
+  untouched.
+- All refreshed-gate containers and the Compose project network were removed;
+  no project volume remained and no container referenced the image. The tested
+  image was intentionally retained. The subsequent evidence/manifest commit
+  changes no runtime source.
 
 Feature Freeze is renewed after this owner-approved, UI-only change. It changed
 no model, formal metric, accepted result, API schema, pipeline, dependency,

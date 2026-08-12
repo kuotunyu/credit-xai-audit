@@ -199,8 +199,8 @@
     },
     {
       "path": "docs/release/VERIFICATION.md",
-      "bytes": 12354,
-      "sha256": "f87f7597bc7d1e4de0626daa4195bef3f3a32b34be82b68ad2fd085c09384692"
+      "bytes": 14004,
+      "sha256": "8f22a65ebe3ec7a1599f1baffc1702d354519d431d06b8214a6f92548cbcdf51"
     },
     {
       "path": "docs/superpowers/plans/2026-08-12-credit-xai-release-candidate.md",
