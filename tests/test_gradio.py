@@ -224,8 +224,12 @@ def test_gradio_css_uses_complete_responsive_open_sections() -> None:
     six_track_rule = css.split(".audit-feature-count-6 .audit-feature-row > .form", maxsplit=1)[
         1
     ].split("}", maxsplit=1)[0]
-    assert "grid-template-columns: repeat(5, minmax(0, 1fr))" in five_track_rule
+    assert "grid-template-columns: repeat(6, minmax(0, 1fr))" in five_track_rule
     assert "grid-template-columns: repeat(6, minmax(0, 1fr))" in six_track_rule
+    first_field_rule = css.split(".audit-feature-count-5 .audit-number:first-child", maxsplit=1)[
+        1
+    ].split("}", maxsplit=1)[0]
+    assert "grid-column: span 2" in first_field_rule
     compact = css.split("@media (max-width: 820px)", maxsplit=1)[1].split(
         "@media (max-width: 520px)", maxsplit=1
     )[0]
@@ -241,6 +245,8 @@ def test_gradio_css_uses_complete_responsive_open_sections() -> None:
     ]
     number_rule = css.split(".audit-number {", maxsplit=1)[1].split("}", maxsplit=1)[0]
     input_rule = css.split(".audit-number input {", maxsplit=1)[1].split("}", maxsplit=1)[0]
+    toolbar_rule = css.split(".audit-input-toolbar {", maxsplit=1)[1].split("}", maxsplit=1)[0]
+    footer_rule = css.split(".audit-input-footer {", maxsplit=1)[1].split("}", maxsplit=1)[0]
 
     assert "align-items: flex-start" in workspace_rule
     assert "display: block" in group_rule
@@ -249,6 +255,8 @@ def test_gradio_css_uses_complete_responsive_open_sections() -> None:
     assert "border-right: 0" in heading_rule
     assert "border-left: 0" in number_rule
     assert "border-bottom: 1px solid var(--audit-rule)" in input_rule
+    assert "padding-inline: 0.75rem" in toolbar_rule
+    assert "padding-inline: 0.75rem" in footer_rule
     assert ".audit-number + .audit-number" not in css
 
 
