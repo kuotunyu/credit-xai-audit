@@ -303,6 +303,43 @@ The committed typography code was then rebuilt and exercised in Docker:
   strict Mypy for `app`, the layout detector, and `git diff --check` also
   passed.
 
+The committed workspace-density code was then rebuilt and exercised in Docker:
+
+- `docker compose config --quiet` passed against Docker Engine 29.6.1 and
+  Compose 5.3.0. `docker compose build api` completed in 158.153 seconds and
+  produced `credit-xai-audit:latest`, ID
+  `sha256:686e06bd303c32e794643c8982a40d7906163a99480f5129611daf02f223e70e`,
+  measuring 814,561,428 bytes.
+- The Linux/amd64 image defaults to non-root `appuser`/UID 1000. Runtime
+  inspection used two CPUs, two GB of memory, empty `CUDA_VISIBLE_DEVICES`,
+  `NVIDIA_VISIBLE_DEVICES=void`, and no device request. Its application layer
+  contained no raw dataset, result payload, model/joblib bundle, `.env`,
+  credential, private note, or runtime scratch payload.
+- The existing synthetic CI pipeline completed in 22.681 seconds with
+  `network=none`. It generated 2,000 rows and ran preparation, all three model
+  paths, validation-only calibration, evaluation, explanation, and report
+  rendering entirely inside a disposable volume; no accepted artifact was
+  mounted or changed.
+- The synthetic audit verified disjoint 1,400/300/300 splits, source
+  `synthetic`, three valid bundle manifests and file hashes, `status=complete`
+  for 50 metric bootstraps, 50 group bootstraps, 12 stability iterations, and
+  50 faithfulness iterations per model. Explainers were `linear_shap`,
+  `ebm_native`, and `tree_shap`; no ZIP/XLS payload existed.
+- The model-absent container was healthy with `/health` 200,
+  `model_loaded=false`, `/predict` 503, and `/ui/` 200. A second container
+  mounted only the synthetic volume read-only; `/health`, `/predict`,
+  `/explain`, and `/ui/` returned 200, with LightGBM and `tree_shap`, 23
+  attributions, and no decision field or advisory language.
+- Playwright rendered the actual model-absent Docker UI at 1,734px, 1,280px,
+  768px, and 390px with zero page overflow and zero browser exceptions. The
+  measured workspace values matched the source browser gate: 405px/9.08px at
+  1,734px and 403px/7.19px at 1,280px; compact and phone layouts stacked in the
+  intended order without fabricated prediction content.
+- Both temporary containers and the synthetic volume were removed. No project
+  network remained, no container references the image, and the tested image is
+  intentionally retained. The following evidence/manifest-only commit changes
+  no runtime source.
+
 Feature Freeze is renewed after this owner-approved, UI-only change. It changed
 no model, formal metric, accepted result, API schema, pipeline, dependency,
 Docker policy, or decision scope.
