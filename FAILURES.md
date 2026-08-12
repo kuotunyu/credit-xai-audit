@@ -59,12 +59,16 @@ is auditable too.
 - `from tests.conftest import ...` failed under pytest's default import mode
   until `tests/__init__.py` was added. Trivial (<5 min).
 
-## 7. Docker engine not running on first build attempt — OPERATIONAL NOTE
+## 7. Docker engine not running on first build attempt — FINAL GATE VERIFIED
 
 - `docker compose build` failed with the named-pipe error
   (`dockerDesktopLinuxEngine: The system cannot find the file specified`)
   because Docker Desktop was not started. Resolved by starting Docker Desktop;
-  no repo change needed.
+  no repo change was needed. The final 2026-08-12 CPU release gate then built
+  the API image successfully, completed both container health checks, exercised
+  model-absent and synthetic-bundle API/UI paths, and removed all temporary
+  runtime resources. This entry records the earlier operational failure; it is
+  not an outstanding release blocker.
 
 ## 8. Dockerfile layer-cache anti-pattern: README.md coupled to the dependency-install layer — FIXED
 
@@ -140,6 +144,20 @@ is auditable too.
 - **Scope**: no user name, drive, or machine path is hard-coded. Development
   commands use `uv run --no-sync`; source-tree tests explicitly set a relative
   `PYTHONPATH=src`, while isolated wheel tests exercise the installed artifact.
+
+## 11. Fresh Docker named volume was root-owned — FIXED IN GATE ORCHESTRATION
+
+- **Symptom**: the first isolated synthetic smoke attempt failed before data
+  generation with `PermissionError` while creating `tmp/ci/manifests`.
+- **Root cause**: Docker created the new named-volume mountpoint as UID/GID
+  `0:0`, mode `0755`; mounting it over `/app/tmp/ci` hid the image's writable
+  parent directory from the non-root `appuser`.
+- **Fix and verification**: a one-shot, network-disabled initializer changed
+  only the explicitly named temporary volume to UID/GID `1000:1000`. A direct
+  `appuser` write/delete probe passed, then the unchanged Compose smoke command
+  completed as non-root with `network_mode=none`. The volume was mounted
+  read-only for the API smoke and removed during cleanup. No Dockerfile,
+  application, accepted metric, or public artifact changed.
 
 ## Residual nondeterminism notes
 

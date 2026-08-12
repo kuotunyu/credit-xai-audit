@@ -9,6 +9,7 @@ deployment, or model upload was created.
 
 - Windows 11 10.0.26200, Intel Core i7-13700, CPU only
 - Python 3.11.15; uv 0.11.18; Git 2.41.0.windows.1
+- Docker Engine 29.6.1; Docker Compose 5.3.0; Linux/amd64 daemon with 24 CPUs
 - `CUDA_VISIBLE_DEVICES` was empty; long-run thread counts were capped at 2
 - Source snapshot: `58cd1ab6190b6c6bf7a1e4a23391dce2213f1e61`
 
@@ -87,15 +88,57 @@ recorded path-dependent `pred_contrib` TreeSHAP fallback, as declared in
   components, and the historical-replay decision boundary was present.
 - FastAPI and Gradio with the isolated hash-verified LightGBM bundle: health,
   predict, and explain all returned 200; explanation method was `tree_shap`.
-- sdist: 226,994 bytes, 84 files; wheel: 85,013 bytes, 67 files.
+- `python -m build`: pass; both sdist and wheel were produced. Exact compressed
+  bytes are recorded in the release-gate report rather than treated as a stable
+  claim, because refreshing the embedded release manifest changes gzip output.
 - Archive inspection found no environment, raw dataset, model, result, or scratch
   payload in either distribution.
 - The wheel was installed in an isolated environment outside the repository;
   package import and FastAPI health passed.
 - `docker compose config --quiet`: pass.
-- Docker CLI/buildx were present, but the Docker Desktop Linux daemon was not
-  running. Docker build and container health were **not executed and are not
-  claimed as passed**. They remain an owner action before publication.
+
+The final Docker release gate used the Docker Desktop Linux daemon and completed
+with the following fresh evidence:
+
+- `docker compose build api`: pass in 200.092 seconds. The build pulled and
+  installed Linux CPU dependencies rather than relying solely on cached runtime
+  validation.
+- Image: `credit-xai-audit:latest`, ID
+  `sha256:907aa52bcf84e2f65cb0623cecc369bb25059b5d39c9f640b0a0ed30536877b4`.
+  `docker image inspect` reported 814,540,128 bytes; Docker Desktop reported
+  3.51 GB in its unpacked local image store (3.399 GB unique).
+- Runtime identity and compute boundary: configured user `appuser`, UID 1000,
+  Linux/amd64, two-CPU/two-GB smoke limits, empty `CUDA_VISIBLE_DEVICES`,
+  `NVIDIA_VISIBLE_DEVICES=void`, no GPU device requests, and no `/dev/nvidia0`.
+- Image content audit: `/app/data`, `/app/models`, and `/app/results` were empty;
+  no joblib bundle, `.env`, raw UCI payload, private progress/handoff/agent note,
+  or committed result payload was present.
+- Existing Compose synthetic profile: pass in 19.635 seconds with
+  `network_mode=none`. It generated 2,000 synthetic rows; trained logistic,
+  EBM, and LightGBM; calibrated on validation; evaluated and explained all three
+  models; and regenerated the smoke report without touching the accepted public
+  evidence.
+- Synthetic artifact audit: source fingerprint `synthetic`, no ZIP/XLS, three
+  bundle hash manifests valid, exact checkpoint IDs and `status=complete` for
+  50 metric bootstraps, 50 group bootstraps, 12 stability iterations, and 50
+  faithfulness instances per model. Explainers were `linear_shap`, `ebm_native`,
+  and `tree_shap` respectively.
+- Model-absent Compose API: container healthy; `/health` 200 with
+  `model_loaded=false`; `/predict` 503; Gradio `/ui` 200.
+- Read-only synthetic LightGBM bundle: container healthy; `/health`, `/predict`,
+  `/explain`, Gradio `/ui`, and OpenAPI all returned 200. The explanation method
+  was `tree_shap`; responses retained the historical replay disclaimer/scope and
+  exposed no approval, eligibility, accept, reject, or decision fields.
+- The API had no writable repository mount. Its synthetic bundle volume was
+  read-only, so requests and responses could not alter the public repository.
+- Cleanup audit: release-gate containers, project network, and temporary volume
+  were removed. The audited `credit-xai-audit:latest` image was intentionally
+  retained; it had zero running containers after cleanup.
+
+With these Docker gates and the final source/package gates recorded below, the
+unpublished candidate is under **Feature Freeze**. Only evidence corrections,
+security fixes, or owner-approved publication metadata may change it before
+release.
 
 ## Interpretation boundary
 
