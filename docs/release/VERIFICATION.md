@@ -252,6 +252,35 @@ Linux daemon with the following fresh evidence:
 - The focused Gradio/presenter suite passed all 36 tests after the change. Ruff
   format/check, strict Mypy for `app`, and `git diff --check` also passed.
 
+The committed typography code was then rebuilt and exercised in Docker:
+
+- `docker compose config --quiet` passed against Docker Engine 29.6.1 and
+  Compose 5.3.0. `docker compose build api` completed in 190.781 seconds and
+  produced `credit-xai-audit:latest`, ID
+  `sha256:7ee5bb1fa09fb8c0718eada458ea21b3bc497553bced2cf16a1b1ce2cff7b459`,
+  measuring 814,560,778 bytes.
+- The image ran as `appuser`/UID 1000 on Linux/amd64 with two CPUs, two GB of
+  memory, empty `CUDA_VISIBLE_DEVICES`, `NVIDIA_VISIBLE_DEVICES=void`, and no
+  NVIDIA device. Its application content contained no raw data, result payload,
+  model bundle, `.env`, private note, credential, or runtime scratch payload.
+- The network-disabled synthetic pipeline completed cleanly in 21.869 seconds.
+  It generated 2,000 synthetic rows, trained/calibrated/evaluated/explained all
+  three models, and rendered its report inside a disposable Docker volume.
+  Calibration used validation only; methods were `linear_shap`, `ebm_native`,
+  and `tree_shap`; metric/group bootstrap counts were 50, stability resamples
+  were 10, faithfulness counts were 50, and all bundle file hashes passed.
+- A model-absent container became healthy with `/health` 200 and
+  `model_loaded=false`. Its real browser render at 1,656px/390px reproduced the
+  verified 38.916px/30px thesis, 16px body, 15.04px supporting copy, 14.56px
+  labels, and 18px values with no overflow or fabricated prediction.
+- A second container mounted only the disposable synthetic volume read-only.
+  `/health`, `/predict`, and `/explain` returned 200; `model_loaded=true` and the
+  method was `tree_shap`. Its Gradio success state displayed LightGBM,
+  `isotonic`, TreeSHAP, and attributions without decision language or overflow.
+- Both temporary containers and the synthetic volume were removed. No Compose
+  network was created; no container references the retained tested image. The
+  following evidence/manifest-only commit changes no runtime source.
+
 Feature Freeze is renewed after this owner-approved, UI-only change. It changed
 no model, formal metric, accepted result, API schema, pipeline, dependency,
 Docker policy, or decision scope.
