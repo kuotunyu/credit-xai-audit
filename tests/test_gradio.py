@@ -132,7 +132,15 @@ def test_gradio_css_uses_approved_square_tokens() -> None:
 
     for token in ("#f6f3ec", "#202d65", "#283b86", "#c88725", "#e4ad4f"):
         assert token in css
-    assert "max-width: 1440px" in css
+    assert "max-width: 1600px" in css
+    for token in (
+        "--audit-type-body: 1.0625rem",
+        "--audit-type-support: 1rem",
+        "--audit-type-label: 0.96875rem",
+        "--audit-type-meta: 0.9375rem",
+        "--audit-type-value: 1.1875rem",
+    ):
+        assert token in css
     assert "@media (max-width: 820px)" in css
     assert "border-radius: 0" in css
     assert "box-shadow" not in css
