@@ -3,6 +3,7 @@ from __future__ import annotations
 import json
 from pathlib import Path
 
+from app.gradio_presenter import FEATURE_GROUPS
 from app.gradio_ui import _theme, build_ui
 
 from credit_xai.constants import DEMO_SCOPE, FEATURES
@@ -45,15 +46,38 @@ def test_gradio_exposes_each_feature_as_one_labeled_number(test_config) -> None:
         assert labels.count(feature) == 1
 
 
-def test_gradio_has_four_feature_tabs_and_wide_layout(test_config) -> None:
+def test_gradio_exposes_four_complete_feature_group_ledgers(test_config) -> None:
     config, text = _config(test_config)
-    tab_labels = {
-        component["props"].get("label")
-        for component in config["components"]
-        if component["type"] == "tabitem"
-    }
+    components = {component["id"]: component for component in config["components"]}
+    layout_nodes = [config["layout"]]
+    for node in layout_nodes:
+        layout_nodes.extend(node.get("children", []))
 
-    assert {"基本資料", "還款狀態", "帳單金額", "繳款金額"} <= tab_labels
+    groups = [
+        component
+        for component in config["components"]
+        if "audit-feature-group" in component.get("props", {}).get("elem_classes", [])
+    ]
+
+    assert not [component for component in config["components"] if component["type"] == "tabitem"]
+    assert len(groups) == len(FEATURE_GROUPS) == 4
+    for group, (label, features) in zip(groups, FEATURE_GROUPS, strict=True):
+        group_node = next(node for node in layout_nodes if node["id"] == group["id"])
+        descendants = list(group_node.get("children", []))
+        for node in descendants:
+            descendants.extend(node.get("children", []))
+        child_components = [components[node["id"]] for node in descendants]
+        heading = next(component for component in child_components if component["type"] == "html")
+        number_labels = [
+            component["props"].get("label")
+            for component in child_components
+            if component["type"] == "number"
+        ]
+
+        assert label in heading["props"]["value"]
+        assert f"{len(features)} 欄" in heading["props"]["value"]
+        assert number_labels == list(features)
+
     assert config["fill_width"] is True
     assert "audit-workspace" in text
 
@@ -89,6 +113,31 @@ def test_gradio_groups_heading_and_case_actions_in_one_toolbar(test_config) -> N
     assert [component["type"] for component in child_components] == ["html", "row"]
     assert "audit-input-heading-block" in child_components[0]["props"]["elem_classes"]
     assert "audit-case-controls" in child_components[1]["props"]["elem_classes"]
+
+
+def test_gradio_groups_case_context_and_primary_action_in_one_footer(
+    test_config,
+) -> None:
+    config, _ = _config(test_config)
+    components = {component["id"]: component for component in config["components"]}
+    layout_nodes = [config["layout"]]
+    for node in layout_nodes:
+        layout_nodes.extend(node.get("children", []))
+
+    footer = next(
+        component
+        for component in config["components"]
+        if "audit-input-footer" in component.get("props", {}).get("elem_classes", [])
+    )
+    footer_node = next(node for node in layout_nodes if node["id"] == footer["id"])
+    descendants = list(footer_node.get("children", []))
+    for node in descendants:
+        descendants.extend(node.get("children", []))
+    child_components = [components[node["id"]] for node in descendants]
+
+    assert [component["type"] for component in child_components] == ["markdown", "button"]
+    assert "audit-case-note" in child_components[0]["props"]["elem_classes"]
+    assert "audit-primary" in child_components[1]["props"]["elem_classes"]
 
 
 def test_gradio_places_attributions_after_workspace_and_hides_them_initially(
@@ -161,23 +210,29 @@ def test_gradio_theme_keeps_the_approved_light_palette_in_dark_preference() -> N
     assert tokens["button_transition"] == "none"
 
 
-def test_gradio_css_uses_equal_compact_tracks_without_tab_overflow() -> None:
+def test_gradio_css_uses_complete_responsive_group_ledgers() -> None:
     css = Path("app/gradio_theme.css").read_text(encoding="utf-8").lower()
 
     assert (
         "color: var(--audit-white)"
         in css.split(".audit-product-lockup strong", maxsplit=1)[1].split("}", maxsplit=1)[0]
     )
-    compact = css.split("@media (max-width: 520px)", maxsplit=1)[1]
-    tablist_rule = compact.split('.audit-tabs [role="tablist"]', maxsplit=1)[1].split(
-        "}", maxsplit=1
+    assert ".audit-tabs" not in css
+    five_track_rule = css.split(".audit-feature-count-5 .audit-feature-row > .form", maxsplit=1)[
+        1
+    ].split("}", maxsplit=1)[0]
+    six_track_rule = css.split(".audit-feature-count-6 .audit-feature-row > .form", maxsplit=1)[
+        1
+    ].split("}", maxsplit=1)[0]
+    assert "grid-template-columns: repeat(5, minmax(0, 1fr))" in five_track_rule
+    assert "grid-template-columns: repeat(6, minmax(0, 1fr))" in six_track_rule
+    compact = css.split("@media (max-width: 820px)", maxsplit=1)[1].split(
+        "@media (max-width: 520px)", maxsplit=1
     )[0]
-    assert "grid-template-columns: repeat(2, minmax(0, 1fr))" in tablist_rule
-    feature_rule = compact.split(".audit-feature-row > .form", maxsplit=1)[1].split(
-        "}", maxsplit=1
-    )[0]
-    assert "grid-template-columns: repeat(2, minmax(0, 1fr))" in feature_rule
-    assert "min-width: 0" in compact
+    phone = css.split("@media (max-width: 520px)", maxsplit=1)[1]
+    assert "grid-template-columns: repeat(3, minmax(0, 1fr))" in compact
+    assert "grid-template-columns: repeat(2, minmax(0, 1fr))" in phone
+    assert "min-width: 0" in phone
 
 
 def test_gradio_css_removes_framework_gutters_and_keeps_labels_readable() -> None:

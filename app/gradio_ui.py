@@ -109,9 +109,9 @@ def _header_and_hero_html(evidence: PublicEvidence | None) -> str:
 def _input_heading_html() -> str:
     return """
     <div class="audit-input-heading">
-      <span>01　案例輸入</span>
+      <span>案例輸入</span>
       <h2>建立歷史案例</h2>
-      <p>23 個欄位 · integer-only · 僅在本機處理</p>
+      <p>4 組 · 23 個 integer-only 欄位 · 僅在本機處理</p>
     </div>
     """
 
@@ -283,14 +283,25 @@ def build_ui(cfg: Config) -> gr.Blocks:
                             "載入測試案例",
                             elem_classes="audit-secondary",
                         )
-                case_note = gr.Markdown(
-                    initial_case_note,
-                    container=False,
-                    elem_classes="audit-case-note",
-                )
-                with gr.Tabs(elem_classes="audit-tabs"):
-                    for label, features in FEATURE_GROUPS:
-                        with gr.Tab(label):
+                with gr.Column(elem_classes="audit-feature-groups"):
+                    for group_index, (label, features) in enumerate(FEATURE_GROUPS, start=1):
+                        with gr.Row(
+                            elem_classes=[
+                                "audit-feature-group",
+                                f"audit-feature-count-{len(features)}",
+                            ]
+                        ):
+                            gr.HTML(
+                                f"""
+                                <div class="audit-group-heading">
+                                  <span>{group_index:02}</span>
+                                  <strong>{label}</strong>
+                                  <small>{len(features)} 欄</small>
+                                </div>
+                                """,
+                                padding=False,
+                                elem_classes="audit-group-heading-block",
+                            )
                             with gr.Row(elem_classes="audit-feature-row"):
                                 for feature in features:
                                     controls[feature] = gr.Number(
@@ -300,11 +311,17 @@ def build_ui(cfg: Config) -> gr.Blocks:
                                         label=feature,
                                         elem_classes="audit-number",
                                     )
-                analyze_btn = gr.Button(
-                    "執行審計",
-                    variant="primary",
-                    elem_classes="audit-primary",
-                )
+                with gr.Row(elem_classes="audit-input-footer"):
+                    case_note = gr.Markdown(
+                        initial_case_note,
+                        container=False,
+                        elem_classes="audit-case-note",
+                    )
+                    analyze_btn = gr.Button(
+                        "執行審計",
+                        variant="primary",
+                        elem_classes="audit-primary",
+                    )
             with gr.Column(scale=4, min_width=300, elem_classes="audit-result-column"):
                 result_html = gr.HTML(
                     render_empty_result(),
