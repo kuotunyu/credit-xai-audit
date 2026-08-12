@@ -49,8 +49,8 @@
     },
     {
       "path": ".impeccable/design.json",
-      "bytes": 8473,
-      "sha256": "1f6fcaa1c1d6471dbbe77919a4c6c5aa996fcbc18029bc19db7ab48603886b4f"
+      "bytes": 8672,
+      "sha256": "89bb4bec518ab4c099a93fcc0355f3750c2d6e52aded77603dd1e0c182ab78a9"
     },
     {
       "path": ".python-version",
@@ -59,8 +59,8 @@
     },
     {
       "path": "CHANGELOG.md",
-      "bytes": 3309,
-      "sha256": "ca9a2867aa7bf6e0f383563e81396ec4ff0b7921d6ff4ac85372589e36f5302b"
+      "bytes": 3458,
+      "sha256": "634bec746fbfef4a7c236048361bdd1df88368f83fa3b9614b6cc3c0301d76df"
     },
     {
       "path": "CITATION.cff",
@@ -74,8 +74,8 @@
     },
     {
       "path": "DESIGN.md",
-      "bytes": 6952,
-      "sha256": "832f8c683440bcee70d85c56824c6a679e9ae1b97163afac56f93d34663a19e9"
+      "bytes": 7125,
+      "sha256": "0a2d94752cae34239a8476076865c22cbc8ae8d3d3ac2d85bf21ba04cf2261e2"
     },
     {
       "path": "Dockerfile",
@@ -124,8 +124,8 @@
     },
     {
       "path": "app/gradio_theme.css",
-      "bytes": 22200,
-      "sha256": "5f9a7679f02bc2ae124d385d16aff65047867525e55194af8ab218ccc4c3262c"
+      "bytes": 22405,
+      "sha256": "25d259de52206d687c212a0812994fbb6b37ba9764020618a70d94c7bcb66524"
     },
     {
       "path": "app/gradio_ui.py",
@@ -199,8 +199,8 @@
     },
     {
       "path": "docs/release/VERIFICATION.md",
-      "bytes": 40442,
-      "sha256": "b27b44567e976f9d270662050464ad209cf2f83ea9957106e76a79f19942cb65"
+      "bytes": 43248,
+      "sha256": "fba9dfb34d80c3bb44595c1d5b5fc2db3bda4b0a4cbbda8b9452e92617064107"
     },
     {
       "path": "docs/superpowers/plans/2026-08-12-credit-xai-release-candidate.md",
@@ -1019,8 +1019,8 @@
     },
     {
       "path": "tests/test_gradio.py",
-      "bytes": 10451,
-      "sha256": "7108a99bf4ef5669356f967559439bf29db732104f524d1444c1e4bf29ec0cce"
+      "bytes": 10939,
+      "sha256": "2b6252c5671d7f61c24a80234d13e30b4b928ceeb2e897bcc81d41a3ebd33bdf"
     },
     {
       "path": "tests/test_gradio_presenter.py",

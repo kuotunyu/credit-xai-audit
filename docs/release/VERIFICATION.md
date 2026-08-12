@@ -589,10 +589,11 @@ dependency, Docker policy, or decision scope.
   zero; and the empty result plane followed its 425px content height rather
   than the 636px form height.
 - Browser verification covered 1,908px, 1,280px, 768px, and 390px. Desktop
-  retained the five/six-column rows, the compact layout used three columns,
-  and the phone used two columns. Every width retained all 23 controls with
-  zero horizontal overflow. The model-absent action remained fail-closed and
-  displayed no fabricated probability or attribution.
+  used one shared six-column mother grid, with `LIMIT_BAL` spanning two
+  columns; the compact layout resolved it into three visual columns and the
+  phone into two. Every width retained all 23 controls with zero horizontal
+  overflow. The model-absent action remained fail-closed and displayed no
+  fabricated probability or attribution.
 - Docker Engine 29.6.1 and Compose 5.3.0 accepted the Compose configuration.
   The Linux/amd64 CPU-only image build completed in 145.01 seconds and produced
   `credit-xai-audit:latest`, ID
@@ -635,6 +636,47 @@ dependency, Docker policy, or decision scope.
 Feature Freeze is renewed after this owner-approved presentation correction.
 It changed no component graph, callback, model, formal metric, accepted result,
 API schema, pipeline, dependency, Docker policy, or decision scope.
+
+### Shared alignment grid gate
+
+- The rendered RED measurement at 1,908px found the first feature group on five
+  equal tracks while the other groups used six. Corresponding field starts
+  drifted by as much as 133.34px, and the toolbar/footer inset differed from the
+  feature grid by 12px. This made consistent vertical alignment impossible.
+- The corrected form uses one six-column mother grid for all 23 fields and
+  reserves two columns for `LIMIT_BAL`. At 1,908px the toolbar, every group,
+  the first field, and the footer shared the same 174.5px left anchor with
+  0px spread. All four group rows measured 119.25px; label and input-baseline
+  spreads were 0px. The same baseline spread remained 0px at 1,280px and
+  768px. At 390px all anchors remained equal, all groups resolved into three
+  orderly rows, and horizontal overflow remained 0px.
+- The focused Gradio/presenter suite passed 37 tests. Ruff format/check passed
+  for 91 files, strict Mypy passed for 65 source files, and the full suite
+  passed all 146 tests with the same 27 declared third-party warnings.
+- Docker Engine 29.6.1 and Compose 5.3.0 rebuilt the Linux/amd64 CPU-only image
+  in 117.89 seconds. `credit-xai-audit:latest`, ID
+  `sha256:3ed61dc137e6871e0f8f0aee3f2f8f774d1a2c643c9ecc3d98782b793d32877a`,
+  measured 814,563,141 bytes and defaulted to non-root `appuser`.
+- A network-disabled synthetic pipeline completed in 15.55 seconds with 2,000
+  rows, disjoint 1,400/300/300 splits, Logistic, EBM, and LightGBM training,
+  validation-only `isotonic` calibration, evaluation, and model-correct
+  `linear_shap`, `ebm_native`, and `tree_shap` explanations. It wrote only to
+  a disposable Docker volume.
+- The synthetic API remained healthy with a read-only root filesystem and
+  read-only bundle mount. `/health`, `/predict`, `/explain`, `/ui/`, and
+  OpenAPI returned 200; browser actions at 1,280px and 390px confirmed
+  LightGBM, `isotonic`, TreeSHAP, all 23 inputs, 0px horizontal overflow, no
+  browser error, and no lending recommendation language.
+- The two test containers, dedicated network, and disposable volume were
+  removed. The tested image is retained. No dataset, model, result, request,
+  response, environment file, or private note entered the public tree.
+- A fresh wheel and sdist build passed member and content inspection with no
+  raw data, model bundle, result payload, environment file, private note, Git
+  history, or absolute path. The sdist retained the three intended Gradio
+  sources while the wheel preserved the intentional API-only boundary. A new
+  wheel-plus-`serve` environment imported exclusively from its own
+  `site-packages` and returned model-absent `/health` 200; both verified
+  temporary directories were then removed.
 
 With these Docker gates and the final source/package gates recorded below, the
 unpublished candidate is under **Feature Freeze**. Only evidence corrections,

@@ -35,9 +35,11 @@ been published or tagged.
   reducing the verified desktop workspace by 104px and post-action blank space
   from 113px to 9px without changing the mobile reading order.
 - The case workspace is now one complete audit worksheet: all four canonical
-  groups remain visible beneath full-width headings in 5/6-, three-, or
-  two-column field rows, and case context plus the primary action form one
-  immediate footer.
+  groups remain visible beneath full-width headings on one shared six-column
+  mother grid. `LIMIT_BAL` spans two columns so every desktop field edge aligns;
+  compact and phone layouts preserve the same source order in three- and
+  two-column rows. Case context plus the primary action form one immediate
+  footer.
 - Side rails and vertical cell separators were removed from the case form.
   Quiet input underlines restore edit affordance, the input-to-result ratio is
   now 8/4, and the empty result plane follows content height instead of
