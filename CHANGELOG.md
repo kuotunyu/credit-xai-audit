@@ -30,6 +30,9 @@ been published or tagged.
 - Successful model attributions now appear in a conditional full-width evidence
   band, removing the empty desktop column while leaving empty and error states
   compact.
+- Calibrated probability and model metadata now share a responsive facts band,
+  reducing the verified desktop workspace by 104px and post-action blank space
+  from 113px to 9px without changing the mobile reading order.
 - Repeated container chrome was removed from statuses, KPIs, tabs, case
   selection, numeric fields, and evidence groups. One-pixel transition rules,
   underlined controls, a compact desktop primary action, and the single tonal

@@ -49,8 +49,8 @@
     },
     {
       "path": ".impeccable/design.json",
-      "bytes": 7661,
-      "sha256": "ba218cb255843d1edc68589f3f591f75c75652361010dc61825104da55005905"
+      "bytes": 7829,
+      "sha256": "527d6eda9ffb6234a1d801a62fbc8fb13c5de0b7b475abef6f78fc23db4fac61"
     },
     {
       "path": ".python-version",
@@ -59,8 +59,8 @@
     },
     {
       "path": "CHANGELOG.md",
-      "bytes": 2317,
-      "sha256": "0cd6967d6db01f8d9f21afa31c5d9c3fefbef8da2434b0becd1431ff4f37362d"
+      "bytes": 2538,
+      "sha256": "d8017f6b208d75570e05ec0dd3f5f57242995a4d9200b279c84916e1cbd114bd"
     },
     {
       "path": "CITATION.cff",
@@ -74,8 +74,8 @@
     },
     {
       "path": "DESIGN.md",
-      "bytes": 6041,
-      "sha256": "765e2326cdd601fd772d3ea69fd57b0c772844453e435e7200baa7f67a4ecec4"
+      "bytes": 6349,
+      "sha256": "2549acf6949facab109471dc147940486871cc4c9be51848992a13f5476af73e"
     },
     {
       "path": "Dockerfile",
@@ -124,8 +124,8 @@
     },
     {
       "path": "app/gradio_theme.css",
-      "bytes": 18976,
-      "sha256": "d0cee23e1d0756165c6a088859b82e3be9ae69b21cf71379df0dbdca96019dd7"
+      "bytes": 19978,
+      "sha256": "28d170d1bd75fb2ac7899ae99e240050037db6c099d741eaca810dd153e36e20"
     },
     {
       "path": "app/gradio_ui.py",
@@ -199,8 +199,8 @@
     },
     {
       "path": "docs/release/VERIFICATION.md",
-      "bytes": 17492,
-      "sha256": "87e1339371a4ec4baf71e04985f65308fe88283a8f4d4f41204e161a204005ab"
+      "bytes": 18787,
+      "sha256": "9ca7472a594bc8e409cb16e787a8a501ba3642dc56b783ffe00e541f957443f8"
     },
     {
       "path": "docs/superpowers/plans/2026-08-12-credit-xai-release-candidate.md",
@@ -233,6 +233,11 @@
       "sha256": "67f89fcf554778695074be1b4144711bf3b4680268871386b523019f3ba82cbc"
     },
     {
+      "path": "docs/superpowers/plans/2026-08-12-gradio-workspace-density.md",
+      "bytes": 4986,
+      "sha256": "7a389804063f67dbbcf607fbd808c0bdf7031c0ef721fa4aafc8eadf69188a3e"
+    },
+    {
       "path": "docs/superpowers/specs/2026-08-12-credit-xai-release-candidate-design.md",
       "bytes": 6185,
       "sha256": "26555ecdef4450b1cb9b46619406d8c50489a765785bd3ea61b9f18f79332869"
@@ -261,6 +266,11 @@
       "path": "docs/superpowers/specs/2026-08-12-gradio-visual-chrome-distillation-design.md",
       "bytes": 4328,
       "sha256": "28ae7c197f932d391a97f971bc3e5767446abb89ca8e00b61bdbcbe0c03556f9"
+    },
+    {
+      "path": "docs/superpowers/specs/2026-08-12-gradio-workspace-density-design.md",
+      "bytes": 3277,
+      "sha256": "834ece18a17163fa5a58819e01d4c797e46c4415f2411f50232844a4014f47fa"
     },
     {
       "path": "manifests/dataset_fingerprint.json",

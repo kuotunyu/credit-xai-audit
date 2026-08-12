@@ -281,6 +281,28 @@ The committed typography code was then rebuilt and exercised in Docker:
   network was created; no container references the retained tested image. The
   following evidence/manifest-only commit changes no runtime source.
 
+### Workspace density
+
+- A real-browser RED contract at 1,734px measured both workspace columns at
+  509px high, with 113px of unused space below the primary action. Probability
+  and the five-row model metadata table were sequential, making the result
+  plane dictate the input column's height.
+- The exact GREEN contract measured both columns at 405px, 9px below the
+  primary action, and a zero-pixel column-height difference. Probability and
+  model metadata now share one facts row, so the evidence section arrives
+  104px earlier without adding content or moving form controls apart.
+- Real-browser checks at 1,734px and 1,280px measured 9px and 7px below the
+  action respectively. At 768px the input and result planes stack, and at
+  390px the facts return to source-order stacking. All four widths had zero
+  page-level horizontal overflow.
+- A CPU-only synthetic LightGBM run displayed `isotonic`, `TreeSHAP`, and the
+  attribution table in the compact layout. It used the ignored CI bundle,
+  changed no accepted artifact, and exposed no approval, rejection,
+  eligibility, recommendation, or financial-decision language.
+- The focused Gradio/presenter suite passed all 36 tests. Ruff format/check,
+  strict Mypy for `app`, the layout detector, and `git diff --check` also
+  passed.
+
 Feature Freeze is renewed after this owner-approved, UI-only change. It changed
 no model, formal metric, accepted result, API schema, pipeline, dependency,
 Docker policy, or decision scope.
