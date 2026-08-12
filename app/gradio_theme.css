@@ -481,6 +481,15 @@ body {
   background: var(--audit-structure) !important;
 }
 
+@media (min-width: 821px) {
+  .audit-input-column:has(
+      .audit-tabs button[role="tab"]:nth-child(n + 2)[aria-selected="true"]
+    )
+    .audit-primary {
+    width: calc(100% / 6) !important;
+  }
+}
+
 .audit-result-shell {
   display: grid;
   min-height: 0;
