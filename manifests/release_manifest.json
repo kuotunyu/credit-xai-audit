@@ -44,8 +44,8 @@
     },
     {
       "path": ".gitignore",
-      "bytes": 493,
-      "sha256": "439375799656585621127704264790bf1807a7aaff199058a3129ecbd64b655e"
+      "bytes": 507,
+      "sha256": "b4f917a36fe4aabafd08630ce034b4800dd2b86342ccea7a81ed7257a204ba0b"
     },
     {
       "path": ".python-version",
@@ -86,6 +86,11 @@
       "path": "MODEL_CARD.md",
       "bytes": 4953,
       "sha256": "da0908b4d454317c2fbe6cf21a543b0ab6f2322c14dab5115bff48e9c3b97df5"
+    },
+    {
+      "path": "PRODUCT.md",
+      "bytes": 4381,
+      "sha256": "323a17dff67a49092710d55ae8f435c91c2f4b015535d26f7a68499edbbd694e"
     },
     {
       "path": "README.md",
@@ -186,6 +191,11 @@
       "path": "docs/superpowers/specs/2026-08-12-credit-xai-release-candidate-design.md",
       "bytes": 6185,
       "sha256": "26555ecdef4450b1cb9b46619406d8c50489a765785bd3ea61b9f18f79332869"
+    },
+    {
+      "path": "docs/superpowers/specs/2026-08-12-gradio-editorial-audit-console-design.md",
+      "bytes": 10914,
+      "sha256": "a326d0dd90042e0047554dd0c1e8fd8f7f658879c36f1e4ef94a15fd405fd50c"
     },
     {
       "path": "manifests/dataset_fingerprint.json",

@@ -39,3 +39,4 @@ Thumbs.db
 *.log
 tmp/
 *.zip
+.superpowers/
