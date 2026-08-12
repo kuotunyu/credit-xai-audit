@@ -340,6 +340,27 @@ The committed workspace-density code was then rebuilt and exercised in Docker:
   intentionally retained. The following evidence/manifest-only commit changes
   no runtime source.
 
+### Input-grid alignment
+
+- A 1,714px real-browser RED contract measured a 67.36px center-line
+  difference between case status and controls. The four tabs were only 84.17px
+  wide inside an 809.67px input plane instead of dividing the available width.
+- The exact GREEN contract measured a zero-pixel utility-row center difference,
+  a 0.20px case-input/load-action bottom difference, zero-pixel right-edge
+  differences, and four equal 202.41–202.42px tab tracks. Input-plane height
+  remained about 405px and post-action space remained 7.19px.
+- Browser checks at 1,714px, 1,280px, 768px, and 390px had zero page overflow,
+  no browser exceptions, equal visible field widths, complete labels, and 44px
+  minimum targets. Desktop used five field columns, compact used three, and
+  phone used two; compact layouts retained DOM/source reading order.
+- The CPU-only synthetic LightGBM UI succeeded at 1,714px and 390px with
+  `isotonic`, `TreeSHAP`, and the attribution table visible below the workspace.
+  It changed no accepted artifact and exposed no approval, rejection,
+  eligibility, recommendation, or financial-action language.
+- The focused Gradio/presenter suite passed all 36 tests. Ruff format/check,
+  strict Mypy for `app`, the Impeccable layout detector, and `git diff --check`
+  also passed.
+
 Feature Freeze is renewed after this owner-approved, UI-only change. It changed
 no model, formal metric, accepted result, API schema, pipeline, dependency,
 Docker policy, or decision scope.
