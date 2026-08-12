@@ -41,6 +41,10 @@ been published or tagged.
   selection, numeric fields, and evidence groups. One-pixel transition rules,
   underlined controls, a compact desktop primary action, and the single tonal
   result plane now carry the visual hierarchy.
+- The reading stage now expands to 1600px, ordinary and supporting roles use a
+  17px/16px scale, field labels and values use 15.5px/19px, and low-information
+  section padding is reduced while preserving 44px targets and phone source
+  order.
 - Model-absent, invalid-input, and bundle-error states fail closed without
   fabricated predictions or local exception details.
 

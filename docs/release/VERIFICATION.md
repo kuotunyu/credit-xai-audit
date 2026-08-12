@@ -464,6 +464,58 @@ actual container boundary:
   at 814,562,510 bytes; no host result, model, dataset, request, or response was
   created or changed.
 
+### Reading-density refinement
+
+- The real-browser RED contract at 1,908px measured a 1,440px stage, 15.04px
+  support copy, 14.56px labels and metadata, 18px field values, and a 32px
+  workspace-to-evidence transition. The exact GREEN contract measured a
+  1,600px stage, 16px support copy, 15.5px labels and metadata, 19px values,
+  and a 22px transition. The thesis remained 40px on desktop and 30px on a
+  390px phone.
+- A single bounded desktop/phone visual batch confirmed the larger reading
+  scale, equal field ledger, 4.8px input tail, two-column phone fields, and
+  full-width phone action. Both widths had zero page-level overflow and zero
+  browser exceptions. The Impeccable layout detector returned no finding, and
+  the focused Gradio/presenter suite passed all 36 tests.
+- Docker Engine 29.6.1 and Compose 5.3.0 accepted the Compose configuration.
+  The API image build completed in 111.96 seconds and produced
+  `credit-xai-audit:latest`, ID
+  `sha256:b0322baf8ad212e599b4d952f1b1a6a61887b8b9ad8dbbcabdc64c485628d4ff`,
+  measuring 814,562,586 bytes. The Linux/amd64 image defaults to non-root
+  `appuser`/UID 1000 and contained no raw data, committed results, model/joblib
+  bundle, `.env`, private note, credential, or Git history.
+- The accepted network-disabled synthetic pipeline used the image venv, two
+  CPUs, two GB, and a disposable volume. It completed in 22.10 seconds with
+  2,000 synthetic rows, disjoint 1,400/300/300 splits, validation-only
+  `isotonic` calibration for all three models, twelve complete checkpoint
+  records, three hash-valid bundles, and the expected `linear_shap`,
+  `ebm_native`, and `tree_shap` explainers. An earlier harness invocation using
+  system Python stopped before producing data and was not counted as evidence.
+- Read-only model-absent and synthetic API containers both returned `/health`
+  and `/ui/` 200. The former reported `model_loaded=false`; the latter returned
+  200 from `/predict` and `/explain`, reported `historical_model_replay`, and
+  used `tree_shap` with ten top attributions. Playwright executed the real
+  synthetic Gradio action at 1,908px and 390px: both displayed LightGBM,
+  `isotonic`, TreeSHAP, and the attribution table using the verified type scale,
+  with no overflow, browser exception, or financial-action language.
+- The final non-editable setup imported `credit_xai` from the checkout's
+  `.venv` site-packages, with `direct_url.json` confirming `editable=false`.
+  `uv lock --check` resolved all 92 locked packages; Ruff format/check passed
+  for 91 files; strict Mypy passed for 65 source files; and the full suite passed
+  all 145 tests with the 24 already-declared third-party deprecation warnings.
+  Claims, privacy, and manifest gates passed independently after removing one
+  machine-specific detector path from the public implementation plan.
+- The wheel and sdist built in isolated build environments and passed member,
+  payload, absolute-path, model-bundle, raw-data, result, environment, and
+  private-note inspection. The wheel was installed with its declared `serve`
+  dependencies in a separate environment; import resolved from that
+  environment's site-packages and the model-absent FastAPI `/health` smoke
+  returned 200. A preliminary `--no-deps` API probe stopped at the intentionally
+  absent FastAPI dependency and was not counted as evidence.
+- Both API containers and the disposable synthetic volume were removed. No
+  temporary network remained. The tested image is intentionally retained; no
+  host result, model, dataset, request, or response was created or changed.
+
 Feature Freeze is renewed after this owner-approved, UI-only change. It changed
 no model, formal metric, accepted result, API schema, pipeline, dependency,
 Docker policy, or decision scope.

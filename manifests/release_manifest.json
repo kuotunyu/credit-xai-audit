@@ -49,8 +49,8 @@
     },
     {
       "path": ".impeccable/design.json",
-      "bytes": 8148,
-      "sha256": "05ecb1859b1d563b8e79761cc8479a25ae54cfe1f3792727be24efb4d1391add"
+      "bytes": 8445,
+      "sha256": "ca34ab087603e9699960585f66f2d5167134b009ae4e7be03752481485b024e8"
     },
     {
       "path": ".python-version",
@@ -59,8 +59,8 @@
     },
     {
       "path": "CHANGELOG.md",
-      "bytes": 2836,
-      "sha256": "b2d8b39bedf3e10e2a7f17bcf04490196e0414a2cd99cb9a4f26b88b9bb73428"
+      "bytes": 3080,
+      "sha256": "851891652e7dd37f0d05c541ae139ff9d8acfe5c7dcdfd6d0085f749df251f10"
     },
     {
       "path": "CITATION.cff",
@@ -74,8 +74,8 @@
     },
     {
       "path": "DESIGN.md",
-      "bytes": 6848,
-      "sha256": "4f73b4c89958a86c64c8b9b2c3a3a89750b0cecf8501b2b2126f790a4c9771f1"
+      "bytes": 7017,
+      "sha256": "9037148341bc5d1df7010d68ade9dcb65bb840896f5612b433871b6f5a868945"
     },
     {
       "path": "Dockerfile",
@@ -124,8 +124,8 @@
     },
     {
       "path": "app/gradio_theme.css",
-      "bytes": 22005,
-      "sha256": "958cce25572ad877977c7c38ef40196bc6ab30d274599050ca65dbb6eee8d7d0"
+      "bytes": 22015,
+      "sha256": "5845fd3265ec647dded0d30deb6fafa853196fda3df094e2ff4b45ab4fc9162d"
     },
     {
       "path": "app/gradio_ui.py",
@@ -199,8 +199,8 @@
     },
     {
       "path": "docs/release/VERIFICATION.md",
-      "bytes": 29098,
-      "sha256": "bb1214280f026caaf616db3219b98e64376cb91dfaf6a40eb602ea995b8203b4"
+      "bytes": 32688,
+      "sha256": "3fc5883141bcf5a6b2e80b3b0fd9f950bd439ec72ee6dbcbeb9a9fa8aa618a4e"
     },
     {
       "path": "docs/superpowers/plans/2026-08-12-credit-xai-release-candidate.md",
@@ -226,6 +226,11 @@
       "path": "docs/superpowers/plans/2026-08-12-gradio-input-grid-alignment.md",
       "bytes": 6173,
       "sha256": "a5e63dd47e7de5d1b1b75f8988160fa9dadb6a4d524e17066fee593c3135a50e"
+    },
+    {
+      "path": "docs/superpowers/plans/2026-08-12-gradio-reading-density.md",
+      "bytes": 7133,
+      "sha256": "1754e2e1859d907e3827ca5521fa6b39a64820bc9bb135ae1f45b3c706ca6b2e"
     },
     {
       "path": "docs/superpowers/plans/2026-08-12-gradio-success-state-density.md",
@@ -271,6 +276,11 @@
       "path": "docs/superpowers/specs/2026-08-12-gradio-input-grid-alignment-design.md",
       "bytes": 3062,
       "sha256": "f6aeff948fd39df50135b885db089e01450215a39a452b151d193f158594b42a"
+    },
+    {
+      "path": "docs/superpowers/specs/2026-08-12-gradio-reading-density-design.md",
+      "bytes": 3959,
+      "sha256": "73e3a7f03cbe83f39a70c6bc9754ba9b2c0cb2b56b2fc53612898e5fa748d410"
     },
     {
       "path": "docs/superpowers/specs/2026-08-12-gradio-success-state-density-design.md",
@@ -989,8 +999,8 @@
     },
     {
       "path": "tests/test_gradio.py",
-      "bytes": 6738,
-      "sha256": "4009135501529bca73ef61ec284bc40e5c0b1ee209a1c79529f59cf20b3673fd"
+      "bytes": 6993,
+      "sha256": "a7f420e78e8cc986f8e16ba9e858593601e9791737ba45f594ace2a79535f6c8"
     },
     {
       "path": "tests/test_gradio_presenter.py",

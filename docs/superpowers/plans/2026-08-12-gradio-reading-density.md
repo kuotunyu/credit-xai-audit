@@ -131,10 +131,10 @@ batch and stop polishing.
 
 - [ ] **Step 2: Run the final layout detector and focused gates**
 
-Run:
+Run the installed Impeccable layout detector from its configured skill root,
+then run:
 
 ```powershell
-node C:\Users\3Hml\.codex\skills\impeccable\scripts\detect.mjs --json --scope layout app/gradio_theme.css
 .venv\Scripts\python.exe -m pytest tests/test_gradio.py tests/test_gradio_presenter.py -q
 .venv\Scripts\ruff.exe format --check .
 .venv\Scripts\ruff.exe check .
