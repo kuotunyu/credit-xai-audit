@@ -24,6 +24,9 @@ been published or tagged.
 - The Gradio portfolio surface is now Traditional Chinese first, evidence
   first, responsive, and square-cornered, with all 23 integer inputs grouped
   into four compact feature sections.
+- The first-viewport type scale and spacing are rebalanced for desktop reading:
+  the thesis is capped at 48px, the scope note sizes to its content, supporting
+  labels are larger, and case selection shares one compact toolbar.
 - Model-absent, invalid-input, and bundle-error states fail closed without
   fabricated predictions or local exception details.
 

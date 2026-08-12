@@ -142,9 +142,14 @@ Linux daemon with the following fresh evidence:
 ## Owner-approved UI renewal gate
 
 - Focused presenter/Gradio suite: 35 passed. Full suite: 144 passed.
-- Desktop and compact browser inspection confirmed the approved 8/4 editorial
-  workspace, readable type, visible keyboard focus, square controls, stable
-  empty/result geometry, and no page-level horizontal overflow at 390px.
+- Desktop and compact browser inspection at 1900px, 1280px, 768px, and 390px
+  confirmed the approved 8/4 editorial workspace, readable type, visible
+  keyboard focus, square controls, stable empty/result geometry, and no
+  page-level horizontal overflow. The desktop thesis measured 38px at 1280px
+  and capped at 48px at 1900px; compact metadata measured at least 13.76px.
+- The scope boundary now sizes to its content instead of stretching to the hero.
+  Case heading, metadata, index, and load action share one 85px desktop toolbar;
+  the first feature row begins about 36px earlier than the superseded layout.
 - The model-absent screen showed no illustrative probability. A separate,
   ignored synthetic LightGBM bundle produced successful calibrated prediction
   and explanation views without exposing the synthetic prediction value in
