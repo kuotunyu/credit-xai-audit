@@ -210,7 +210,7 @@ def test_gradio_theme_keeps_the_approved_light_palette_in_dark_preference() -> N
     assert tokens["button_transition"] == "none"
 
 
-def test_gradio_css_uses_complete_responsive_group_ledgers() -> None:
+def test_gradio_css_uses_complete_responsive_open_sections() -> None:
     css = Path("app/gradio_theme.css").read_text(encoding="utf-8").lower()
 
     assert (
@@ -233,6 +233,23 @@ def test_gradio_css_uses_complete_responsive_group_ledgers() -> None:
     assert "grid-template-columns: repeat(3, minmax(0, 1fr))" in compact
     assert "grid-template-columns: repeat(2, minmax(0, 1fr))" in phone
     assert "min-width: 0" in phone
+
+    workspace_rule = css.split(".audit-workspace {", maxsplit=1)[1].split("}", maxsplit=1)[0]
+    group_rule = css.split(".audit-feature-group {", maxsplit=1)[1].split("}", maxsplit=1)[0]
+    heading_rule = css.split(".audit-group-heading-block {", maxsplit=1)[1].split("}", maxsplit=1)[
+        0
+    ]
+    number_rule = css.split(".audit-number {", maxsplit=1)[1].split("}", maxsplit=1)[0]
+    input_rule = css.split(".audit-number input {", maxsplit=1)[1].split("}", maxsplit=1)[0]
+
+    assert "align-items: flex-start" in workspace_rule
+    assert "display: block" in group_rule
+    assert "grid-template-columns" not in group_rule
+    assert "width: 100%" in heading_rule
+    assert "border-right: 0" in heading_rule
+    assert "border-left: 0" in number_rule
+    assert "border-bottom: 1px solid var(--audit-rule)" in input_rule
+    assert ".audit-number + .audit-number" not in css
 
 
 def test_gradio_css_removes_framework_gutters_and_keeps_labels_readable() -> None:
