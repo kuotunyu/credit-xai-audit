@@ -10,6 +10,11 @@
   --audit-rule: #bfc1c8;
   --audit-rule-warm: #c8c7c2;
   --audit-white: #fffdf8;
+  --audit-type-body: 1rem;
+  --audit-type-support: 0.94rem;
+  --audit-type-label: 0.91rem;
+  --audit-type-meta: 0.875rem;
+  --audit-type-value: 1.125rem;
 }
 
 html,
@@ -29,7 +34,7 @@ body {
   color: var(--audit-text) !important;
   font-family: system-ui, "Noto Sans TC", "Microsoft JhengHei", "PingFang TC",
     sans-serif !important;
-  font-size: 15px !important;
+  font-size: 16px !important;
 }
 
 .gradio-container main.app {
@@ -83,7 +88,7 @@ body {
 
 .audit-product-lockup span {
   color: #e4e8fb;
-  font-size: 0.875rem;
+  font-size: var(--audit-type-support);
 }
 
 .audit-statuses {
@@ -103,7 +108,7 @@ body {
   padding: 0;
   border: 0;
   color: var(--audit-white);
-  font-size: 0.82rem;
+  font-size: var(--audit-type-label);
   font-weight: 650;
   line-height: 1.25;
   text-align: center;
@@ -119,7 +124,7 @@ body {
   grid-template-columns: minmax(0, 1.55fr) minmax(300px, 0.65fr);
   gap: clamp(1.5rem, 3vw, 3rem);
   align-items: center;
-  padding: clamp(1rem, 1.7vw, 1.5rem) 1rem 0.85rem;
+  padding: clamp(0.9rem, 1.4vw, 1.2rem) 1rem 0.75rem;
 }
 
 .audit-hero-copy {
@@ -130,7 +135,7 @@ body {
 .audit-section-index {
   margin: 0 0 0.35rem;
   color: var(--audit-action);
-  font-size: 0.78rem;
+  font-size: var(--audit-type-meta);
   font-weight: 700;
   letter-spacing: 0.08em;
 }
@@ -139,7 +144,7 @@ body {
   max-width: 24ch;
   margin: 0;
   color: #15203d;
-  font-size: clamp(2.35rem, 2.7vw, 3rem);
+  font-size: clamp(2.25rem, 2.35vw, 2.5rem);
   font-weight: 720;
   line-height: 1.08;
   letter-spacing: -0.035em;
@@ -150,7 +155,7 @@ body {
   max-width: 68ch;
   margin: 0.7rem 0 0;
   color: var(--audit-muted);
-  font-size: clamp(0.98rem, 1.1vw, 1rem);
+  font-size: var(--audit-type-body);
   line-height: 1.5;
 }
 
@@ -166,13 +171,13 @@ body {
 .audit-boundary strong {
   margin-bottom: 0.3rem;
   color: #192544;
-  font-size: 0.98rem;
+  font-size: var(--audit-type-body);
 }
 
 .audit-boundary span {
   max-width: 29ch;
   color: var(--audit-text);
-  font-size: 0.95rem;
+  font-size: var(--audit-type-body);
   line-height: 1.55;
 }
 
@@ -186,7 +191,7 @@ body {
 
 .audit-kpi {
   display: flex;
-  min-height: 70px;
+  min-height: 64px;
   align-items: center;
   justify-content: center;
   gap: 0.65rem;
@@ -201,7 +206,7 @@ body {
 
 .audit-kpi strong {
   color: var(--audit-action);
-  font-size: clamp(1.75rem, 2.2vw, 2.3rem);
+  font-size: clamp(1.9rem, 2vw, 2.1rem);
   font-weight: 680;
   line-height: 1;
   letter-spacing: -0.035em;
@@ -210,7 +215,7 @@ body {
 .audit-kpi span {
   max-width: 11ch;
   color: var(--audit-muted);
-  font-size: 0.88rem;
+  font-size: var(--audit-type-support);
   line-height: 1.35;
 }
 
@@ -230,15 +235,17 @@ body {
 }
 
 .audit-input-column {
+  flex-grow: 7 !important;
   gap: 0.45rem !important;
-  padding: 0.9rem 0 0.5rem !important;
+  padding: 0.8rem 0 0.45rem !important;
   border: 0;
   background: transparent;
 }
 
 .audit-result-column {
+  flex-grow: 5 !important;
   gap: 0.45rem !important;
-  padding: 1rem !important;
+  padding: 0.9rem 1rem !important;
   background: var(--audit-result);
 }
 
@@ -252,7 +259,7 @@ body {
 .audit-input-heading span {
   flex: 0 0 auto;
   color: var(--audit-action);
-  font-size: 0.76rem;
+  font-size: var(--audit-type-meta);
   font-weight: 700;
   white-space: nowrap;
 }
@@ -261,7 +268,7 @@ body {
   flex: 0 0 auto;
   margin: 0;
   color: #17203d;
-  font-size: 1.4rem;
+  font-size: 1.45rem;
   line-height: 1.2;
   white-space: nowrap;
 }
@@ -269,19 +276,20 @@ body {
 .audit-input-heading p {
   margin: 0 0 0 auto;
   color: var(--audit-muted);
-  font-size: 0.84rem;
+  font-size: var(--audit-type-label);
 }
 
 .audit-input-toolbar {
-  align-items: center !important;
-  flex-wrap: nowrap !important;
-  gap: 0.75rem !important;
+  align-items: flex-start !important;
+  flex-wrap: wrap !important;
+  gap: 0.55rem 0.75rem !important;
   margin: 0 !important;
 }
 
 .audit-input-heading-block {
-  flex: 1 1 300px !important;
-  min-width: 260px !important;
+  flex: 1 1 100% !important;
+  width: 100% !important;
+  min-width: 0 !important;
   margin: 0 !important;
   padding: 0 !important;
 }
@@ -315,6 +323,7 @@ body {
 }
 
 .audit-case-index input {
+  min-height: 44px !important;
   border: 0 !important;
   border-bottom: 1px solid var(--audit-rule) !important;
   background: transparent !important;
@@ -325,7 +334,7 @@ body {
   align-items: center !important;
   justify-content: center !important;
   border-radius: 0 !important;
-  font-size: 0.92rem !important;
+  font-size: var(--audit-type-body) !important;
   font-weight: 700 !important;
 }
 
@@ -345,7 +354,7 @@ body {
   margin: 0 !important;
   padding: 0 0 0.25rem !important;
   color: var(--audit-muted) !important;
-  font-size: 0.86rem !important;
+  font-size: var(--audit-type-support) !important;
 }
 
 .audit-case-note p {
@@ -369,7 +378,7 @@ body {
   padding: 0.45rem 0.75rem !important;
   border: 0 !important;
   color: var(--audit-muted) !important;
-  font-size: 0.9rem !important;
+  font-size: var(--audit-type-support) !important;
 }
 
 .audit-tabs button[role="tab"][aria-selected="true"] {
@@ -399,14 +408,14 @@ body {
   justify-content: center !important;
   min-height: 1.2rem;
   color: var(--audit-muted) !important;
-  font-size: 0.82rem !important;
+  font-size: var(--audit-type-label) !important;
   font-weight: 650 !important;
   text-align: center !important;
 }
 
 .audit-number [data-testid="block-info"] {
   color: var(--audit-muted) !important;
-  font-size: 0.82rem !important;
+  font-size: var(--audit-type-label) !important;
   font-weight: 650 !important;
 }
 
@@ -417,7 +426,7 @@ body {
   border-bottom: 1px solid var(--audit-rule) !important;
   background: transparent !important;
   color: #111936 !important;
-  font-size: 1.04rem !important;
+  font-size: var(--audit-type-value) !important;
   font-weight: 650 !important;
   text-align: center !important;
 }
@@ -451,14 +460,14 @@ body {
   padding: 0.35rem 0.75rem;
   background: #f1d9a9;
   color: #54360a;
-  font-size: 0.82rem;
+  font-size: var(--audit-type-label);
   font-weight: 750;
 }
 
 .audit-result-shell h2 {
   margin: 0.7rem 0 0.35rem;
   color: #17203d;
-  font-size: clamp(1.3rem, 1.7vw, 1.55rem);
+  font-size: clamp(1.4rem, 1.5vw, 1.55rem);
   line-height: 1.18;
   letter-spacing: -0.025em;
 }
@@ -467,7 +476,7 @@ body {
   min-height: 3em;
   margin: 0;
   color: var(--audit-muted);
-  font-size: 0.95rem;
+  font-size: var(--audit-type-body);
   line-height: 1.5;
 }
 
@@ -484,12 +493,12 @@ body {
 
 .audit-probability span {
   color: var(--audit-muted);
-  font-size: 0.84rem;
+  font-size: var(--audit-type-support);
 }
 
 .audit-probability strong {
   color: var(--audit-action);
-  font-size: clamp(1.8rem, 2.6vw, 2.45rem);
+  font-size: clamp(1.9rem, 2.1vw, 2.15rem);
   font-weight: 680;
   line-height: 0.95;
   letter-spacing: -0.04em;
@@ -510,7 +519,7 @@ body {
 .audit-result-meta dt,
 .audit-result-meta dd {
   margin: 0;
-  font-size: 0.86rem;
+  font-size: var(--audit-type-support);
 }
 
 .audit-result-meta dt {
@@ -537,20 +546,20 @@ body {
 
 .audit-result-boundary strong {
   color: #29304a;
-  font-size: 0.84rem;
+  font-size: var(--audit-type-label);
 }
 
 .audit-result-boundary span {
   margin-top: 0.2rem;
   color: var(--audit-muted);
-  font-size: 0.82rem;
+  font-size: var(--audit-type-label);
   line-height: 1.45;
 }
 
 .audit-result-boundary small {
   margin-top: 0.35rem;
   color: #74798a;
-  font-size: 0.8rem;
+  font-size: var(--audit-type-meta);
   line-height: 1.4;
 }
 
@@ -565,12 +574,12 @@ body {
 .audit-attributions label {
   padding-top: 0.65rem !important;
   color: var(--audit-text) !important;
-  font-size: 0.9rem !important;
+  font-size: var(--audit-type-body) !important;
   font-weight: 700 !important;
 }
 
 .audit-attributions table {
-  font-size: 0.82rem !important;
+  font-size: var(--audit-type-support) !important;
 }
 
 .audit-evidence-section {
@@ -594,14 +603,14 @@ body {
 .audit-section-heading h2 {
   margin: 0;
   color: #17203d;
-  font-size: 1.45rem;
+  font-size: 1.5rem;
   line-height: 1.2;
 }
 
 .audit-section-heading > p:last-child {
   margin: 0.2rem 0 0;
   color: var(--audit-muted);
-  font-size: 0.82rem;
+  font-size: var(--audit-type-label);
 }
 
 .audit-evidence-grid {
@@ -626,7 +635,7 @@ body {
 .audit-evidence-table caption {
   padding: 0.55rem 0.7rem;
   color: var(--audit-muted);
-  font-size: 0.82rem;
+  font-size: var(--audit-type-label);
   text-align: left;
 }
 
@@ -635,7 +644,7 @@ body {
   padding: 0.58rem 0.7rem;
   border-top: 1px solid var(--audit-rule);
   color: var(--audit-text);
-  font-size: 0.84rem;
+  font-size: var(--audit-type-support);
   line-height: 1.35;
   text-align: left;
 }
@@ -643,7 +652,7 @@ body {
 .audit-evidence-table thead th {
   background: transparent;
   color: var(--audit-muted);
-  font-size: 0.8rem;
+  font-size: var(--audit-type-label);
   font-weight: 700;
 }
 
@@ -665,7 +674,7 @@ body {
 .audit-evidence-checks h3 {
   margin: 0 0 0.4rem;
   color: #17203d;
-  font-size: 0.9rem;
+  font-size: var(--audit-type-body);
 }
 
 .audit-evidence-checks ul {
@@ -681,7 +690,7 @@ body {
   padding: 0.35rem 0;
   border-bottom: 1px solid var(--audit-rule);
   color: var(--audit-text);
-  font-size: 0.82rem;
+  font-size: var(--audit-type-label);
   line-height: 1.4;
 }
 
@@ -698,14 +707,14 @@ body {
   margin: 0;
   padding: 0.6rem 0;
   color: var(--audit-muted);
-  font-size: 0.78rem;
+  font-size: var(--audit-type-meta);
   line-height: 1.45;
 }
 
 .audit-evidence-links code {
   color: var(--audit-action);
   font-family: ui-monospace, "Cascadia Mono", Consolas, monospace;
-  font-size: 0.75rem;
+  font-size: var(--audit-type-meta);
 }
 
 .audit-evidence-unavailable {
@@ -723,7 +732,7 @@ body {
 
 .audit-evidence-unavailable span {
   color: var(--audit-muted);
-  font-size: 0.84rem;
+  font-size: var(--audit-type-support);
 }
 
 .audit-footer {
@@ -734,31 +743,12 @@ body {
   padding: 0.7rem 0 1rem;
   border-top: 1px solid var(--audit-rule-warm);
   color: var(--audit-muted);
-  font-size: 0.78rem;
+  font-size: var(--audit-type-meta);
   line-height: 1.45;
 }
 
 .audit-footer strong {
   color: var(--audit-structure);
-}
-
-@media (max-width: 1080px) and (min-width: 821px) {
-  .audit-input-toolbar {
-    align-items: flex-start !important;
-    flex-wrap: wrap !important;
-  }
-
-  .audit-input-heading-block,
-  .audit-case-controls {
-    flex: 1 1 100% !important;
-    width: 100% !important;
-    min-width: 0 !important;
-    margin-left: 0 !important;
-  }
-
-  .audit-case-controls {
-    max-width: 520px;
-  }
 }
 
 @media (max-width: 820px) {
@@ -801,7 +791,7 @@ body {
 
   .audit-hero h1 {
     max-width: none;
-    font-size: clamp(2rem, 6.5vw, 2.6rem);
+    font-size: clamp(2rem, 5.4vw, 2.25rem);
   }
 
   .audit-boundary {
@@ -898,7 +888,7 @@ body {
   }
 
   .audit-hero h1 {
-    font-size: clamp(1.8rem, 8.5vw, 2.25rem);
+    font-size: clamp(1.875rem, 7.2vw, 2.0625rem);
   }
 
   .audit-input-heading {
@@ -947,6 +937,6 @@ body {
   .audit-evidence-table th,
   .audit-evidence-table td {
     padding-inline: 0.5rem;
-    font-size: 0.78rem;
+    font-size: var(--audit-type-meta);
   }
 }
