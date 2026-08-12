@@ -419,6 +419,51 @@ actual container boundary:
   strict Mypy for `app`, the Impeccable layout detector, and `git diff --check`
   also passed.
 
+The committed field-ledger code was then rebuilt and exercised through the
+actual container boundary:
+
+- Docker Engine 29.6.1 and Compose 5.3.0 reported a Linux/amd64 daemon with 24
+  CPUs. `docker compose config --quiet` passed. The API image build completed
+  in 96.181 seconds and produced `credit-xai-audit:latest`, ID
+  `sha256:7961ebcef91cd13ed3865a6c6424f781c40fc8d85338aa5c7c29004cfc8a9701`,
+  measuring 814,562,510 bytes.
+- The image defaults to non-root `appuser`/UID 1000 and resolves project code
+  from `/app/src`. Its project layer contained zero raw-data, model, result, or
+  temporary payload files and no `.env`, private note, credential, or model
+  bundle. Runtime checks used two CPUs, two GB of memory, empty
+  `CUDA_VISIBLE_DEVICES`, and `NVIDIA_VISIBLE_DEVICES=void`.
+- The accepted synthetic pipeline ran as non-root with `network=none` in
+  19.587 seconds. It used a clean disposable volume for `tmp/ci` and a
+  disposable writable container layer for report-owned README/figure outputs,
+  matching the existing smoke profile boundary. It produced 2,000 synthetic
+  rows, disjoint 1,400/300/300 splits, validation-only calibration, three
+  hash-declared bundles, and complete 50/50/12/50 evaluation, group,
+  stability, and faithfulness checkpoints. Explainers were `linear_shap`,
+  `ebm_native`, and `tree_shap` for Logistic, EBM, and LightGBM respectively.
+- Earlier harness probes were rejected rather than counted as passes: a login
+  shell resolved system Python instead of the image venv; read-only report
+  probes correctly blocked `/app/assets` and generated README writes; and the
+  first assets tmpfs was root-owned. The accepted command explicitly used the
+  image venv and the disposable writable container layer. Neither accepted
+  artifacts nor repository files were mounted writable.
+- The model-absent API container used a read-only root filesystem and became
+  healthy with `/health` 200, `model_loaded=false`, `/predict` 503, and `/ui/`
+  200. The synthetic API mounted only the disposable volume read-only and
+  returned 200 from `/health`, `/predict`, `/explain`, and `/ui/`; it reported
+  LightGBM, `tree_shap`, 23 link-scale attributions, and no financial-action
+  response field.
+- Playwright executed the real synthetic UI action at 1,714px and 390px. Both
+  layouts had zero overflow and zero browser exceptions, displayed LightGBM,
+  `isotonic`, `TreeSHAP`, and the attribution table, and contained no approval
+  or rejection term in the result. Desktop field widths differed by only
+  0.016px and the 158.19px action matched one field track; the phone retained
+  its two-column ledger and full-width action.
+- Both healthy API containers, the dedicated network, and every temporary
+  synthetic volume from this gate were removed. No container references the
+  image. The tested `credit-xai-audit:latest` image is intentionally retained
+  at 814,562,510 bytes; no host result, model, dataset, request, or response was
+  created or changed.
+
 Feature Freeze is renewed after this owner-approved, UI-only change. It changed
 no model, formal metric, accepted result, API schema, pipeline, dependency,
 Docker policy, or decision scope.

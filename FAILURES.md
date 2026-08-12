@@ -159,6 +159,26 @@ is auditable too.
   read-only for the API smoke and removed during cleanup. No Dockerfile,
   application, accepted metric, or public artifact changed.
 
+## 12. Over-strict manual pipeline runner blocked report-owned files — RESOLVED IN GATE ORCHESTRATION
+
+- **Symptoms**: the first field-ledger container probe used `bash -lc`, whose
+  login-shell path selected system Python instead of `/app/.venv/bin/python`.
+  Subsequent read-only probes completed the synthetic modeling stages but
+  correctly rejected report writes to `/app/assets` and the generated README
+  blocks; the first assets tmpfs was also root-owned and rejected `appuser`.
+- **Cause**: these probes imposed an API-style read-only root filesystem on the
+  existing full smoke command even though `report` intentionally writes figures
+  and generated README blocks into the disposable container layer. This was a
+  verification-runner mismatch, not a model, package, or Dockerfile defect.
+- **Resolution and evidence**: the accepted run invoked the image venv
+  explicitly, retained `network=none`, two CPUs, two GB of memory, non-root UID
+  1000, disabled GPU visibility, and stored `tmp/ci` in a clean named volume.
+  Report-owned files stayed in the disposable writable container layer, which
+  was deleted at exit. The complete pipeline passed in 19.587 seconds. Both API
+  containers separately retained read-only root filesystems and the synthetic
+  volume was mounted read-only. No host dataset, model, accepted result, or
+  repository file was mounted writable.
+
 ## Residual nondeterminism notes
 
 - LightGBM runs with `deterministic=true, force_row_wise=true` and a fixed

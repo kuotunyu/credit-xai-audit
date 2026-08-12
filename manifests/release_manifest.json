@@ -84,8 +84,8 @@
     },
     {
       "path": "FAILURES.md",
-      "bytes": 10090,
-      "sha256": "adcb8a5e565132b513efb0606fc4cf47a11c3ab21306cf2fdd9fca54cdd1dfb3"
+      "bytes": 11475,
+      "sha256": "a150f4bf08641a3ed4aad48a8be9206f38d905c92b5afef18c1a894628027e34"
     },
     {
       "path": "LICENSE",
@@ -199,8 +199,8 @@
     },
     {
       "path": "docs/release/VERIFICATION.md",
-      "bytes": 26107,
-      "sha256": "8cf314f2ff92e93585a29c485c5faaa03c079dbed8440eaea0b9cb178931bf5a"
+      "bytes": 29098,
+      "sha256": "bb1214280f026caaf616db3219b98e64376cb91dfaf6a40eb602ea995b8203b4"
     },
     {
       "path": "docs/superpowers/plans/2026-08-12-credit-xai-release-candidate.md",
