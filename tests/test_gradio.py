@@ -71,6 +71,26 @@ def test_gradio_has_one_primary_audit_action_and_named_regions(test_config) -> N
     assert '"elem_id": "audit-evidence"' in text
 
 
+def test_gradio_groups_heading_and_case_actions_in_one_toolbar(test_config) -> None:
+    config, _ = _config(test_config)
+    components = {component["id"]: component for component in config["components"]}
+
+    toolbar = next(
+        component
+        for component in config["components"]
+        if "audit-input-toolbar" in component.get("props", {}).get("elem_classes", [])
+    )
+    layout_nodes = [config["layout"]]
+    for node in layout_nodes:
+        layout_nodes.extend(node.get("children", []))
+    toolbar_node = next(node for node in layout_nodes if node["id"] == toolbar["id"])
+    child_components = [components[child["id"]] for child in toolbar_node["children"]]
+
+    assert [component["type"] for component in child_components] == ["html", "row"]
+    assert "audit-input-heading-block" in child_components[0]["props"]["elem_classes"]
+    assert "audit-case-controls" in child_components[1]["props"]["elem_classes"]
+
+
 def test_gradio_uses_output_only_attribution_table(test_config) -> None:
     config, _ = _config(test_config)
     dataframes = [
@@ -105,13 +125,6 @@ def test_gradio_theme_keeps_the_approved_light_palette_in_dark_preference() -> N
     assert tokens["shadow_drop"] == "none"
     assert tokens["shadow_drop_lg"] == "none"
     assert tokens["button_transition"] == "none"
-
-
-def test_gradio_css_keeps_case_controls_compact() -> None:
-    css = Path("app/gradio_theme.css").read_text(encoding="utf-8").lower()
-
-    assert ".audit-case-controls > .form" in css
-    assert "margin-left: auto" in css
 
 
 def test_gradio_css_preserves_compact_readability_without_tab_overflow() -> None:

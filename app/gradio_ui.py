@@ -265,19 +265,24 @@ def build_ui(cfg: Config) -> gr.Blocks:
         controls: dict[str, gr.Number] = {}
         with gr.Row(elem_classes="audit-workspace"):
             with gr.Column(scale=8, min_width=560, elem_classes="audit-input-column"):
-                gr.HTML(_input_heading_html(), padding=False)
-                with gr.Row(elem_classes="audit-case-controls"):
-                    case_index = gr.Number(
-                        value=0,
-                        precision=0,
-                        step=1,
-                        label="案例編號",
-                        elem_classes="audit-case-index",
+                with gr.Row(elem_classes="audit-input-toolbar"):
+                    gr.HTML(
+                        _input_heading_html(),
+                        padding=False,
+                        elem_classes="audit-input-heading-block",
                     )
-                    load_btn = gr.Button(
-                        "載入測試案例",
-                        elem_classes="audit-secondary",
-                    )
+                    with gr.Row(elem_classes="audit-case-controls"):
+                        case_index = gr.Number(
+                            value=0,
+                            precision=0,
+                            step=1,
+                            label="案例編號",
+                            elem_classes="audit-case-index",
+                        )
+                        load_btn = gr.Button(
+                            "載入測試案例",
+                            elem_classes="audit-secondary",
+                        )
                 case_note = gr.Markdown(
                     initial_case_note,
                     container=False,
