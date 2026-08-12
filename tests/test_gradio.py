@@ -153,7 +153,7 @@ def test_gradio_theme_keeps_the_approved_light_palette_in_dark_preference() -> N
     assert tokens["button_transition"] == "none"
 
 
-def test_gradio_css_preserves_compact_readability_without_tab_overflow() -> None:
+def test_gradio_css_uses_equal_compact_tracks_without_tab_overflow() -> None:
     css = Path("app/gradio_theme.css").read_text(encoding="utf-8").lower()
 
     assert (
@@ -161,8 +161,14 @@ def test_gradio_css_preserves_compact_readability_without_tab_overflow() -> None
         in css.split(".audit-product-lockup strong", maxsplit=1)[1].split("}", maxsplit=1)[0]
     )
     compact = css.split("@media (max-width: 520px)", maxsplit=1)[1]
-    assert ".audit-tabs .tab-nav" in compact
-    assert "flex-wrap: wrap" in compact
+    tablist_rule = compact.split('.audit-tabs [role="tablist"]', maxsplit=1)[1].split(
+        "}", maxsplit=1
+    )[0]
+    assert "grid-template-columns: repeat(2, minmax(0, 1fr))" in tablist_rule
+    feature_rule = compact.split(".audit-feature-row > .form", maxsplit=1)[1].split(
+        "}", maxsplit=1
+    )[0]
+    assert "grid-template-columns: repeat(2, minmax(0, 1fr))" in feature_rule
     assert "min-width: 0" in compact
 
 
