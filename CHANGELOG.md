@@ -22,22 +22,22 @@ been published or tagged.
 - Official UCI ZIP bytes are checked against the pinned SHA-256 before use.
 - Checkpoint completion requires exactly one valid record per iteration.
 - The Gradio portfolio surface is now Traditional Chinese first, evidence
-  first, responsive, and square-cornered, with all 23 integer inputs grouped
-  into four compact feature sections.
+  first, responsive, and square-cornered, with all 23 integer inputs visible in
+  four continuous feature-group ledgers.
 - The first-viewport type scale and spacing are rebalanced for browser reading:
-  the thesis is capped at 40px, ordinary copy is 16px, operational roles are
-  14–15px, numeric values are 18px, and case tools use two stable rows.
+  the thesis is capped at 40px, ordinary copy is 17px, supporting copy is 16px,
+  labels are 15.5px, numeric values are 19px, and case tools share one compact
+  toolbar.
 - Successful model attributions now appear in a conditional full-width evidence
   band, removing the empty desktop column while leaving empty and error states
   compact.
 - Calibrated probability and model metadata now share a responsive facts band,
   reducing the verified desktop workspace by 104px and post-action blank space
   from 113px to 9px without changing the mobile reading order.
-- The case workspace now separates navigation from data rhythm: status and case
-  controls share a baseline, the compact group index stays left-aligned, and
-  feature inputs form one shared-rule ledger with consistent 5/6-, three-, or
-  two-column tracks and an action aligned to the active track.
-- Repeated container chrome was removed from statuses, KPIs, tabs, case
+- The case workspace is now one complete audit worksheet: all four canonical
+  groups remain visible in shared-rule 5/6-, three-, or two-column ledgers, and
+  case context plus the primary action form one immediate footer.
+- Repeated container chrome was removed from statuses, KPIs, navigation, case
   selection, numeric fields, and evidence groups. One-pixel transition rules,
   underlined controls, a compact desktop primary action, and the single tonal
   result plane now carry the visual hierarchy.

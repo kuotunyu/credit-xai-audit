@@ -516,9 +516,65 @@ actual container boundary:
   temporary network remained. The tested image is intentionally retained; no
   host result, model, dataset, request, or response was created or changed.
 
-Feature Freeze is renewed after this owner-approved, UI-only change. It changed
-no model, formal metric, accepted result, API schema, pipeline, dependency,
-Docker policy, or decision scope.
+### Complete audit worksheet rebuild
+
+- The rendered RED contract exposed the structural defect directly: zero
+  feature-group rows, four tabs, and only five visible numeric controls. The
+  replacement removes tabs and exposes all four canonical groups and all 23
+  fields in source order. Desktop rows use 5/6/6/6 equal tracks with a 128px
+  group rail; the 768px layout uses three tracks with a 112px rail; and the
+  390px layout uses two tracks with horizontal group headings.
+- At 1,908px and 1,280px, the rebuilt case toolbar measured 70px tall and each
+  within-row field-width spread was at most 0.02px. At 390px the toolbar was
+  119.61px, including the stacked heading and one-line loader. Every tested
+  width kept 44px-or-larger inputs and buttons, zero clipped labels, a 3.19px
+  post-action tail, zero page overflow, and zero browser logs.
+- The real model-absent preview remained fail-closed. The real synthetic
+  container UI succeeded at 1,280px and 390px, displaying LightGBM,
+  `isotonic`, TreeSHAP, and the verified attribution table. It exposed no
+  financial-action language or case-level value in public evidence.
+- Docker Engine 29.6.1 and Compose 5.3.0 accepted the Compose configuration.
+  The Linux/amd64 API image build completed in 194.95 seconds and produced
+  `credit-xai-audit:latest`, ID
+  `sha256:20bef1a8090594eefde95d272fd3b1ea6fcc25dc4cbc86c9b22d18046b1a22c2`,
+  measuring 814,562,858 bytes. It defaults to non-root `appuser`/UID 1000 and
+  contains no GPU package, raw data, model bundle, committed result, `.env`,
+  Git history, or private progress/handoff file.
+- The accepted network-disabled synthetic pipeline used the image venv, two
+  CPUs, two GB, and a disposable volume. It completed in 22.55 seconds with
+  2,000 synthetic rows, disjoint 1,400/300/300 splits, validation-only
+  `isotonic` calibration for all three models, twelve complete checkpoint
+  streams, three hash-valid bundles, and the expected `linear_shap`,
+  `ebm_native`, and `tree_shap` explainers. A preliminary login-shell command
+  resolved system Python and stopped before data generation; it was corrected
+  with the explicit image venv and is not counted as evidence.
+- The synthetic API ran healthy with a read-only root filesystem and a
+  read-only synthetic volume. `/health`, `/predict`, `/explain`, `/ui/`, and
+  OpenAPI returned 200; the service reported `historical_model_replay`, used
+  `tree_shap`, and returned ten top attributions. The first default-config
+  launch also correctly failed closed with `model_loaded=false` before the
+  explicit synthetic config was supplied.
+- Both temporary API containers, the dedicated network, and the synthetic
+  volume were removed. The tested image is intentionally retained. The Docker
+  gate wrote no dataset, model, result, request, or response into the public
+  repository.
+- Fresh non-editable setup resolved `credit_xai` from the checkout's `.venv`
+  site-packages with `editable=false`. `uv lock --check` resolved 92 packages;
+  Ruff format/check passed for 91 files; strict Mypy passed for 65 source
+  files; the focused Gradio/presenter suite passed all 37 tests; and the full
+  suite passed all 146 tests with 27 already-declared third-party deprecation
+  warnings. Claims, privacy, manifest, and release-verifier gates passed after
+  manifest regeneration.
+- The wheel and sdist built in isolated environments. Archive inspection found
+  no raw/model/result/environment/private payload or absolute path; the sdist
+  retained the Gradio sources and the wheel retained the intentional API-only
+  boundary. A separate wheel-plus-`serve` installation imported from its own
+  site-packages and returned model-absent `/health` 200, after which the
+  verified temporary environment was removed.
+
+Feature Freeze is renewed after this owner-approved, UI-only rebuild. It
+changed no model, formal metric, accepted result, API schema, pipeline,
+dependency, Docker policy, or decision scope.
 
 With these Docker gates and the final source/package gates recorded below, the
 unpublished candidate is under **Feature Freeze**. Only evidence corrections,
