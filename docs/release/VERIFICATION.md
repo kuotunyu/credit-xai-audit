@@ -19,15 +19,16 @@ The final source-level run completed with:
 
 - `uv lock --check`: pass (92 locked packages)
 - `ruff check src app tests`: pass
-- `ruff format --check src app tests`: pass (88 files)
-- `mypy --strict src app`: pass (64 source files)
-- `pytest`: 110 passed, 5 third-party deprecation warnings
+- `ruff format --check src app tests`: pass (90 files)
+- `mypy --strict src app`: pass (65 source files)
+- `pytest`: 144 passed, 18 third-party deprecation warnings
 - `credit_xai.release.verify claims`: pass
 - `credit_xai.release.verify privacy`: pass
 
-The warnings are three SHAP/Matplotlib pending deprecations and two Gradio 5
-`row_count` deprecations. They do not change outputs; the Gradio dependency is
-bounded below version 6 for this candidate.
+The warnings are three SHAP/Matplotlib pending deprecations and 15 Gradio 5
+constructor/`row_count` deprecation reports emitted across five UI-construction
+tests. They do not change outputs; the Gradio dependency is bounded below
+version 6 for this candidate.
 
 The non-editable clean setup command, `python scripts/setup_environment.py`,
 completed and imported the package successfully from the non-ASCII checkout.
@@ -84,8 +85,8 @@ recorded path-dependent `pred_contrib` TreeSHAP fallback, as declared in
 
 ## API, UI, package, and container gates
 
-- FastAPI and Gradio without a model: health 200, `model_loaded=false`, 11 UI
-  components, and the historical-replay decision boundary was present.
+- FastAPI and Gradio without a model: health 200, `model_loaded=false`, all 23
+  labeled integer inputs, and the historical-replay decision boundary present.
 - FastAPI and Gradio with the isolated hash-verified LightGBM bundle: health,
   predict, and explain all returned 200; explanation method was `tree_shap`.
 - `python -m build`: pass; both sdist and wheel were produced. Exact compressed
@@ -97,34 +98,37 @@ recorded path-dependent `pred_contrib` TreeSHAP fallback, as declared in
   package import and FastAPI health passed.
 - `docker compose config --quiet`: pass.
 
-The final Docker release gate used the Docker Desktop Linux daemon and completed
-with the following fresh evidence:
+The owner-approved UI renewal reran the Docker release gate on the Docker Desktop
+Linux daemon with the following fresh evidence:
 
-- `docker compose build api`: pass in 200.092 seconds. The build pulled and
-  installed Linux CPU dependencies rather than relying solely on cached runtime
-  validation.
+- `docker compose build api`: pass in 121.191 seconds. Runtime validation was
+  still performed even though reusable build layers were available.
 - Image: `credit-xai-audit:latest`, ID
-  `sha256:907aa52bcf84e2f65cb0623cecc369bb25059b5d39c9f640b0a0ed30536877b4`.
-  `docker image inspect` reported 814,540,128 bytes; Docker Desktop reported
-  3.51 GB in its unpacked local image store (3.399 GB unique).
+  `sha256:a15fdf1bbb176f9146bf36e955e1de50d767a327031549f93290363d26ef9e55`.
+  `docker image inspect` reported 814,558,270 bytes.
 - Runtime identity and compute boundary: configured user `appuser`, UID 1000,
   Linux/amd64, two-CPU/two-GB smoke limits, empty `CUDA_VISIBLE_DEVICES`,
   `NVIDIA_VISIBLE_DEVICES=void`, no GPU device requests, and no `/dev/nvidia0`.
-- Image content audit: `/app/data`, `/app/models`, and `/app/results` were empty;
-  no joblib bundle, `.env`, raw UCI payload, private progress/handoff/agent note,
-  or committed result payload was present.
-- Existing Compose synthetic profile: pass in 19.635 seconds with
-  `network_mode=none`. It generated 2,000 synthetic rows; trained logistic,
-  EBM, and LightGBM; calibrated on validation; evaluated and explained all three
-  models; and regenerated the smoke report without touching the accepted public
-  evidence.
+- Image content audit: `/app/data` and `/app/results` had no payloads, while
+  `/app/models` contained only the public `.gitkeep`; no joblib bundle, `.env`,
+  raw UCI payload, private progress/handoff/agent note, or committed result
+  payload was present.
+- The existing synthetic CI command set passed in 20.767 seconds inside a
+  two-CPU/two-GB container with `network=none`. It generated 2,000 synthetic
+  rows; trained logistic, EBM, and LightGBM; calibrated on validation; evaluated
+  and explained all three models; and regenerated the smoke report without
+  touching the accepted public evidence.
 - Synthetic artifact audit: source fingerprint `synthetic`, no ZIP/XLS, three
   bundle hash manifests valid, exact checkpoint IDs and `status=complete` for
   50 metric bootstraps, 50 group bootstraps, 12 stability iterations, and 50
   faithfulness instances per model. Explainers were `linear_shap`, `ebm_native`,
   and `tree_shap` respectively.
-- Model-absent Compose API: container healthy; `/health` 200 with
-  `model_loaded=false`; `/predict` 503; Gradio `/ui` 200.
+- Model-absent Compose API: container healthy; container-internal `/health` 200
+  with `model_loaded=false`; Gradio `/ui/` and `/ui/config` returned 200 and
+  contained the shipped Traditional Chinese thesis, model set, and honest
+  no-bundle state. Container-internal checks were authoritative because another
+  local process already occupied the host loopback port; that unrelated process
+  was left untouched.
 - Read-only synthetic LightGBM bundle: container healthy; `/health`, `/predict`,
   `/explain`, Gradio `/ui`, and OpenAPI all returned 200. The explanation method
   was `tree_shap`; responses retained the historical replay disclaimer/scope and
@@ -134,6 +138,40 @@ with the following fresh evidence:
 - Cleanup audit: release-gate containers, project network, and temporary volume
   were removed. The audited `credit-xai-audit:latest` image was intentionally
   retained; it had zero running containers after cleanup.
+
+## Owner-approved UI renewal gate
+
+- Focused presenter/Gradio suite: 35 passed. Full suite: 144 passed.
+- Desktop and compact browser inspection confirmed the approved 8/4 editorial
+  workspace, readable type, visible keyboard focus, square controls, stable
+  empty/result geometry, and no page-level horizontal overflow at 390px.
+- The model-absent screen showed no illustrative probability. A separate,
+  ignored synthetic LightGBM bundle produced successful calibrated prediction
+  and explanation views without exposing the synthetic prediction value in
+  public evidence.
+- API `/health`, `/predict`, and `/explain` returned 200 with the synthetic
+  bundle; Gradio `/analyze` also succeeded. The model/explainer pair was exactly
+  `LightGBM`/`TreeSHAP`, and approval, eligibility, accept, reject, and lending
+  decision fields or language were absent.
+- Synthetic artifacts used source `synthetic`, the verified deterministic
+  checksum, and split counts 1,400/300/300. All three bundle manifests and file
+  hashes passed; explainer mappings were `linear_shap`, `ebm_native`, and
+  `tree_shap`. Metric/group checkpoints were complete at 50/50, stability at
+  12, and faithfulness at 50 per model. No network or UCI archive was used.
+- `python -m build` produced the sdist and API-only wheel. The sdist contained
+  `app/gradio_ui.py`, `app/gradio_presenter.py`, and `app/gradio_theme.css`;
+  archive inspection found no environment, raw-data payload, model bundle,
+  result payload, browser artifact, scratch file, or absolute archive path.
+  An isolated wheel install imported from its own site-packages and passed the
+  FastAPI model-absent health smoke from the extracted sdist application layer.
+- The design review reached `ship`: hierarchy, editorial-world fidelity,
+  first-viewport story, responsive form, accessibility, and truth/privacy all
+  matched the approved specification. The one mechanical detector notice was
+  the approved amber scope-boundary rule, not a decorative card accent.
+
+Feature Freeze is renewed after this owner-approved, UI-only change. It changed
+no model, formal metric, accepted result, API schema, pipeline, dependency,
+Docker policy, or decision scope.
 
 With these Docker gates and the final source/package gates recorded below, the
 unpublished candidate is under **Feature Freeze**. Only evidence corrections,

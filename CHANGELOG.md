@@ -11,6 +11,8 @@ been published or tagged.
 - Owner-only clean history, citation metadata, security guidance, public
   artifact boundary, and publication checklist.
 - Unicode-checkout installation test and non-editable setup entry point.
+- A deterministic public-evidence presenter and documented Editorial Audit
+  Console design system.
 
 ### Changed
 
@@ -19,6 +21,14 @@ been published or tagged.
   replays.
 - Official UCI ZIP bytes are checked against the pinned SHA-256 before use.
 - Checkpoint completion requires exactly one valid record per iteration.
+- The Gradio portfolio surface is now Traditional Chinese first, evidence
+  first, responsive, and square-cornered, with all 23 integer inputs grouped
+  into four compact feature sections.
+- Model-absent, invalid-input, and bundle-error states fail closed without
+  fabricated predictions or local exception details.
+
+The interface renewal does not change any model, accepted metric, API schema,
+explanation method, pipeline, or non-decision boundary.
 
 ### Preserved evidence
 
