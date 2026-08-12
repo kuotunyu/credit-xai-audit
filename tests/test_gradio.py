@@ -3,7 +3,7 @@ from __future__ import annotations
 import json
 from pathlib import Path
 
-from app.gradio_ui import build_ui
+from app.gradio_ui import _theme, build_ui
 
 from credit_xai.constants import DEMO_SCOPE, FEATURES
 
@@ -91,3 +91,49 @@ def test_gradio_css_uses_approved_square_tokens() -> None:
     assert "border-radius: 0" in css
     assert "box-shadow" not in css
     assert "linear-gradient" not in css
+
+
+def test_gradio_theme_keeps_the_approved_light_palette_in_dark_preference() -> None:
+    tokens = _theme().to_dict()["theme"]
+
+    assert tokens["body_background_fill_dark"] == "#F6F3EC"
+    assert tokens["body_text_color_dark"] == "#202838"
+    assert tokens["block_background_fill_dark"] == "#FFFDF8"
+    assert tokens["input_background_fill_dark"] == "#FFFDF8"
+    assert tokens["button_secondary_background_fill_dark"] == "#FFFDF8"
+    assert tokens["button_secondary_text_color_dark"] == "#283B86"
+    assert tokens["shadow_drop"] == "none"
+    assert tokens["shadow_drop_lg"] == "none"
+    assert tokens["button_transition"] == "none"
+
+
+def test_gradio_css_keeps_case_controls_compact() -> None:
+    css = Path("app/gradio_theme.css").read_text(encoding="utf-8").lower()
+
+    assert ".audit-case-controls > .form" in css
+    assert "margin-left: auto" in css
+
+
+def test_gradio_css_preserves_compact_readability_without_tab_overflow() -> None:
+    css = Path("app/gradio_theme.css").read_text(encoding="utf-8").lower()
+
+    assert (
+        "color: var(--audit-white)"
+        in css.split(".audit-product-lockup strong", maxsplit=1)[1].split("}", maxsplit=1)[0]
+    )
+    compact = css.split("@media (max-width: 520px)", maxsplit=1)[1]
+    assert ".audit-tabs .tab-nav" in compact
+    assert "flex-wrap: wrap" in compact
+    assert "min-width: 0" in compact
+
+
+def test_gradio_css_removes_framework_gutters_and_keeps_labels_readable() -> None:
+    css = Path("app/gradio_theme.css").read_text(encoding="utf-8").lower()
+
+    app_rule = css.split(".gradio-container main.app", maxsplit=1)[1].split("}", maxsplit=1)[0]
+    assert "padding: 0" in app_rule
+    assert "max-width: 100%" in app_rule
+    label_rule = css.split('.audit-number [data-testid="block-info"]', maxsplit=1)[1].split(
+        "}", maxsplit=1
+    )[0]
+    assert "color: var(--audit-muted)" in label_rule

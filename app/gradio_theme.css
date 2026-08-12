@@ -18,7 +18,10 @@ body {
 }
 
 .gradio-container {
+  box-sizing: border-box !important;
+  width: 100% !important;
   max-width: 1440px !important;
+  min-width: 0 !important;
   min-height: 100vh !important;
   margin-inline: auto !important;
   padding: 0 !important;
@@ -27,6 +30,14 @@ body {
   font-family: system-ui, "Noto Sans TC", "Microsoft JhengHei", "PingFang TC",
     sans-serif !important;
   font-size: 15px !important;
+}
+
+.gradio-container main.app {
+  box-sizing: border-box !important;
+  width: 100% !important;
+  max-width: 100% !important;
+  min-width: 0 !important;
+  padding: 0 !important;
 }
 
 .gradio-container button,
@@ -64,6 +75,7 @@ body {
 }
 
 .audit-product-lockup strong {
+  color: var(--audit-white);
   font-size: clamp(1.25rem, 2vw, 1.55rem);
   line-height: 1;
   letter-spacing: -0.02em;
@@ -258,6 +270,14 @@ body {
   margin-bottom: 0.25rem;
 }
 
+.audit-case-controls > .form {
+  flex: 0 1 220px !important;
+  min-width: 160px !important;
+  margin-left: auto !important;
+  border: 0 !important;
+  background: transparent !important;
+}
+
 .audit-case-index {
   flex: 0 1 210px !important;
   min-width: 150px !important;
@@ -340,6 +360,12 @@ body {
   font-size: 0.75rem !important;
   font-weight: 650 !important;
   text-align: center !important;
+}
+
+.audit-number [data-testid="block-info"] {
+  color: var(--audit-muted) !important;
+  font-size: 0.75rem !important;
+  font-weight: 650 !important;
 }
 
 .audit-number input {
@@ -666,6 +692,9 @@ body {
 @media (max-width: 820px) {
   .gradio-container {
     width: 100% !important;
+    max-width: 100% !important;
+    min-width: 0 !important;
+    overflow-x: clip !important;
   }
 
   .audit-masthead {
@@ -796,10 +825,20 @@ body {
     min-width: 135px !important;
   }
 
+  .audit-case-controls > .form {
+    flex: 1 1 50% !important;
+    margin-left: 0 !important;
+  }
+
   .audit-tabs .tab-nav button,
   .audit-tabs button[role="tab"] {
-    min-width: 50% !important;
+    min-width: 0 !important;
+    width: 50% !important;
     border-bottom: 1px solid var(--audit-rule) !important;
+  }
+
+  .audit-tabs .tab-nav {
+    flex-wrap: wrap !important;
   }
 
   .audit-evidence-table th,
