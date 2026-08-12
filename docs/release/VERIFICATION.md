@@ -576,6 +576,66 @@ Feature Freeze is renewed after this owner-approved, UI-only rebuild. It
 changed no model, formal metric, accepted result, API schema, pipeline,
 dependency, Docker policy, or decision scope.
 
+### Open form release gate
+
+- A rendered RED contract at 1,908px measured each 884px feature group as a
+  128px side rail plus a 756px field row. Nineteen vertical cell separators
+  were visible, none of the 23 inputs had an editable underline, and the empty
+  result plane was forced to the same 481px height as the form.
+- The replacement keeps all 23 fields in canonical source and focus order but
+  presents each canonical group as an open section. At 1,908px every group
+  heading and field row measured the same 1,008px width; all 23 inputs exposed
+  one-pixel underlines; vertical separators and page overflow both measured
+  zero; and the empty result plane followed its 425px content height rather
+  than the 636px form height.
+- Browser verification covered 1,908px, 1,280px, 768px, and 390px. Desktop
+  retained the five/six-column rows, the compact layout used three columns,
+  and the phone used two columns. Every width retained all 23 controls with
+  zero horizontal overflow. The model-absent action remained fail-closed and
+  displayed no fabricated probability or attribution.
+- Docker Engine 29.6.1 and Compose 5.3.0 accepted the Compose configuration.
+  The Linux/amd64 CPU-only image build completed in 145.01 seconds and produced
+  `credit-xai-audit:latest`, ID
+  `sha256:12379e9a03a41b0fb776391b45efe83f53e66893a93a2d967331028402959f16`,
+  measuring 814,562,956 bytes. It defaults to non-root `appuser`/UID 1000 and
+  contained no raw dataset, committed result, model/joblib bundle, `.env`, Git
+  history, private progress/handoff file, or GPU framework.
+- The accepted network-disabled synthetic pipeline used two CPUs, two GB, and
+  an isolated disposable volume. It completed in 16.02 seconds with 2,000
+  synthetic rows, disjoint 1,400/300/300 splits, validation-only `isotonic`
+  calibration for Logistic, EBM, and LightGBM, twelve complete checkpoint
+  streams, three hash-valid bundles, and the expected `linear_shap`,
+  `ebm_native`, and `tree_shap` explainers. An initial run stopped at volume
+  initialization with a permission error before data generation; the volume
+  was assigned to the image's non-root UID and the accepted run then started
+  from empty storage.
+- The synthetic API ran healthy with a read-only root filesystem and the
+  synthetic volume mounted read-only. `/health`, `/predict`, `/explain`,
+  `/ui/`, and OpenAPI all returned 200; the output remained
+  `historical_model_replay`, explanation used `tree_shap`, and ten top
+  attributions were returned. Real-browser actions at 1,280px and 390px showed
+  LightGBM, `isotonic`, TreeSHAP, and the attribution table with zero page
+  overflow or browser error and no lending recommendation language.
+- Both temporary containers, the dedicated network, and the synthetic volume
+  were removed. The tested image is intentionally retained. No Docker gate
+  wrote a dataset, model, result, request, or response into the public tree.
+- Fresh non-editable setup resolved `credit_xai` from the checkout's `.venv`
+  site-packages with `editable=false`. `uv lock --check` resolved all 92 locked
+  packages; Ruff format/check passed for 91 files; strict Mypy passed for 65
+  source files; the focused Gradio/presenter suite passed all 37 tests; and the
+  full suite passed all 146 tests with the 27 already-declared third-party
+  deprecation warnings.
+- The wheel and sdist built in isolated environments and passed archive member
+  inspection: neither archive contained raw data, models, committed results,
+  environment files, private notes, or Git history. The sdist retained the
+  Gradio source while the intentional API-only wheel did not. A separate
+  wheel-plus-`serve` environment imported from its own site-packages and
+  returned model-absent `/health` 200.
+
+Feature Freeze is renewed after this owner-approved presentation correction.
+It changed no component graph, callback, model, formal metric, accepted result,
+API schema, pipeline, dependency, Docker policy, or decision scope.
+
 With these Docker gates and the final source/package gates recorded below, the
 unpublished candidate is under **Feature Freeze**. Only evidence corrections,
 security fixes, or owner-approved publication metadata may change it before

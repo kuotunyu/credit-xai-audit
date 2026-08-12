@@ -23,7 +23,7 @@ been published or tagged.
 - Checkpoint completion requires exactly one valid record per iteration.
 - The Gradio portfolio surface is now Traditional Chinese first, evidence
   first, responsive, and square-cornered, with all 23 integer inputs visible in
-  four continuous feature-group ledgers.
+  four open feature-group sections.
 - The first-viewport type scale and spacing are rebalanced for browser reading:
   the thesis is capped at 40px, ordinary copy is 17px, supporting copy is 16px,
   labels are 15.5px, numeric values are 19px, and case tools share one compact
@@ -35,8 +35,13 @@ been published or tagged.
   reducing the verified desktop workspace by 104px and post-action blank space
   from 113px to 9px without changing the mobile reading order.
 - The case workspace is now one complete audit worksheet: all four canonical
-  groups remain visible in shared-rule 5/6-, three-, or two-column ledgers, and
-  case context plus the primary action form one immediate footer.
+  groups remain visible beneath full-width headings in 5/6-, three-, or
+  two-column field rows, and case context plus the primary action form one
+  immediate footer.
+- Side rails and vertical cell separators were removed from the case form.
+  Quiet input underlines restore edit affordance, the input-to-result ratio is
+  now 8/4, and the empty result plane follows content height instead of
+  stretching to the full form.
 - Repeated container chrome was removed from statuses, KPIs, navigation, case
   selection, numeric fields, and evidence groups. One-pixel transition rules,
   underlined controls, a compact desktop primary action, and the single tonal
