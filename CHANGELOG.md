@@ -30,6 +30,10 @@ been published or tagged.
 - Successful model attributions now appear in a conditional full-width evidence
   band, removing the empty desktop column while leaving empty and error states
   compact.
+- Repeated container chrome was removed from statuses, KPIs, tabs, case
+  selection, numeric fields, and evidence groups. One-pixel transition rules,
+  underlined controls, a compact desktop primary action, and the single tonal
+  result plane now carry the visual hierarchy.
 - Model-absent, invalid-input, and bundle-error states fail closed without
   fabricated predictions or local exception details.
 

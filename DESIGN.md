@@ -46,27 +46,27 @@ Use the local system stack only: `system-ui`, `Noto Sans TC`, `Microsoft JhengHe
 
 # Layout
 
-The desktop container is at most 1440px wide. The first viewport follows a 12-column editorial composition: thesis and content-sized scope boundary, four equal 70px-minimum KPI cells, then an 8/4 input-to-result workspace. The case heading, metadata, index, and load action share one compact toolbar so the feature inputs begin without a redundant row. Successful attributions occupy a conditional full-width evidence band below the workspace; empty and error states reserve no table space. At the 820px compact breakpoint, columns stack, KPIs become a 2-by-2 grid, and feature inputs reduce without page-level horizontal scrolling. Center only short, equal-weight content such as status cells, KPI pairs, tab labels, compact controls, short numeric values, and the primary action. Keep thesis copy, explanatory prose, form groups, model metadata, attributions, and evidence rows left-aligned.
+The desktop container is at most 1440px wide. The first viewport follows a 12-column editorial composition: thesis and content-sized scope boundary, four equal unboxed KPI pairs, then an 8/4 input-to-result workspace. The case heading, metadata, index, and load action share one compact toolbar so the feature inputs begin without a redundant row. Successful attributions occupy a conditional full-width evidence band below the workspace; empty and error states reserve no table space. At the 820px compact breakpoint, columns stack, KPIs become a 2-by-2 grid, and feature inputs reduce without page-level horizontal scrolling. The primary action is compact and right-aligned on wider screens, then full-width only on narrow phones. Center only short, equal-weight content such as status labels, KPI pairs, tab labels, compact controls, short numeric values, and the primary action. Keep thesis copy, explanatory prose, form groups, model metadata, attributions, and evidence rows left-aligned.
 
 # Elevation & Depth
 
-Depth is flat. Create hierarchy with one-pixel rules, tonal fields, aligned columns, type scale, and occasional three-pixel structural boundaries. Do not use shadows, floating panels, blur, glass effects, or decorative gradients.
+Depth is flat. Create hierarchy with typography, aligned columns, one-pixel transition rules, and a single cool tonal result field. Lines mark transitions; they do not enclose every item. Do not use shadows, floating panels, blur, glass effects, decorative gradients, or repeated container chrome.
 
 # Shapes
 
-Square corners (`0px`) are normative for controls, fields, tables, status cells, and content regions. Do not introduce decorative rounded cards or pill badges. Circular geometry is reserved for controls whose semantics genuinely require it; this console currently has none.
+When a control or data structure needs an edge, square corners (`0px`) are normative. Most status labels, KPIs, tabs, numeric fields, and content regions remain unboxed; use short underlines and section rules instead of complete rectangles. Do not introduce decorative rounded cards or pill badges. Circular geometry is reserved for controls whose semantics genuinely require it; this console currently has none.
 
 # Components
 
-- Masthead: full-width deep-indigo structure with a product lockup and three equal, centered status cells.
+- Masthead: full-width deep-indigo structure with a product lockup and three compact inline status labels.
 - Thesis boundary: large Traditional Chinese statement paired with a concise historical-use limitation; the amber rule is a section boundary, not a card accent.
-- KPI strip: four equal square cells with centered number-and-label pairs backed by committed public evidence.
-- Case workspace: four feature tabs containing all 23 integer-only inputs in the canonical model order, with compact case selection and one full-width primary action.
-- Result field: a stable cool-toned summary region for empty, loading, success, and safe error states; successful content must come from the loaded bundle, and its ten verified attributions appear in the full-width band below.
+- KPI strip: four equal, unboxed number-and-label pairs backed by committed public evidence.
+- Case workspace: four underline tabs containing all 23 integer-only inputs in the canonical model order, with underlined case selection and one compact desktop primary action.
+- Result field: the only major cool-toned content surface, reserved for empty, loading, success, and safe error states; successful content must come from the loaded bundle, and its verified attributions appear in the full-width band below.
 - Evidence rows: compact left-aligned model/explainer mappings and verification checks sourced from committed public artifacts.
 
 # Do's and Don'ts
 
-Do keep Traditional Chinese primary, use original technical terms, preserve visible focus, maintain stable loading and error geometry, and trace every public claim to committed evidence. Do center only short, equal-weight content. Do preserve the historical educational-audit, privacy, CPU-only, and non-decision boundaries.
+Do keep Traditional Chinese primary, use original technical terms, preserve visible focus, maintain stable loading and error geometry, and trace every public claim to committed evidence. Do use rules to mark section transitions rather than to build containers. Do center only short, equal-weight content. Do preserve the historical educational-audit, privacy, CPU-only, and non-decision boundaries.
 
-Don't use rounded dashboard cards, pills, fabricated numbers, decision language, shadows, decorative animation, or network-loaded visual assets. Don't imply causal proof, current-market fairness, lending eligibility, approval, rejection, or financial advice. Don't let runtime requests, responses, bundles, or caches write into the public repository.
+Don't use rounded dashboard cards, pills, repeated rectangles, full-width desktop actions, fabricated numbers, decision language, shadows, decorative animation, or network-loaded visual assets. Don't imply causal proof, current-market fairness, lending eligibility, approval, rejection, or financial advice. Don't let runtime requests, responses, bundles, or caches write into the public repository.

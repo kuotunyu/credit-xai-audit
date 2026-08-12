@@ -179,6 +179,31 @@ Linux daemon with the following fresh evidence:
   matched the approved specification. The one mechanical detector notice was
   the approved amber scope-boundary rule, not a decorative card accent.
 
+### Borderless visual distillation
+
+- A browser-rendered RED contract at 1280px reproduced the excessive chrome:
+  status, KPI, tab, numeric input, and secondary-action borders measured 1px,
+  while the primary action stretched to 814.30px.
+- The GREEN contract passed at 1900px, 1280px, 768px, and 390px. Those redundant
+  border sides all measured 0px; Gradio's feature-form and case-index backgrounds
+  were transparent; page width equalled viewport width; and no browser exception
+  occurred. Desktop primary-action widths were 220.00px, 196.47px, and 184.31px;
+  only the 390px phone layout intentionally used a full-width action.
+- The same viewport set confirmed inline masthead statuses, unboxed KPI pairs,
+  underline tabs and fields, and the result region as the only major tonal
+  content plane. The evidence matrix remains a table because its row/column
+  relationships require a grid.
+- A fresh synthetic-bundle UI smoke returned health 200 with
+  `model_loaded=true`, `LightGBM`, `isotonic`, and `TreeSHAP`. The result
+  displayed calibrated and uncalibrated probabilities plus 11 attribution rows.
+  Desktop and 390px success states had no horizontal overflow; the mobile
+  attribution band and primary action both matched the viewport width.
+- The smoke used the existing CPU-only `configs/ci.yaml` bundle under ignored
+  `tmp/ci`; it did not download UCI data, use the network, alter accepted
+  metrics, or write runtime data into the public tree. The focused Gradio and
+  presenter suite passed all 36 tests, and the layout detector returned no
+  findings.
+
 Feature Freeze is renewed after this owner-approved, UI-only change. It changed
 no model, formal metric, accepted result, API schema, pipeline, dependency,
 Docker policy, or decision scope.
