@@ -27,6 +27,9 @@ been published or tagged.
 - The first-viewport type scale and spacing are rebalanced for desktop reading:
   the thesis is capped at 48px, the scope note sizes to its content, supporting
   labels are larger, and case selection shares one compact toolbar.
+- Successful model attributions now appear in a conditional full-width evidence
+  band, removing the empty desktop column while leaving empty and error states
+  compact.
 - Model-absent, invalid-input, and bundle-error states fail closed without
   fabricated predictions or local exception details.
 

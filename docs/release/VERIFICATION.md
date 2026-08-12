@@ -21,12 +21,12 @@ The final source-level run completed with:
 - `ruff check src app tests`: pass
 - `ruff format --check src app tests`: pass (90 files)
 - `mypy --strict src app`: pass (65 source files)
-- `pytest`: 144 passed, 18 third-party deprecation warnings
+- `pytest`: 145 passed, 24 third-party deprecation warnings
 - `credit_xai.release.verify claims`: pass
 - `credit_xai.release.verify privacy`: pass
 
-The warnings are three SHAP/Matplotlib pending deprecations and 15 Gradio 5
-constructor/`row_count` deprecation reports emitted across five UI-construction
+The warnings are three SHAP/Matplotlib pending deprecations and 21 Gradio 5
+constructor/`row_count` deprecation reports emitted across seven UI-construction
 tests. They do not change outputs; the Gradio dependency is bounded below
 version 6 for this candidate.
 
@@ -141,7 +141,7 @@ Linux daemon with the following fresh evidence:
 
 ## Owner-approved UI renewal gate
 
-- Focused presenter/Gradio suite: 35 passed. Full suite: 144 passed.
+- Focused presenter/Gradio suite: 36 passed. Full suite: 145 passed.
 - Desktop and compact browser inspection at 1900px, 1280px, 768px, and 390px
   confirmed the approved 8/4 editorial workspace, readable type, visible
   keyboard focus, square controls, stable empty/result geometry, and no
@@ -150,6 +150,11 @@ Linux daemon with the following fresh evidence:
 - The scope boundary now sizes to its content instead of stretching to the hero.
   Case heading, metadata, index, and load action share one 85px desktop toolbar;
   the first feature row begins about 36px earlier than the superseded layout.
+- A real synthetic success state moved the ten verified attribution rows into a
+  conditional full-width band. At 1900px the workspace height fell from about
+  855px to 497px, its input and result columns differed by about 3px, and the
+  attribution band matched the 1,440px workspace width. The band was absent
+  before analysis and remained overflow-free at 768px and 390px.
 - The model-absent screen showed no illustrative probability. A separate,
   ignored synthetic LightGBM bundle produced successful calibrated prediction
   and explanation views without exposing the synthetic prediction value in
