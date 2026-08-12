@@ -361,6 +361,41 @@ The committed workspace-density code was then rebuilt and exercised in Docker:
   strict Mypy for `app`, the Impeccable layout detector, and `git diff --check`
   also passed.
 
+The committed input-grid change was then rebuilt and exercised through the
+actual container boundary:
+
+- `docker compose config --quiet` passed. A fresh API image build completed in
+  178.992 seconds and produced `credit-xai-audit:latest`, ID
+  `sha256:269ef2ac69c4f09a214a6acef10abdc144b669b3548b3e6089408850cf39678c`,
+  measuring 814,561,991 bytes.
+- The Linux/amd64 image defaults to non-root `appuser`/UID 1000. It contained no
+  raw dataset, model/joblib bundle, result payload, `.env`, private note, or
+  runtime scratch file. Both API containers used a read-only root filesystem,
+  two CPUs, two GB of memory, empty `CUDA_VISIBLE_DEVICES`,
+  `NVIDIA_VISIBLE_DEVICES=void`, and no GPU device request.
+- The full synthetic pipeline completed in 22.263 seconds with `network=none`
+  and an isolated disposable volume. It produced 2,000 synthetic rows, disjoint
+  1,400/300/300 splits, validation-only calibration, three hash-valid bundles,
+  and complete metric/group bootstrap, stability, and faithfulness checkpoints.
+  Explainers matched their bundles: `linear_shap`, `ebm_native`, and
+  `tree_shap`.
+- The model-absent API returned `/health` 200 with `model_loaded=false`,
+  `/predict` 503, and `/ui/` 200. With the synthetic volume mounted read-only,
+  `/health`, `/predict`, `/explain`, and `/ui/` returned 200; `/explain` used
+  `tree_shap` with 23 attributions and neither response exposed a financial
+  action or decision field.
+- Playwright rendered the Docker UI at 1,714px, 1,280px, 768px, and 390px with
+  zero horizontal overflow and zero browser exceptions. Tabs were equal,
+  labels were complete, targets were at least 44px, and feature inputs formed
+  five, five, three, and two columns respectively. Desktop utility centers and
+  right edges matched within one pixel; compact layouts retained source order.
+  A real synthetic UI action at 1,714px and 390px displayed LightGBM,
+  `isotonic`, `TreeSHAP`, and the attribution table without financial-action
+  language.
+- Both temporary containers, the dedicated network, and the synthetic volume
+  were removed. No container references the retained test image, and no
+  committed result, model, dataset, request, or response was changed.
+
 Feature Freeze is renewed after this owner-approved, UI-only change. It changed
 no model, formal metric, accepted result, API schema, pipeline, dependency,
 Docker policy, or decision scope.
