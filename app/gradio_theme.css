@@ -530,11 +530,15 @@ body {
 }
 
 .audit-attributions {
-  margin-top: 0.75rem !important;
-  border-top: 1px solid var(--audit-rule) !important;
+  margin: 0.85rem 1rem 0 !important;
+  border: 0 !important;
+  border-top: 3px solid var(--audit-action) !important;
+  border-radius: 0 !important;
+  background: var(--audit-white) !important;
 }
 
 .audit-attributions label {
+  padding-top: 0.65rem !important;
   color: var(--audit-text) !important;
   font-size: 0.9rem !important;
   font-weight: 700 !important;
@@ -808,6 +812,10 @@ body {
     border-bottom: 1px solid var(--audit-rule);
   }
 
+  .audit-attributions {
+    margin-top: 0.75rem !important;
+  }
+
   .audit-input-toolbar {
     align-items: flex-start !important;
     flex-wrap: wrap !important;
@@ -855,6 +863,7 @@ body {
   .audit-hero,
   .audit-kpis,
   .audit-workspace,
+  .audit-attributions,
   .audit-evidence-section,
   .audit-footer {
     margin-inline: 0.65rem !important;

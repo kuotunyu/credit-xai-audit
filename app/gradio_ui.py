@@ -311,16 +311,17 @@ def build_ui(cfg: Config) -> gr.Blocks:
                     elem_id="audit-result",
                     padding=False,
                 )
-                attribution_table = gr.Dataframe(
-                    value=pd.DataFrame(columns=_ATTRIBUTION_COLUMNS),
-                    headers=_ATTRIBUTION_COLUMNS,
-                    datatype=["str", "number", "str"],
-                    interactive=False,
-                    wrap=True,
-                    max_height=300,
-                    label="主要 attributions（link scale）",
-                    elem_classes="audit-attributions",
-                )
+        attribution_table = gr.Dataframe(
+            value=pd.DataFrame(columns=_ATTRIBUTION_COLUMNS),
+            headers=_ATTRIBUTION_COLUMNS,
+            datatype=["str", "number", "str"],
+            interactive=False,
+            wrap=True,
+            max_height=300,
+            visible=False,
+            label="主要 attributions（link scale）",
+            elem_classes="audit-attributions",
+        )
         gr.HTML(
             render_public_evidence(evidence),
             elem_id="audit-evidence",
@@ -330,8 +331,9 @@ def build_ui(cfg: Config) -> gr.Blocks:
 
         ordered_controls = [controls[feature] for feature in FEATURES]
 
-        def analyze(*values: object) -> tuple[str, pd.DataFrame]:
-            return analyze_values(service, values)
+        def analyze(*values: object) -> tuple[str, gr.Dataframe]:
+            html_result, frame = analyze_values(service, values)
+            return html_result, gr.Dataframe(value=frame, visible=not frame.empty)
 
         def load_case(index: object) -> tuple[Any, ...]:
             values, note = case_values(test_cases, index)

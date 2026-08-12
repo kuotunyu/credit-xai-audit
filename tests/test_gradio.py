@@ -91,6 +91,32 @@ def test_gradio_groups_heading_and_case_actions_in_one_toolbar(test_config) -> N
     assert "audit-case-controls" in child_components[1]["props"]["elem_classes"]
 
 
+def test_gradio_places_attributions_after_workspace_and_hides_them_initially(
+    test_config,
+) -> None:
+    config, _ = _config(test_config)
+    workspace = next(
+        component
+        for component in config["components"]
+        if "audit-workspace" in component.get("props", {}).get("elem_classes", [])
+    )
+    attributions = next(
+        component
+        for component in config["components"]
+        if "audit-attributions" in component.get("props", {}).get("elem_classes", [])
+    )
+    layout_nodes = [config["layout"]]
+    for node in layout_nodes:
+        layout_nodes.extend(node.get("children", []))
+    workspace_node = next(node for node in layout_nodes if node["id"] == workspace["id"])
+    workspace_descendants = list(workspace_node.get("children", []))
+    for node in workspace_descendants:
+        workspace_descendants.extend(node.get("children", []))
+
+    assert attributions["id"] not in {node["id"] for node in workspace_descendants}
+    assert attributions["props"]["visible"] is False
+
+
 def test_gradio_uses_output_only_attribution_table(test_config) -> None:
     config, _ = _config(test_config)
     dataframes = [
