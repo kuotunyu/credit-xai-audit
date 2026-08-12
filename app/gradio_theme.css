@@ -87,18 +87,21 @@ body {
 }
 
 .audit-statuses {
-  display: grid;
-  grid-template-columns: repeat(3, minmax(84px, 1fr));
-  min-width: 300px;
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 1.6rem;
+  min-width: 0;
+  padding: 0 1rem;
 }
 
 .audit-status {
   display: flex;
   align-items: center;
   justify-content: center;
-  min-height: 68px;
-  padding: 0.45rem 0.7rem;
-  border-left: 1px solid #6370a6;
+  min-height: 44px;
+  padding: 0;
+  border: 0;
   color: var(--audit-white);
   font-size: 0.82rem;
   font-weight: 650;
@@ -107,9 +110,8 @@ body {
 }
 
 .audit-status:last-child {
-  background: var(--audit-amber-light);
-  border-left-color: var(--audit-amber-light);
-  color: #171e38;
+  background: transparent;
+  color: #f2bf69;
 }
 
 .audit-hero {
@@ -178,8 +180,8 @@ body {
   display: grid;
   grid-template-columns: repeat(4, minmax(0, 1fr));
   margin: 0 1rem 0.75rem;
-  border-top: 2px solid var(--audit-action);
-  border-bottom: 1px solid var(--audit-rule);
+  border-top: 1px solid var(--audit-action);
+  border-bottom: 0;
 }
 
 .audit-kpi {
@@ -189,7 +191,7 @@ body {
   justify-content: center;
   gap: 0.65rem;
   padding: 0.5rem 0.75rem;
-  border-right: 1px solid var(--audit-rule);
+  border-right: 0;
   text-align: center;
 }
 
@@ -214,12 +216,12 @@ body {
 
 .audit-workspace {
   align-items: stretch !important;
-  gap: 0 !important;
+  gap: 1.25rem !important;
   margin: 0 1rem !important;
-  overflow: clip;
-  border: 1px solid var(--audit-rule);
-  border-top: 3px solid var(--audit-action);
-  background: var(--audit-white);
+  overflow: visible;
+  border: 0;
+  border-top: 1px solid var(--audit-action);
+  background: transparent;
 }
 
 .audit-input-column,
@@ -229,14 +231,14 @@ body {
 
 .audit-input-column {
   gap: 0.45rem !important;
-  padding: 0.8rem 0.9rem 0.9rem !important;
-  border-right: 1px solid var(--audit-rule);
-  background: var(--audit-white);
+  padding: 0.9rem 0 0.5rem !important;
+  border: 0;
+  background: transparent;
 }
 
 .audit-result-column {
   gap: 0.45rem !important;
-  padding: 0.8rem 0.9rem 0.9rem !important;
+  padding: 1rem !important;
   background: var(--audit-result);
 }
 
@@ -248,9 +250,11 @@ body {
 }
 
 .audit-input-heading span {
+  flex: 0 0 auto;
   color: var(--audit-action);
   font-size: 0.76rem;
   font-weight: 700;
+  white-space: nowrap;
 }
 
 .audit-input-heading h2 {
@@ -287,7 +291,7 @@ body {
   width: auto !important;
   min-width: 340px !important;
   align-items: stretch !important;
-  gap: 0 !important;
+  gap: 0.65rem !important;
   margin: 0 0 0 auto !important;
 }
 
@@ -302,11 +306,18 @@ body {
 .audit-case-index {
   flex: 0 1 210px !important;
   min-width: 150px !important;
+  background: transparent !important;
 }
 
 .audit-case-index label,
 .audit-case-index input {
   text-align: center !important;
+}
+
+.audit-case-index input {
+  border: 0 !important;
+  border-bottom: 1px solid var(--audit-rule) !important;
+  background: transparent !important;
 }
 
 .audit-secondary,
@@ -322,8 +333,10 @@ body {
   flex: 0 0 175px !important;
   min-width: 150px !important;
   min-height: 44px !important;
-  align-self: stretch !important;
-  border-color: var(--audit-action) !important;
+  align-self: center !important;
+  border: 0 !important;
+  border-bottom: 1px solid var(--audit-action) !important;
+  background: transparent !important;
   color: var(--audit-action) !important;
 }
 
@@ -341,7 +354,7 @@ body {
 
 .audit-tabs {
   margin: 0 !important;
-  border-top: 1px solid var(--audit-rule);
+  border: 0 !important;
 }
 
 .audit-tabs .tab-nav {
@@ -354,7 +367,7 @@ body {
   justify-content: center !important;
   min-height: 44px !important;
   padding: 0.45rem 0.75rem !important;
-  border-right: 1px solid var(--audit-rule) !important;
+  border: 0 !important;
   color: var(--audit-muted) !important;
   font-size: 0.9rem !important;
 }
@@ -371,9 +384,15 @@ body {
   padding: 0.5rem 0 0.45rem !important;
 }
 
+.audit-feature-row > .form {
+  background: transparent !important;
+}
+
 .audit-number {
   flex: 1 1 0 !important;
   min-width: 0 !important;
+  border: 0 !important;
+  background: transparent !important;
 }
 
 .audit-number label {
@@ -394,7 +413,9 @@ body {
 .audit-number input {
   min-height: 46px !important;
   padding-inline: 0.25rem !important;
-  border-color: var(--audit-rule) !important;
+  border: 0 !important;
+  border-bottom: 1px solid var(--audit-rule) !important;
+  background: transparent !important;
   color: #111936 !important;
   font-size: 1.04rem !important;
   font-weight: 650 !important;
@@ -402,6 +423,10 @@ body {
 }
 
 .audit-primary {
+  align-self: flex-end !important;
+  width: clamp(180px, 24%, 220px) !important;
+  min-width: 180px !important;
+  max-width: 220px !important;
   min-height: 50px !important;
   margin-top: 0.2rem !important;
   border-color: var(--audit-action) !important;
@@ -532,9 +557,9 @@ body {
 .audit-attributions {
   margin: 0.85rem 1rem 0 !important;
   border: 0 !important;
-  border-top: 3px solid var(--audit-action) !important;
+  border-top: 1px solid var(--audit-action) !important;
   border-radius: 0 !important;
-  background: var(--audit-white) !important;
+  background: transparent !important;
 }
 
 .audit-attributions label {
@@ -582,14 +607,14 @@ body {
 .audit-evidence-grid {
   display: grid;
   grid-template-columns: minmax(0, 1.55fr) minmax(280px, 0.75fr);
-  border: 1px solid var(--audit-rule);
-  border-top: 2px solid var(--audit-action);
+  border: 0;
+  border-top: 1px solid var(--audit-action);
 }
 
 .audit-evidence-table-wrap {
   min-width: 0;
   overflow-x: auto;
-  border-right: 1px solid var(--audit-rule);
+  border-right: 0;
 }
 
 .audit-evidence-table {
@@ -616,7 +641,7 @@ body {
 }
 
 .audit-evidence-table thead th {
-  background: var(--audit-result);
+  background: transparent;
   color: var(--audit-muted);
   font-size: 0.8rem;
   font-weight: 700;
@@ -633,8 +658,8 @@ body {
 }
 
 .audit-evidence-checks {
-  padding: 0.75rem 0.85rem;
-  background: var(--audit-result);
+  padding: 0.75rem 0 0.75rem 1.5rem;
+  background: transparent;
 }
 
 .audit-evidence-checks h3 {
@@ -686,9 +711,10 @@ body {
 .audit-evidence-unavailable {
   display: grid;
   gap: 0.2rem;
-  padding: 0.8rem;
-  border: 1px solid var(--audit-rule);
-  background: var(--audit-result);
+  padding: 0.75rem 0;
+  border: 0;
+  border-top: 1px solid var(--audit-rule);
+  background: transparent;
 }
 
 .audit-evidence-unavailable strong {
@@ -753,17 +779,19 @@ body {
 
   .audit-statuses {
     min-width: 0;
+    justify-content: space-between;
+    gap: 0.75rem;
+    padding: 0.65rem 1rem;
     border-top: 1px solid #6370a6;
   }
 
   .audit-status {
-    min-height: 48px;
-    border-left: 0;
-    border-right: 1px solid #6370a6;
+    min-height: 32px;
+    border: 0;
   }
 
   .audit-status:last-child {
-    border-right: 0;
+    border: 0;
   }
 
   .audit-hero {
@@ -792,7 +820,7 @@ body {
 
   .audit-kpi {
     min-height: 68px;
-    border-bottom: 1px solid var(--audit-rule);
+    border: 0;
   }
 
   .audit-kpi:nth-child(2n) {
@@ -809,7 +837,7 @@ body {
 
   .audit-input-column {
     border-right: 0;
-    border-bottom: 1px solid var(--audit-rule);
+    border-bottom: 0;
   }
 
   .audit-attributions {
@@ -844,7 +872,7 @@ body {
 
   .audit-evidence-table-wrap {
     border-right: 0;
-    border-bottom: 1px solid var(--audit-rule);
+    border-bottom: 0;
   }
 
   .audit-footer {
@@ -907,6 +935,13 @@ body {
 
   .audit-tabs .tab-nav {
     flex-wrap: wrap !important;
+  }
+
+  .audit-primary {
+    align-self: stretch !important;
+    width: 100% !important;
+    min-width: 0 !important;
+    max-width: none !important;
   }
 
   .audit-evidence-table th,
