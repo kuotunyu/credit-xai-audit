@@ -15,9 +15,9 @@
     "white": { "role": "high-contrast foreground", "displayName": "Warm White", "canonical": "#FFFDF8" }
   },
   "typographyMeta": {
-    "display": { "role": "first-viewport thesis", "minimum": "29px compact; 38px desktop", "alignment": "left" },
-    "body": { "role": "ordinary interface copy", "minimum": "14px", "alignment": "left" },
-    "label": { "role": "compact metadata and field labels", "minimum": "12px", "alignment": "contextual" }
+    "display": { "role": "first-viewport thesis", "minimum": "30px phone; 36px compact; 36-40px desktop", "alignment": "left" },
+    "body": { "role": "ordinary interface copy", "minimum": "15px; 16px for ordinary copy", "alignment": "left" },
+    "label": { "role": "compact metadata and field labels", "minimum": "14px", "alignment": "contextual" }
   },
   "breakpoints": [
     { "name": "compact", "value": "820px" }
@@ -29,38 +29,38 @@
       "id": "ds-primary-button",
       "name": "Primary Button",
       "html": "<button class=\"ds-primary-button\" type=\"button\">執行審計</button>",
-      "css": ".ds-primary-button{display:flex;align-items:center;justify-content:center;width:min(220px,100%);min-height:48px;padding:7px 16px;border:1px solid #283B86;border-radius:0;background:#283B86;color:#FFFDF8;font:650 15px/1.35 system-ui,\"Noto Sans TC\",\"Microsoft JhengHei\",sans-serif;cursor:pointer}.ds-primary-button:hover{background:#202D65}.ds-primary-button:focus-visible{outline:3px solid #C88725;outline-offset:2px}"
+      "css": ".ds-primary-button{display:flex;align-items:center;justify-content:center;width:min(220px,100%);min-height:50px;padding:7px 16px;border:1px solid #283B86;border-radius:0;background:#283B86;color:#FFFDF8;font:650 16px/1.35 system-ui,\"Noto Sans TC\",\"Microsoft JhengHei\",sans-serif;cursor:pointer}.ds-primary-button:hover{background:#202D65}.ds-primary-button:focus-visible{outline:3px solid #C88725;outline-offset:2px}"
     },
     {
       "id": "ds-numeric-field",
       "name": "Numeric Field",
       "html": "<label class=\"ds-numeric-field\"><span>LIMIT_BAL</span><input inputmode=\"numeric\" value=\"200000\"></label>",
-      "css": ".ds-numeric-field{display:grid;gap:7px;color:#606777;font:650 12px/1.35 system-ui,\"Noto Sans TC\",\"Microsoft JhengHei\",sans-serif}.ds-numeric-field input{box-sizing:border-box;width:100%;min-height:46px;padding:7px 4px;border:0;border-bottom:1px solid #BFC1C8;border-radius:0;background:transparent;color:#202838;text-align:center;font:600 16px/1.35 system-ui,\"Noto Sans TC\",\"Microsoft JhengHei\",sans-serif}.ds-numeric-field input:hover{border-bottom-color:#606777}.ds-numeric-field input:focus-visible{outline:3px solid #C88725;outline-offset:2px}"
+      "css": ".ds-numeric-field{display:grid;gap:7px;color:#606777;font:650 14px/1.35 system-ui,\"Noto Sans TC\",\"Microsoft JhengHei\",sans-serif}.ds-numeric-field input{box-sizing:border-box;width:100%;min-height:46px;padding:7px 4px;border:0;border-bottom:1px solid #BFC1C8;border-radius:0;background:transparent;color:#202838;text-align:center;font:600 18px/1.35 system-ui,\"Noto Sans TC\",\"Microsoft JhengHei\",sans-serif}.ds-numeric-field input:hover{border-bottom-color:#606777}.ds-numeric-field input:focus-visible{outline:3px solid #C88725;outline-offset:2px}"
     },
     {
       "id": "ds-status-cell",
       "name": "Status Cell",
       "html": "<div class=\"ds-status-cell\"><span>僅使用</span><strong>CPU</strong></div>",
-      "css": ".ds-status-cell{display:flex;min-height:44px;align-items:center;justify-content:center;flex-direction:column;padding:0;border:0;border-radius:0;background:transparent;color:#FFFDF8;text-align:center;font:650 13px/1.25 system-ui,\"Noto Sans TC\",\"Microsoft JhengHei\",sans-serif}.ds-status-cell:focus-within{outline:3px solid #C88725;outline-offset:2px}"
+      "css": ".ds-status-cell{display:flex;min-height:44px;align-items:center;justify-content:center;flex-direction:column;padding:0;border:0;border-radius:0;background:transparent;color:#FFFDF8;text-align:center;font:650 14px/1.25 system-ui,\"Noto Sans TC\",\"Microsoft JhengHei\",sans-serif}.ds-status-cell:focus-within{outline:3px solid #C88725;outline-offset:2px}"
     },
     {
       "id": "ds-kpi-cell",
       "name": "KPI Cell",
       "html": "<div class=\"ds-kpi-cell\"><strong>1,000</strong><span>Bootstrap 重抽樣</span></div>",
-      "css": ".ds-kpi-cell{display:flex;min-height:70px;align-items:center;justify-content:center;gap:12px;padding:7px 16px;border:0;border-radius:0;background:transparent;color:#202838;text-align:center}.ds-kpi-cell strong{color:#283B86;font:650 32px/1 system-ui,\"Noto Sans TC\",\"Microsoft JhengHei\",sans-serif}.ds-kpi-cell span{max-width:12ch;font:400 14px/1.35 system-ui,\"Noto Sans TC\",\"Microsoft JhengHei\",sans-serif}.ds-kpi-cell:focus-within{outline:3px solid #C88725;outline-offset:2px}"
+      "css": ".ds-kpi-cell{display:flex;min-height:64px;align-items:center;justify-content:center;gap:12px;padding:7px 16px;border:0;border-radius:0;background:transparent;color:#202838;text-align:center}.ds-kpi-cell strong{color:#283B86;font:650 32px/1 system-ui,\"Noto Sans TC\",\"Microsoft JhengHei\",sans-serif}.ds-kpi-cell span{max-width:12ch;font:400 15px/1.35 system-ui,\"Noto Sans TC\",\"Microsoft JhengHei\",sans-serif}.ds-kpi-cell:focus-within{outline:3px solid #C88725;outline-offset:2px}"
     },
     {
       "id": "ds-evidence-row",
       "name": "Evidence Row",
       "html": "<div class=\"ds-evidence-row\"><strong>LightGBM</strong><span>TreeSHAP</span><span>已驗證</span></div>",
-      "css": ".ds-evidence-row{display:grid;grid-template-columns:minmax(90px,1fr) minmax(110px,1fr) auto;gap:16px;align-items:center;padding:7px 0;border-bottom:1px solid #BFC1C8;border-radius:0;background:#FFFDF8;color:#202838;font:400 14px/1.5 system-ui,\"Noto Sans TC\",\"Microsoft JhengHei\",sans-serif}.ds-evidence-row:hover{background:#F0F1F6}.ds-evidence-row:focus-within{outline:3px solid #C88725;outline-offset:2px}"
+      "css": ".ds-evidence-row{display:grid;grid-template-columns:minmax(90px,1fr) minmax(110px,1fr) auto;gap:16px;align-items:center;padding:7px 0;border-bottom:1px solid #BFC1C8;border-radius:0;background:#FFFDF8;color:#202838;font:400 15px/1.5 system-ui,\"Noto Sans TC\",\"Microsoft JhengHei\",sans-serif}.ds-evidence-row:hover{background:#F0F1F6}.ds-evidence-row:focus-within{outline:3px solid #C88725;outline-offset:2px}"
     }
   ],
   "narrative": {
     "northStar": "The Editorial Audit Console",
     "overview": "Credit XAI Audit presents verified Machine Learning and Trustworthy AI evidence as a compact editorial research console. A warm reading field, deep-indigo structure, restrained amber state accents, large Traditional Chinese thesis copy, and dense evidence rows make the interface feel like a serious technical publication rather than a generic risk dashboard. The product remains an educational replay of a historical 2005 dataset, never a lending system or financial decision tool.",
     "keyCharacteristics": "Depth is flat. Create hierarchy with typography, aligned columns, one-pixel transition rules, and one cool result field. Lines mark transitions; they do not enclose every item. Do not use shadows, floating panels, blur, glass effects, decorative gradients, or repeated container chrome.",
-    "rules": "The desktop container is at most 1440px wide. The first viewport follows a 12-column editorial composition: thesis and content-sized scope boundary, four equal unboxed KPI pairs, then an 8/4 input-to-result workspace. The case heading, metadata, index, and load action share one compact toolbar so the feature inputs begin without a redundant row. Successful attributions occupy a conditional full-width evidence band below the workspace; empty and error states reserve no table space. At the 820px compact breakpoint, columns stack, KPIs become a 2-by-2 grid, and feature inputs reduce without page-level horizontal scrolling. The primary action is compact on wider screens and full-width only on narrow phones. Center only short, equal-weight content such as status labels, KPI pairs, tab labels, compact controls, short numeric values, and the primary action. Keep thesis copy, explanatory prose, form groups, model metadata, attributions, and evidence rows left-aligned.",
+    "rules": "The desktop container is at most 1440px wide. The first viewport follows a 12-column editorial composition: thesis and content-sized scope boundary, four equal unboxed KPI pairs, then a 7/5 input-to-result workspace. Case heading and metadata occupy the first toolbar row; case selection and loading occupy a stable second row aligned to the right. Successful attributions occupy a conditional full-width evidence band below the workspace; empty and error states reserve no table space. At the 820px compact breakpoint, columns stack, KPIs become a 2-by-2 grid, and feature inputs reduce without page-level horizontal scrolling. The primary action is compact on wider screens and full-width only on narrow phones. Center only short, equal-weight content such as status labels, KPI pairs, tab labels, compact controls, short numeric values, and the primary action. Keep thesis copy, explanatory prose, form groups, model metadata, attributions, and evidence rows left-aligned.",
     "dos": "Do keep Traditional Chinese primary, use original technical terms, preserve visible focus, maintain stable loading and error geometry, and trace every public claim to committed evidence. Do use rules to mark section transitions rather than to build containers. Do center only short, equal-weight content. Do preserve the historical educational-audit, privacy, CPU-only, and non-decision boundaries.",
     "donts": "Don't use rounded dashboard cards, pills, repeated rectangles, full-width desktop actions, fabricated numbers, decision language, shadows, decorative animation, or network-loaded visual assets. Don't imply causal proof, current-market fairness, lending eligibility, approval, rejection, or financial advice. Don't let runtime requests, responses, bundles, or caches write into the public repository."
   }

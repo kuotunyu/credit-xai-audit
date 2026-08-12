@@ -49,8 +49,8 @@
     },
     {
       "path": ".impeccable/design.json",
-      "bytes": 7621,
-      "sha256": "2944b0f04fc6aef8e6330d70abd8dbd41d85203a793a6d820af617221f0edc63"
+      "bytes": 7661,
+      "sha256": "ba218cb255843d1edc68589f3f591f75c75652361010dc61825104da55005905"
     },
     {
       "path": ".python-version",
@@ -59,8 +59,8 @@
     },
     {
       "path": "CHANGELOG.md",
-      "bytes": 2314,
-      "sha256": "3113653e38268fa9075b8446ab0d3b4f8ded5e4c0d3bbca76cad8576823e125f"
+      "bytes": 2317,
+      "sha256": "0cd6967d6db01f8d9f21afa31c5d9c3fefbef8da2434b0becd1431ff4f37362d"
     },
     {
       "path": "CITATION.cff",
@@ -74,8 +74,8 @@
     },
     {
       "path": "DESIGN.md",
-      "bytes": 5943,
-      "sha256": "ac3bab164c4dde68d94452460670081f67d482feca35fb1353b99ea44343152b"
+      "bytes": 6041,
+      "sha256": "765e2326cdd601fd772d3ea69fd57b0c772844453e435e7200baa7f67a4ecec4"
     },
     {
       "path": "Dockerfile",
@@ -124,8 +124,8 @@
     },
     {
       "path": "app/gradio_theme.css",
-      "bytes": 18530,
-      "sha256": "a457a5d2d2c55f1e73f6a6c0811cccd669b6209639d67ec050b208498ab4eaa0"
+      "bytes": 18976,
+      "sha256": "d0cee23e1d0756165c6a088859b82e3be9ae69b21cf71379df0dbdca96019dd7"
     },
     {
       "path": "app/gradio_ui.py",
@@ -199,8 +199,8 @@
     },
     {
       "path": "docs/release/VERIFICATION.md",
-      "bytes": 14004,
-      "sha256": "8f22a65ebe3ec7a1599f1baffc1702d354519d431d06b8214a6f92548cbcdf51"
+      "bytes": 15513,
+      "sha256": "b76a366de60cc0328bbc38e877540f3e70c6fa4e4cf696f943c8fd07338b9736"
     },
     {
       "path": "docs/superpowers/plans/2026-08-12-credit-xai-release-candidate.md",
@@ -221,6 +221,11 @@
       "path": "docs/superpowers/plans/2026-08-12-gradio-success-state-density.md",
       "bytes": 5237,
       "sha256": "5f0b7ebb023abd40c80a5f101d7a9a1d6b80fd23840f84672c11631858055212"
+    },
+    {
+      "path": "docs/superpowers/plans/2026-08-12-gradio-typography-rebalance.md",
+      "bytes": 7249,
+      "sha256": "b363d4cad9392fd8d12ea0599bfd294752d41fe1bde9be97d90ee2267209bd6f"
     },
     {
       "path": "docs/superpowers/plans/2026-08-12-gradio-visual-chrome-distillation.md",
@@ -246,6 +251,11 @@
       "path": "docs/superpowers/specs/2026-08-12-gradio-success-state-density-design.md",
       "bytes": 2244,
       "sha256": "62996bd5b521fe5b0e5e5fdddee6ab935065a66c7a29afe5ffd44a5fa79e2a55"
+    },
+    {
+      "path": "docs/superpowers/specs/2026-08-12-gradio-typography-rebalance-design.md",
+      "bytes": 3969,
+      "sha256": "d5d80aa9ecb3de0bb818ec12b20d388cb5750bfb4f9ea11e71877237bafdfb30"
     },
     {
       "path": "docs/superpowers/specs/2026-08-12-gradio-visual-chrome-distillation-design.md",

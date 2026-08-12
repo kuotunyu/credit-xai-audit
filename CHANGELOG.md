@@ -24,9 +24,9 @@ been published or tagged.
 - The Gradio portfolio surface is now Traditional Chinese first, evidence
   first, responsive, and square-cornered, with all 23 integer inputs grouped
   into four compact feature sections.
-- The first-viewport type scale and spacing are rebalanced for desktop reading:
-  the thesis is capped at 48px, the scope note sizes to its content, supporting
-  labels are larger, and case selection shares one compact toolbar.
+- The first-viewport type scale and spacing are rebalanced for browser reading:
+  the thesis is capped at 40px, ordinary copy is 16px, operational roles are
+  14–15px, numeric values are 18px, and case tools use two stable rows.
 - Successful model attributions now appear in a conditional full-width evidence
   band, removing the empty desktop column while leaving empty and error states
   compact.

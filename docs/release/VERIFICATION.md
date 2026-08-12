@@ -228,6 +228,30 @@ Linux daemon with the following fresh evidence:
   image was intentionally retained. The subsequent evidence/manifest commit
   changes no runtime source.
 
+### Typography rebalance
+
+- A real-browser RED contract at 1,656px measured the thesis at 44.712px while
+  40 visible roles used 13.12px and another 18 used 13.44px. Named failures
+  included the 12.16px section marker, 12.80px decision-boundary note, 13.12px
+  field labels, 13.44px evidence cells, 14.72px primary action, and 16.64px
+  numeric values.
+- The exact GREEN contract measured the thesis at 38.916px, ordinary result
+  copy and actions at 16px, supporting copy at 15.04px, labels at 14.56px,
+  compact metadata at 14px, and numeric values at 18px. All named roles cleared
+  their independent thresholds.
+- Browser confirmation at 1,656px, 1,280px, 768px, and 390px measured thesis
+  sizes of 38.916px, 36px, 36px, and 30px respectively. Every width had zero
+  page-level horizontal overflow; case-number and primary-action controls were
+  at least 44px and 50px high. The desktop workspace now uses a verified 7/5
+  split, and the case heading/metadata and case controls occupy two stable rows.
+- A CPU-only synthetic LightGBM UI run displayed `isotonic`, `TreeSHAP`, and
+  the attribution table with 14–16px operational copy and no overflow. It used
+  the existing ignored CI bundle, changed no accepted artifact, disclosed no
+  prediction in this evidence, and exposed no approval, rejection, eligibility,
+  or recommendation language.
+- The focused Gradio/presenter suite passed all 36 tests after the change. Ruff
+  format/check, strict Mypy for `app`, and `git diff --check` also passed.
+
 Feature Freeze is renewed after this owner-approved, UI-only change. It changed
 no model, formal metric, accepted result, API schema, pipeline, dependency,
 Docker policy, or decision scope.

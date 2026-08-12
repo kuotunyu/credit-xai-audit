@@ -49,7 +49,7 @@
 
 - [ ] **Step 1: Implement the minimum CSS change**
 
-  Set the container body role to 16px; cap the desktop thesis at 40px; raise status, marker, metadata, tab, field label, result metadata, evidence, and footer roles to their specified floors; set values/actions to 18px/16px; reduce the container maximum to 1,360px; tighten hero/KPI/workspace spacing only where the new scale requires it.
+  Set the container body role to 16px; cap the desktop thesis at 40px; raise status, marker, metadata, tab, field label, result metadata, evidence, and footer roles to their specified floors; set values/actions to 18px/16px; rebalance the workspace to 7/5; tighten hero/KPI/workspace spacing only where the new scale requires it.
 
 - [ ] **Step 2: Restart the preview and verify GREEN**
 

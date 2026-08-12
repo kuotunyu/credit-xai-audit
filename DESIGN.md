@@ -14,9 +14,9 @@ colors:
   rule-warm: "#C8C7C2"
   white: "#FFFDF8"
 typography:
-  display: 'system-ui, "Noto Sans TC", "Microsoft JhengHei", "PingFang TC", sans-serif / clamp(2.35rem, 2.7vw, 3rem) / 720 / 1.08 / -0.035em'
-  body: 'system-ui, "Noto Sans TC", "Microsoft JhengHei", "PingFang TC", sans-serif / 15px / 400 / 1.5'
-  label: 'system-ui, "Noto Sans TC", "Microsoft JhengHei", "PingFang TC", sans-serif / 12px / 650 / 1.35'
+  display: 'system-ui, "Noto Sans TC", "Microsoft JhengHei", "PingFang TC", sans-serif / clamp(2.25rem, 2.35vw, 2.5rem) / 720 / 1.08 / -0.035em'
+  body: 'system-ui, "Noto Sans TC", "Microsoft JhengHei", "PingFang TC", sans-serif / 16px / 400 / 1.5'
+  label: 'system-ui, "Noto Sans TC", "Microsoft JhengHei", "PingFang TC", sans-serif / 14px / 650 / 1.35'
 spacing:
   tight: 4px
   field: 7px
@@ -42,11 +42,11 @@ Use the palette in an approximate 80/15/5 distribution: warm field for reading, 
 
 # Typography
 
-Use the local system stack only: `system-ui`, `Noto Sans TC`, `Microsoft JhengHei`, `PingFang TC`, then `sans-serif`. The interface is Traditional Chinese first; retain established technical terms such as Logistic, EBM, LightGBM, Calibration, Bootstrap, SHAP, Faithfulness, and Stability in English. The thesis uses a restrained 38–48px desktop range and a 29–36px compact range so it leads without displacing the audit controls. Ordinary copy must not fall below 14px, and compact metadata must not fall below 12px. Input values should remain visibly larger than their labels.
+Use the local system stack only: `system-ui`, `Noto Sans TC`, `Microsoft JhengHei`, `PingFang TC`, then `sans-serif`. The interface is Traditional Chinese first; retain established technical terms such as Logistic, EBM, LightGBM, Calibration, Bootstrap, SHAP, Faithfulness, and Stability in English. The thesis uses a restrained 36–40px desktop range, a 32–36px compact range, and a 30–33px phone range so it leads without overwhelming the audit controls. Ordinary copy is 16px, supporting copy is about 15px, and compact metadata does not fall below 14px. Input values remain visibly larger than their labels at 18px.
 
 # Layout
 
-The desktop container is at most 1440px wide. The first viewport follows a 12-column editorial composition: thesis and content-sized scope boundary, four equal unboxed KPI pairs, then an 8/4 input-to-result workspace. The case heading, metadata, index, and load action share one compact toolbar so the feature inputs begin without a redundant row. Successful attributions occupy a conditional full-width evidence band below the workspace; empty and error states reserve no table space. At the 820px compact breakpoint, columns stack, KPIs become a 2-by-2 grid, and feature inputs reduce without page-level horizontal scrolling. The primary action is compact and right-aligned on wider screens, then full-width only on narrow phones. Center only short, equal-weight content such as status labels, KPI pairs, tab labels, compact controls, short numeric values, and the primary action. Keep thesis copy, explanatory prose, form groups, model metadata, attributions, and evidence rows left-aligned.
+The desktop container is at most 1440px wide. The first viewport follows a 12-column editorial composition: thesis and content-sized scope boundary, four equal unboxed KPI pairs, then a 7/5 input-to-result workspace that gives result metadata a comfortable reading width. Case heading and metadata form the first toolbar row; case selection and loading form a stable second row aligned to the right. Successful attributions occupy a conditional full-width evidence band below the workspace; empty and error states reserve no table space. At the 820px compact breakpoint, columns stack, KPIs become a 2-by-2 grid, and feature inputs reduce without page-level horizontal scrolling. The primary action is compact and right-aligned on wider screens, then full-width only on narrow phones. Center only short, equal-weight content such as status labels, KPI pairs, tab labels, compact controls, short numeric values, and the primary action. Keep thesis copy, explanatory prose, form groups, model metadata, attributions, and evidence rows left-aligned.
 
 # Elevation & Depth
 
