@@ -33,28 +33,30 @@
 - Consumes: `_input_heading_html()`, existing `case_index`, `load_btn`, `case_note`, `FEATURE_GROUPS`, and Gradio callbacks.
 - Produces: the `audit-input-toolbar` layout class and a CSS contract with the approved desktop scale; callback signatures and component values remain identical.
 
-- [ ] **Step 1: Write the failing source-contract test**
+- [ ] **Step 1: Write the failing Gradio composition test**
 
-Append a focused test that names the production changes required:
+Append a focused test that exercises the real Gradio config tree and proves the
+heading plus case controls share one toolbar parent:
 
 ```python
-def test_gradio_desktop_density_contract_groups_toolbar_and_balances_type() -> None:
-    source = Path("app/gradio_ui.py").read_text(encoding="utf-8")
-    css = Path("app/gradio_theme.css").read_text(encoding="utf-8").lower()
+def test_gradio_groups_heading_and_case_actions_in_one_toolbar(test_config) -> None:
+    config, _ = _config(test_config)
+    components = {component["id"]: component for component in config["components"]}
 
-    assert 'elem_classes="audit-input-toolbar"' in source
-    hero = css.split(".audit-hero h1", maxsplit=1)[1].split("}", maxsplit=1)[0]
-    assert "font-size: clamp(2.35rem, 2.7vw, 3rem)" in hero
-    boundary = css.split(".audit-boundary", maxsplit=1)[1].split("}", maxsplit=1)[0]
-    assert "align-self: center" in boundary
-    assert "align-self: stretch" not in boundary
-    kpi = css.split(".audit-kpi {", maxsplit=1)[1].split("}", maxsplit=1)[0]
-    assert "min-height: 70px" in kpi
-    toolbar = css.split(".audit-input-toolbar", maxsplit=1)[1].split("}", maxsplit=1)[0]
-    assert "align-items: center" in toolbar
-    assert "gap: 0.75rem" in toolbar
-    result_meta = css.split(".audit-result-meta dt,", maxsplit=1)[1].split("}", maxsplit=1)[0]
-    assert "font-size: 0.86rem" in result_meta
+    toolbar = next(
+        component
+        for component in config["components"]
+        if "audit-input-toolbar" in component.get("props", {}).get("elem_classes", [])
+    )
+    layout_nodes = [config["layout"]]
+    for node in layout_nodes:
+        layout_nodes.extend(node.get("children", []))
+    toolbar_node = next(node for node in layout_nodes if node["id"] == toolbar["id"])
+    child_components = [components[child["id"]] for child in toolbar_node["children"]]
+
+    assert [component["type"] for component in child_components] == ["html", "row"]
+    assert "audit-input-heading-block" in child_components[0]["props"]["elem_classes"]
+    assert "audit-case-controls" in child_components[1]["props"]["elem_classes"]
 ```
 
 - [ ] **Step 2: Run the focused test and confirm RED**
@@ -62,12 +64,31 @@ def test_gradio_desktop_density_contract_groups_toolbar_and_balances_type() -> N
 Run:
 
 ```powershell
-.\.venv\Scripts\python.exe -m pytest tests\test_gradio.py::test_gradio_desktop_density_contract_groups_toolbar_and_balances_type -v
+.\.venv\Scripts\python.exe -m pytest tests\test_gradio.py::test_gradio_groups_heading_and_case_actions_in_one_toolbar -v
 ```
 
-Expected: fail because `audit-input-toolbar`, the 48px desktop cap, content-sized boundary, 70px KPI, and 0.86rem result metadata are absent.
+Expected: fail because no `audit-input-toolbar` component exists.
 
-- [ ] **Step 3: Group the existing heading and case controls**
+- [ ] **Step 3: Record a rendered RED measurement before editing CSS**
+
+Use the already-running mounted page and evaluate real computed layout. The old
+page must fail at least the thesis and boundary assertions:
+
+```javascript
+const h1 = document.querySelector(".audit-hero h1").getBoundingClientRect();
+const boundary = document.querySelector(".audit-boundary").getBoundingClientRect();
+const resultMeta = parseFloat(
+  getComputedStyle(document.querySelector(".audit-result-meta dt")).fontSize
+);
+if (!(h1.height < 120 && boundary.height < h1.height && resultMeta >= 13.5)) {
+  throw new Error("desktop density contract not met");
+}
+```
+
+Capture the measured values with the expected failure; this is the behavioral
+RED for the CSS correction rather than a brittle source-string assertion.
+
+- [ ] **Step 4: Group the existing heading and case controls**
 
 In `build_ui`, replace the two sibling blocks with the same controls inside one row:
 
@@ -85,7 +106,7 @@ with gr.Row(elem_classes="audit-input-toolbar"):
 
 Do not change component labels, values, precision, step, element classes, outputs, or callback wiring.
 
-- [ ] **Step 4: Apply the minimal density CSS**
+- [ ] **Step 5: Apply the minimal density CSS**
 
 Use these exact structural values in `app/gradio_theme.css`:
 
@@ -127,7 +148,7 @@ Use these exact structural values in `app/gradio_theme.css`:
 
 Also set the method/scope copy to 0.98–1rem, result title to `clamp(1.3rem, 1.7vw, 1.55rem)`, result body to 0.95rem, result metadata to 0.86rem, result-boundary text to 0.8–0.84rem, and evidence/footer compact copy to at least 0.78rem. Remove the old `.audit-case-controls > .form { margin-left: auto }` behavior and add a 1080px toolbar-wrap rule. Reduce the existing 820px and 520px thesis maxima without lowering interactive target sizes.
 
-- [ ] **Step 5: Run focused tests and static checks**
+- [ ] **Step 6: Run focused tests and static checks**
 
 Run:
 
@@ -140,7 +161,7 @@ Run:
 
 Expected: all focused tests and static checks pass with no functional callback change.
 
-- [ ] **Step 6: Commit the tested correction**
+- [ ] **Step 7: Commit the tested correction**
 
 ```powershell
 git add app/gradio_ui.py app/gradio_theme.css tests/test_gradio.py
@@ -253,5 +274,7 @@ Expected: full suite and release gates pass, `main` is clean, identity is the ow
 - **Spec coverage:** Type scale, hero stretch, case-toolbar composition, KPI density, result readability, responsive behavior, accessibility, browser evidence, synthetic truth boundary, design persistence, manifest renewal, and Feature Freeze are each assigned to a task.
 - **Scope:** One Gradio presentation subsystem; no model, evidence, API, pipeline, dependency, Docker, or publication work is introduced.
 - **Interface consistency:** Existing controls and callbacks retain their names and values; only their layout parent changes. `audit-input-toolbar` is the sole new presentation interface.
-- **TDD:** The old 60px/stretch/separate-row behavior must produce RED before any production edit, and any rendered follow-up correction also requires a failing focused assertion first.
+- **TDD:** The old separate-row config and the old rendered 60px/stretch behavior
+  must each produce RED before any production edit. Any rendered follow-up
+  correction also requires a failing behavioral assertion first.
 - **No placeholders:** All values, files, commands, commit messages, and verification outcomes are specified.
