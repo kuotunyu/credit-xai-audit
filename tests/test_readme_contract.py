@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+import re
 from pathlib import Path
 
 PROJECT_ROOT = Path(__file__).resolve().parents[1]
@@ -17,7 +18,9 @@ def test_readmes_open_with_recruiter_summary_and_canonical_ui_image() -> None:
     for text in (english, chinese):
         assert "assets/ui_audit_console.png" in text
         assert text.count("```mermaid") == 1
-        assert "Group metrics" in text
+        diagram = re.search(r"```mermaid\n(.*?)\n```", text, re.DOTALL)
+        assert diagram is not None
+        assert "Group metrics" in diagram.group(1)
         for capability in (
             "Model comparison",
             "Probability quality",
