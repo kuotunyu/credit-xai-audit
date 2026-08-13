@@ -3,7 +3,7 @@ from __future__ import annotations
 import json
 from pathlib import Path
 
-from app.gradio_presenter import FEATURE_GROUPS
+from app.gradio_presenter import FEATURE_GROUPS, FEATURE_LABELS
 from app.gradio_ui import _theme, build_ui
 
 from credit_xai.constants import DEMO_SCOPE, FEATURES
@@ -34,16 +34,19 @@ def test_gradio_uses_approved_zh_tw_historical_language(test_config) -> None:
         assert forbidden not in text
 
 
-def test_gradio_exposes_each_feature_as_one_labeled_number(test_config) -> None:
+def test_gradio_pairs_readable_labels_with_canonical_feature_codes(test_config) -> None:
     config, _ = _config(test_config)
-    labels = [
-        component["props"].get("label")
+    numbers = [
+        component
         for component in config["components"]
         if component["type"] == "number"
+        and "audit-number" in component.get("props", {}).get("elem_classes", [])
     ]
 
-    for feature in FEATURES:
-        assert labels.count(feature) == 1
+    assert len(numbers) == len(FEATURES) == 23
+    assert {
+        component["props"].get("info"): component["props"].get("label") for component in numbers
+    } == {feature: FEATURE_LABELS[feature] for feature in FEATURES}
 
 
 def test_gradio_exposes_four_complete_feature_group_ledgers(test_config) -> None:
@@ -68,15 +71,16 @@ def test_gradio_exposes_four_complete_feature_group_ledgers(test_config) -> None
             descendants.extend(node.get("children", []))
         child_components = [components[node["id"]] for node in descendants]
         heading = next(component for component in child_components if component["type"] == "html")
-        number_labels = [
-            component["props"].get("label")
-            for component in child_components
-            if component["type"] == "number"
+        number_components = [
+            component for component in child_components if component["type"] == "number"
         ]
 
         assert label in heading["props"]["value"]
         assert f"{len(features)} 欄" in heading["props"]["value"]
-        assert number_labels == list(features)
+        assert [component["props"].get("info") for component in number_components] == list(features)
+        assert [component["props"].get("label") for component in number_components] == [
+            FEATURE_LABELS[feature] for feature in features
+        ]
 
     assert config["fill_width"] is True
     assert "audit-workspace" in text

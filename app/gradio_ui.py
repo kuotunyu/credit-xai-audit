@@ -10,6 +10,7 @@ import gradio as gr
 import pandas as pd
 from app.gradio_presenter import (
     FEATURE_GROUPS,
+    FEATURE_LABELS,
     PublicEvidence,
     analyze_values,
     case_values,
@@ -308,7 +309,8 @@ def build_ui(cfg: Config) -> gr.Blocks:
                                         value=_EXAMPLE[feature],
                                         precision=0,
                                         step=1,
-                                        label=feature,
+                                        label=FEATURE_LABELS[feature],
+                                        info=feature,
                                         elem_classes="audit-number",
                                     )
                 with gr.Row(elem_classes="audit-input-footer"):
