@@ -28,7 +28,14 @@ def test_non_editable_install_imports_from_unicode_checkout(tmp_path: Path) -> N
 
     scripts_dir = checkout / ".venv" / ("Scripts" if sys.platform == "win32" else "bin")
     python = scripts_dir / ("python.exe" if sys.platform == "win32" else "python")
-    site_packages = next((checkout / ".venv").glob("Lib/site-packages"))
+    site_packages_query = subprocess.run(
+        [str(python), "-c", "import sysconfig; print(sysconfig.get_path('purelib'))"],
+        check=True,
+        cwd=tmp_path,
+        capture_output=True,
+        text=True,
+    )
+    site_packages = Path(site_packages_query.stdout.strip())
     pth_text = "\n".join(path.read_text(encoding="utf-8") for path in site_packages.glob("*.pth"))
     assert str(checkout / "src") not in pth_text
 

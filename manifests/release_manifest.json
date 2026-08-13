@@ -64,8 +64,8 @@
     },
     {
       "path": "CHANGELOG.md",
-      "bytes": 4154,
-      "sha256": "c54dd197f7d5c8182757f01e689edc567d734b473a6e54fd732f1ca472f28cf8"
+      "bytes": 4301,
+      "sha256": "b2235d946aae952ae2c8850b4c0e27cf279255ac233fddbb93f62458888e4c14"
     },
     {
       "path": "CITATION.cff",
@@ -1049,8 +1049,8 @@
     },
     {
       "path": "tests/test_install_portability.py",
-      "bytes": 1470,
-      "sha256": "75b25dcdb068e7c09b269d7697dbea487bad783df9dc1a438edb7a9474475645"
+      "bytes": 1683,
+      "sha256": "3b8dcd68915e4f71efe651e5d1a35c1183ef7d91ccc36850965a5e86a3dcb4ba"
     },
     {
       "path": "tests/test_metrics.py",

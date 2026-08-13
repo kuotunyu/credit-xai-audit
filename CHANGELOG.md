@@ -65,6 +65,8 @@ All notable changes to this project are documented here.
 - The repository now records its clean-snapshot lineage and canonical public
   identity; later donor work is reconciled selectively without copying
   unrelated history or private artifacts.
+- The non-editable Unicode-checkout installation gate now discovers the active
+  environment's `site-packages` path portably on Windows and Linux.
 
 The interface renewal does not change any model, accepted metric, API schema,
 explanation method, pipeline, or non-decision boundary.
