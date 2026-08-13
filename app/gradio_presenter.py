@@ -23,6 +23,8 @@ from credit_xai.constants import (
     PAY_FEATURES,
     TARGET,
 )
+from credit_xai.data.schema import SchemaError
+from credit_xai.serving.service import ServiceError
 
 logger = logging.getLogger(__name__)
 
@@ -40,6 +42,32 @@ _EXPECTED_EXPLANATIONS = {
     "logistic": "linear_shap",
     "ebm": "ebm_native",
     "lightgbm": "tree_shap",
+}
+
+FEATURE_LABELS: dict[str, str] = {
+    "LIMIT_BAL": "信用額度",
+    "SEX": "性別",
+    "EDUCATION": "教育程度",
+    "MARRIAGE": "婚姻狀態",
+    "AGE": "年齡",
+    "PAY_0": "9 月還款狀態",
+    "PAY_2": "8 月還款狀態",
+    "PAY_3": "7 月還款狀態",
+    "PAY_4": "6 月還款狀態",
+    "PAY_5": "5 月還款狀態",
+    "PAY_6": "4 月還款狀態",
+    "BILL_AMT1": "9 月帳單金額",
+    "BILL_AMT2": "8 月帳單金額",
+    "BILL_AMT3": "7 月帳單金額",
+    "BILL_AMT4": "6 月帳單金額",
+    "BILL_AMT5": "5 月帳單金額",
+    "BILL_AMT6": "4 月帳單金額",
+    "PAY_AMT1": "9 月繳款金額",
+    "PAY_AMT2": "8 月繳款金額",
+    "PAY_AMT3": "7 月繳款金額",
+    "PAY_AMT4": "6 月繳款金額",
+    "PAY_AMT5": "5 月繳款金額",
+    "PAY_AMT6": "4 月繳款金額",
 }
 
 FEATURE_GROUPS: tuple[tuple[str, tuple[str, ...]], ...] = (
@@ -104,9 +132,14 @@ def case_values(
     if test_cases is None or test_cases.empty:
         return None, "目前沒有已處理的測試案例；仍可手動輸入 23 個欄位。"
     try:
-        resolved = int(float(str(index))) % len(test_cases)
+        numeric = float(str(index))
     except (TypeError, ValueError, OverflowError):
-        return None, "案例編號必須是整數。"
+        return None, "案例編號必須是有限整數。"
+    if not math.isfinite(numeric) or not numeric.is_integer():
+        return None, "案例編號必須是有限整數。"
+    resolved = int(numeric)
+    if not 0 <= resolved < len(test_cases):
+        return None, f"案例編號必須介於 0 與 {len(test_cases) - 1} 之間。"
     try:
         row = test_cases.iloc[resolved]
         values = tuple(int(row[feature]) for feature in FEATURES)
@@ -184,6 +217,14 @@ def _render_input_error(detail: str = "輸入資料無法完成審計，請檢�
     )
 
 
+def _render_service_error() -> str:
+    return _result_shell(
+        state="暫時無法回應",
+        title="分析服務暫時無法回應",
+        body="目前無法完成本機歷史模型重播；請稍後再試。",
+    )
+
+
 def _validated_result(result: dict[str, Any]) -> tuple[float, float, str, str, str]:
     model = str(result["model"])
     method = str(result["method"])
@@ -245,10 +286,17 @@ def analyze_values(
         return _render_input_error("必須提供 23 個整數欄位。"), _empty_attributions()
     try:
         result = service.explain(features)
-        return _render_success_result(result), _attribution_frame(result)
+    except (SchemaError, ServiceError) as exc:
+        logger.info("Gradio input rejected (%s)", type(exc).__name__)
+        return _render_input_error(), _empty_attributions()
     except Exception as exc:
         logger.warning("Gradio audit failed (%s)", type(exc).__name__)
-        return _render_input_error(), _empty_attributions()
+        return _render_service_error(), _empty_attributions()
+    try:
+        return _render_success_result(result), _attribution_frame(result)
+    except Exception as exc:
+        logger.warning("Gradio result rejected (%s)", type(exc).__name__)
+        return _render_service_error(), _empty_attributions()
 
 
 def load_public_evidence(path: Path) -> PublicEvidence | None:

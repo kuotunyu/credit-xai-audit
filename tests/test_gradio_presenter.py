@@ -8,6 +8,7 @@ import pandas as pd
 import pytest
 from app.gradio_presenter import (
     FEATURE_GROUPS,
+    FEATURE_LABELS,
     EvidenceModelRow,
     PublicEvidence,
     analyze_values,
@@ -19,6 +20,7 @@ from app.gradio_presenter import (
 )
 
 from credit_xai.constants import DEMO_SCOPE, DISCLAIMER, FEATURES, TARGET
+from credit_xai.serving.service import ServiceError
 
 
 def _summary_payload() -> dict[str, Any]:
@@ -131,6 +133,14 @@ def test_feature_groups_cover_features_once_in_approved_visual_order() -> None:
     )
 
 
+def test_feature_labels_cover_every_canonical_feature() -> None:
+    assert set(FEATURE_LABELS) == set(FEATURES)
+    assert FEATURE_LABELS["LIMIT_BAL"] == "信用額度"
+    assert FEATURE_LABELS["PAY_0"] == "9 月還款狀態"
+    assert FEATURE_LABELS["BILL_AMT1"] == "9 月帳單金額"
+    assert FEATURE_LABELS["PAY_AMT1"] == "9 月繳款金額"
+
+
 def test_feature_mapping_preserves_canonical_integer_values() -> None:
     values = list(range(len(FEATURES)))
 
@@ -174,6 +184,11 @@ class _ExplodingService:
         raise RuntimeError(str(Path.home() / "models" / "internal.joblib"))
 
 
+class _RejectedService:
+    def explain(self, features: dict[str, int]) -> dict[str, Any]:
+        raise ServiceError("private detail")
+
+
 class _MismatchedExplainerService(_FakeService):
     def explain(self, features: dict[str, int]) -> dict[str, Any]:
         result = super().explain(features)
@@ -189,7 +204,7 @@ def test_case_values_reports_unavailable_processed_cases() -> None:
     assert "23 個欄位" in note
 
 
-def test_case_values_uses_modulo_and_canonical_feature_order() -> None:
+def test_case_values_uses_canonical_feature_order() -> None:
     cases = pd.DataFrame(
         [
             {**dict(zip(FEATURES, range(23), strict=True)), TARGET: 0},
@@ -197,11 +212,31 @@ def test_case_values_uses_modulo_and_canonical_feature_order() -> None:
         ]
     )
 
-    values, note = case_values(cases, 3)
+    values, note = case_values(cases, 1)
 
     assert values == tuple(range(100, 123))
     assert "測試案例 1" in note
     assert "歷史觀察結果：1" in note
+
+
+@pytest.mark.parametrize("index", [None, "abc", 1.5, float("nan"), float("inf")])
+def test_case_values_rejects_non_integer_index(index: object) -> None:
+    cases = pd.DataFrame([{**dict.fromkeys(FEATURES, 0), TARGET: 0}])
+
+    values, note = case_values(cases, index)
+
+    assert values is None
+    assert note == "案例編號必須是有限整數。"
+
+
+@pytest.mark.parametrize("index", [-1, 2])
+def test_case_values_rejects_out_of_range_index(index: int) -> None:
+    cases = pd.DataFrame([{**dict.fromkeys(FEATURES, 0), TARGET: 0} for _ in range(2)])
+
+    values, note = case_values(cases, index)
+
+    assert values is None
+    assert note == "案例編號必須介於 0 與 1 之間。"
 
 
 def test_case_values_rejects_invalid_index_without_raw_error() -> None:
@@ -210,7 +245,7 @@ def test_case_values_rejects_invalid_index_without_raw_error() -> None:
     values, note = case_values(cases, "not-a-number")
 
     assert values is None
-    assert note == "案例編號必須是整數。"
+    assert note == "案例編號必須是有限整數。"
 
 
 def test_empty_result_uses_honest_model_absent_state() -> None:
@@ -253,10 +288,21 @@ def test_analyze_values_formats_verified_service_result() -> None:
 def test_analyze_values_sanitizes_service_errors() -> None:
     rendered, attributions = analyze_values(_ExplodingService(), list(range(23)))
 
-    assert "輸入資料無法完成審計" in rendered
+    assert "分析服務暫時無法回應" in rendered
     assert str(Path.home()) not in rendered
     assert "internal.joblib" not in rendered
     assert attributions.empty
+
+
+def test_analyze_values_distinguishes_input_rejection_from_runtime_failure() -> None:
+    rejected, rejected_frame = analyze_values(_RejectedService(), list(range(23)))
+    failed, failed_frame = analyze_values(_ExplodingService(), list(range(23)))
+
+    assert "輸入資料無法完成審計" in rejected
+    assert "分析服務暫時無法回應" in failed
+    assert "private detail" not in rejected
+    assert str(Path.home()) not in failed
+    assert rejected_frame.empty and failed_frame.empty
 
 
 def test_analyze_values_rejects_fractional_input_before_service() -> None:
@@ -270,6 +316,6 @@ def test_analyze_values_rejects_fractional_input_before_service() -> None:
 def test_analyze_values_rejects_model_explainer_mismatch() -> None:
     rendered, attributions = analyze_values(_MismatchedExplainerService(), list(range(23)))
 
-    assert "輸入資料無法完成審計" in rendered
+    assert "分析服務暫時無法回應" in rendered
     assert "Linear SHAP" not in rendered
     assert attributions.empty
