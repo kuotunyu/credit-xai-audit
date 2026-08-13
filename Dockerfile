@@ -6,11 +6,11 @@ FROM ghcr.io/astral-sh/uv:python3.11-bookworm-slim AS builder
 ENV UV_COMPILE_BYTECODE=1 UV_LINK_MODE=copy
 WORKDIR /app
 COPY pyproject.toml uv.lock LICENSE ./
-# hatchling's `readme = "README.md"` metadata field only requires the file to
-# exist during resolution; a placeholder avoids coupling this expensive layer
+# Hatchling's `readme = "README_en.md"` metadata field only requires the file
+# during resolution; a placeholder avoids coupling this expensive layer
 # (installs numpy/pandas/sklearn/shap/lightgbm/interpret/gradio, minutes) to
 # the real README's content, which changes on every `report` run.
-RUN echo "placeholder for dependency resolution; real README copied in the runtime stage" > README.md
+RUN echo "placeholder for dependency resolution; real README copied in the runtime stage" > README_en.md
 RUN --mount=type=cache,target=/root/.cache/uv \
     uv sync --frozen --no-dev --all-extras --no-install-project
 # The project's own package is never installed into the venv (no `uv sync

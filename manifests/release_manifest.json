@@ -69,8 +69,8 @@
     },
     {
       "path": "Dockerfile",
-      "bytes": 2272,
-      "sha256": "558ae333cb6c775bfc4d3905bbbfc1c1611674f128f29744946a6ada8c23276b"
+      "bytes": 2269,
+      "sha256": "e75a14c55a37b5c06606967729c2c0ebda6dc4138d39b8b453000159d4130156"
     },
     {
       "path": "FAILURES.md",
@@ -914,8 +914,8 @@
     },
     {
       "path": "tests/test_readme_contract.py",
-      "bytes": 1278,
-      "sha256": "b147347b792a8d69fd295a15960a90c86221dbcc9a8a5b5d2613d0c7bfbbd086"
+      "bytes": 1407,
+      "sha256": "95630cfd517135d63d7631d7647451f9b68c2681e93ab0eb649e295d8ace5494"
     },
     {
       "path": "tests/test_release_claims.py",
