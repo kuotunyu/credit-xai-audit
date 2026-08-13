@@ -54,6 +54,18 @@ been published or tagged.
   order.
 - Model-absent, invalid-input, and bundle-error states fail closed without
   fabricated predictions or local exception details.
+- All 23 model inputs now pair a Traditional Chinese field name with the
+  canonical feature code, improving scanability without obscuring the serving
+  schema.
+- Case selection now rejects fractional, non-finite, negative, and out-of-range
+  indices instead of truncating or wrapping them.
+- Expected schema/service rejection, missing bundles, and unexpected inference
+  failures now render distinct sanitized states.
+- Both READMEs now open with a recruiter-oriented capability summary and one
+  canonical model-absent screenshot that contains no fabricated prediction.
+- The repository now records its clean-snapshot lineage and canonical public
+  identity; later donor work is reconciled selectively without copying
+  unrelated history or private artifacts.
 
 The interface renewal does not change any model, accepted metric, API schema,
 explanation method, pipeline, or non-decision boundary.

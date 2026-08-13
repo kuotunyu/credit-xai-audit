@@ -683,6 +683,67 @@ unpublished candidate is under **Feature Freeze**. Only evidence corrections,
 security fixes, or owner-approved publication metadata may change it before
 release.
 
+### Canonical UI reconciliation — 2026-08-13
+
+- The public candidate remains `credit-xai-audit`. Its clean-snapshot source is
+  `58cd1ab6190b6c6bf7a1e4a23391dce2213f1e61`; unrelated donor history was not
+  merged or copied. Later donor UI work was reviewed and selectively
+  reimplemented under the canonical presenter, tests, and public boundary.
+- All 23 inputs now pair a Traditional Chinese label with the canonical feature
+  code. Case selection rejects fractional, non-finite, negative, and
+  out-of-range indices. Missing-model, expected input rejection, and unexpected
+  inference/result failures remain distinct, sanitized, fail-closed states.
+- The focused presenter/Gradio/README contract passed 48 tests with 24 declared
+  Gradio deprecation warnings. Ruff format and check passed for 92 files,
+  strict Mypy passed for 65 source files, the full suite passed 157 tests with
+  27 third-party deprecation warnings, and `uv lock --check` resolved all 92
+  locked packages.
+- The canonical public model-absent UI was rendered at 1,440 by 1,000 pixels.
+  Document and body widths both equaled the 1,440px viewport, the browser
+  reported no console or page error, and the explicit no-bundle state contained
+  no fabricated prediction. `assets/ui_audit_console.png` is 142,289 bytes with
+  SHA-256
+  `5315485b94d7021fa31822cb1413cdeb4d0beca1b3dce8dee6ea169c59ea9667`.
+- The fresh wheel is 85,477 bytes with SHA-256
+  `9b6a1aeccd8cc01f57b2d4cfa468b7fac59c757509f64dfbbeff07e3d5667360`;
+  the sdist is 251,373 bytes with SHA-256
+  `74d3fdc4b8c3fc8e30de136882f54d08d66a2b2e06b78fb05d57f5b399d60612`.
+  Archive inspection found no raw data, serialized model, committed result,
+  private note, credential, machine path, or donor-only `ui_presenters.py`.
+  The sdist retained the four intended `app` files while the wheel retained its
+  intentional API-only boundary. A disposable wheel-plus-`serve` environment
+  imported version 0.1.0 exclusively from its own `site-packages`; model-absent
+  `/health` returned 200 with `model_loaded=false`.
+- Docker Engine 29.6.1 and Compose 5.3.0 rebuilt the Linux/amd64 CPU-only image
+  in 174.26 seconds. `credit-xai-audit:canonical-ui-c7688c7`, ID
+  `sha256:63219f054eb1f64561503c4a5a00d87250a4c62933cf302d54afc5337298f1eb`,
+  measures 814,565,523 bytes, defaults to non-root `appuser`, and contains zero
+  files under its runtime data, model, result, and temporary payload roots.
+- The model-absent container used a read-only root filesystem, two CPU and 2 GiB
+  limits, no GPU device request, and became healthy. `/health` and `/ui/`
+  returned 200, `model_loaded=false`, and `/predict` correctly returned 503.
+- A network-disabled synthetic pipeline ran as non-root in 21.46 seconds and
+  wrote only to a disposable Docker volume. It produced 2,000 rows with
+  disjoint 1,400/300/300 splits, trained Logistic, EBM, and LightGBM, selected
+  validation-only isotonic calibration, completed evaluation and the matching
+  `linear_shap`, `ebm_native`, and `tree_shap` explainers. A second read-only
+  API container returned 200 from `/health`, `/predict`, `/explain`, and
+  `/ui/`; the response remained `historical_model_replay`, used LightGBM and
+  TreeSHAP, and returned ten top attributions.
+- Real-browser synthetic actions at 1,280px and 390px displayed LightGBM,
+  isotonic calibration, TreeSHAP, and the attribution table. At both widths the
+  document and body matched the viewport width, with no horizontal overflow,
+  console error, or page exception.
+- Both API containers, the synthetic pipeline container, dedicated network,
+  and disposable volume were removed. The audited image is retained. Temporary
+  package inspection environments are outside the tracked tree and are removed
+  after evidence capture. No push, tag, release, deployment, or other remote
+  action occurred.
+
+This presentation reconciliation changes no dataset, training, calibration,
+model selection, formal metric, accepted result, explanation algorithm, API
+schema, dependency, or Docker policy. Feature Freeze remains appropriate.
+
 ## Interpretation boundary
 
 This is an educational audit of a 2005 historical dataset. It is not a lending

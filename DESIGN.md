@@ -65,6 +65,22 @@ When a control or data structure needs an edge, square corners (`0px`) are norma
 - Result field: the only major cool-toned content surface, reserved for empty, loading, success, and safe error states; probability and model metadata form a responsive facts band, successful content must come from the loaded bundle, and its verified attributions appear in the full-width band below.
 - Evidence rows: compact left-aligned model/explainer mappings and verification checks sourced from committed public artifacts.
 
+# Input and state contract
+
+Every model input displays a readable Traditional Chinese name as the primary
+label and retains its canonical feature code as secondary component information.
+This improves first-pass comprehension while preserving an exact bridge to the
+23-field API and model schema. The code remains visible; it is never replaced by
+an inferred business meaning. The interface does not assign low, medium, or high
+risk bands.
+
+Case indices are finite, integer, and bounded by the processed-case table. The
+presenter does not truncate decimals, wrap out-of-range values, or expose raw
+exceptions. Missing bundles, invalid input or expected schema rejection, and
+unexpected inference/result failures are separate states. All fail closed, hide
+probabilities and attributions, and preserve the same historical non-decision
+boundary.
+
 # Do's and Don'ts
 
 Do keep Traditional Chinese primary, use original technical terms, preserve visible focus, maintain stable loading and error geometry, and trace every public claim to committed evidence. Do use rules to mark section transitions rather than to build containers. Do center only short, equal-weight content. Do preserve the historical educational-audit, privacy, CPU-only, and non-decision boundaries.
