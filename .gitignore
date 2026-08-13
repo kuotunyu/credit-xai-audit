@@ -38,6 +38,12 @@ Thumbs.db
 # Maintainer notes & local workspaces
 .agents/
 .claude/
+/AGENTS.md
+/.impeccable/
+/DESIGN.md
+/PRODUCT.md
+/docs/superpowers/
+/docs/release/OWNER_ACTIONS.md
 CLAUDE.md
 PLAN.md
 PROGRESS.md

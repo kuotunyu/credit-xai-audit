@@ -2,7 +2,7 @@
 
 ## Repository lineage
 
-This public candidate was rebuilt from the audited committed snapshot
+This public repository was rebuilt from the audited committed snapshot
 `58cd1ab6190b6c6bf7a1e4a23391dce2213f1e61`. Its Git history was intentionally
 not copied. Later donor development is not part of that snapshot; any useful
 change from it must be reviewed and reconciled selectively under this
@@ -23,6 +23,8 @@ repository's own tests, evidence, and release boundary.
 
 - The private archive's `.git` directory, refs, objects, authorship history,
   contributor trailers, progress log, and handoff material.
+- Agent instructions, design-tool state, implementation plans, private product
+  briefs, and owner-only publication checklists.
 - Virtual environments, caches, build outputs, temporary reproduction outputs,
   credentials, account paths, and editor/OS metadata.
 - Raw UCI ZIP/XLS/Parquet rows and serialized model/calibrator/background

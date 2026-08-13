@@ -14,7 +14,7 @@ def _candidate_copy(tmp_path: Path) -> Path:
     root.mkdir()
     for directory in ("configs", "manifests", "results"):
         shutil.copytree(PROJECT_ROOT / directory, root / directory)
-    for filename in ("README.md", "README_zh-TW.md"):
+    for filename in ("README.md", "README_en.md"):
         shutil.copy2(PROJECT_ROOT / filename, root / filename)
     return root
 

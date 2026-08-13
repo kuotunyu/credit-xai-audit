@@ -1,4 +1,4 @@
-"""Fail-closed scan of the files intended for the public candidate."""
+"""Fail-closed scan of the files intended for the public repository."""
 
 from __future__ import annotations
 

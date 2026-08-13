@@ -75,7 +75,7 @@ def build_release_manifest(root: str | Path) -> dict[str, Any]:
         )
     return {
         "schema_version": 1,
-        "candidate_state": "unpublished",
+        "candidate_state": "published",
         "source": {
             "kind": "audited committed snapshot from private archive",
             "commit": SOURCE_SNAPSHOT,
@@ -107,8 +107,8 @@ def verify_release_manifest(root: str | Path) -> list[str]:
     errors: list[str] = []
     try:
         manifest = read_json(path)
-        if manifest.get("candidate_state") != "unpublished":
-            errors.append("release manifest: candidate_state must be unpublished")
+        if manifest.get("candidate_state") != "published":
+            errors.append("release manifest: candidate_state must be published")
         if manifest.get("source", {}).get("commit") != SOURCE_SNAPSHOT:
             errors.append("release manifest: source snapshot is incorrect")
         if manifest.get("public_exclusions") != PUBLIC_EXCLUSIONS:

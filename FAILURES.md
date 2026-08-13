@@ -1,190 +1,77 @@
-# FAILURES — compatibility issues, fallbacks, and honest negative results
+# Engineering fallbacks and negative results
 
-> **Historical 2005 educational audit. Not for lending decisions. Not financial advice.**
+> Historical 2005 educational audit. Not for lending decisions or financial
+> advice.
 
-Living log. Every entry is a real event from building or running this
-repository; "not triggered" entries are recorded so the absence of a fallback
-is auditable too.
+This is a curated record of failures that changed the implementation or define
+how its evidence must be interpreted. Routine setup mistakes and resolved UI
+iteration notes are intentionally omitted.
 
-## 1. shap interventional TreeExplainer × LightGBM categoricals — FALLBACK TRIGGERED
+## TreeSHAP interventional mode was incompatible with native categoricals
 
-- **Environment**: shap 0.48.0, lightgbm 4.6.0, numpy 2.2.6, Windows 11/10, Python 3.11.
-- **Symptom**: constructing `shap.TreeExplainer(model, data=background,
-  feature_perturbation="interventional")` for an `LGBMClassifier` trained with
-  native pandas categoricals fails at the probe call with
-  `AttributeError: 'TreeEnsemble' object has no attribute 'values'`.
-- **Action**: automatic, designed fallback to LightGBM's built-in
-  `pred_contrib=True` (path-dependent TreeSHAP). The mode actually used is
-  recorded in every explain artifact under `method_detail.feature_perturbation`
-  (current smoke run: `tree_path_dependent(pred_contrib)`).
-- **Impact**: attributions remain exact TreeSHAP values, but expectations are
-  path-dependent (split-cover weighted) rather than interventional against an
-  explicit background. Documented in MODEL_CARD.md. Time spent: ~15 min (well
-  under the 2 h stop-loss).
+With SHAP 0.48.0 and LightGBM 4.6.0, probing an interventional
+`TreeExplainer` against an `LGBMClassifier` trained with native pandas
+categoricals raised `AttributeError: 'TreeEnsemble' object has no attribute
+values`.
 
-## 2. Unanchored `.gitignore` patterns silently excluded source code — FIXED
+The implementation falls back automatically to LightGBM
+`pred_contrib=True`, which provides exact path-dependent TreeSHAP values. Every
+explanation artifact records the actual mode under
+`method_detail.feature_perturbation`; the accepted run reports
+`tree_path_dependent(pred_contrib)`. These attributions describe model behavior
+under split-cover weighting, not interventional effects or real-world causes.
 
-- **Symptom**: the pattern `data/` (unanchored) also matched
-  `src/credit_xai/data/` and `results/raw/data/`, so the entire data-pipeline
-  package was untracked while the working tree looked clean; `models/*` had the
-  same latent problem for `src/credit_xai/models/`.
-- **Detection**: `git ls-files src/credit_xai/data` returned empty during a
-  post-commit audit.
-- **Fix**: root-anchored patterns (`/data/`, `/models/*`) in commit `cfb94d5`.
-  Lesson: verify with `git ls-files` after the first commit of any new package.
+## Unanchored ignore rules hid source packages
 
-## 3. EBM (interpret) install on Windows — NOT TRIGGERED
+An early `data/` pattern also matched `src/credit_xai/data/` and
+`results/raw/data/`; `models/*` created the same risk for
+`src/credit_xai/models/`. The working tree appeared clean while source files
+were absent from Git.
 
-- interpret-core 0.7.8 wheels installed cleanly via uv on Windows/Python 3.11
-  and inside the Linux Docker image. The 2 h stop-loss fallback (EBM as
-  optional dependency) remains available but was never needed. The lazy-import
-  guard with an install hint is still in `models/registry.py` for environments
-  without the extra.
+The rules are now root-anchored as `/data/` and `/models/*`. Release tests and
+the generated manifest verify the actual tracked tree rather than trusting
+`git status` alone.
 
-## 4. LightGBM install — NOT TRIGGERED
+## Windows Unicode paths broke editable installs
 
-- lightgbm 4.6.0 wheels installed cleanly on both platforms. The
-  `HistGradientBoostingClassifier` fallback in `models/lgbm.py` is tested but
-  was never activated in the recorded runs (`train_meta.json:is_fallback` is
-  `false` everywhere).
+On Python 3.11 with a legacy Windows locale, an editable `.pth` containing a
+UTF-8 checkout path could fail during Python `site` initialization before
+project code loaded.
 
-## 5. First `uv sync` failed: hatchling requires README.md — FIXED
+`scripts/setup_environment.py` therefore performs a frozen, non-editable wheel
+install. The portability test copies the project to a Unicode path, verifies
+that no source-path `.pth` is installed, and imports the package from outside
+the checkout. No account name, drive, or machine-specific path is hard-coded.
 
-- `pyproject.toml` declared `readme = "README.md"` before the file existed;
-  the editable build failed with `OSError: Readme file does not exist`.
-  Fixed by creating the README skeleton before the first sync. Trivial (<5 min).
+## Colab leaked an invalid plotting backend into subprocesses
 
-## 6. `uv run pytest` import error: `tests` not a package — FIXED
+Colab exports `MPLBACKEND=module://matplotlib_inline.backend_inline`. A project
+subprocess without `matplotlib_inline` then failed while importing LightGBM or
+SHAP. Notebook setup overrides the inherited value with the headless `Agg`
+backend before invoking subprocesses. No dependency pin or model behavior
+changed.
 
-- `from tests.conftest import ...` failed under pytest's default import mode
-  until `tests/__init__.py` was added. Trivial (<5 min).
+## Docker smoke orchestration exposed volume and filesystem assumptions
 
-## 7. Docker engine not running on first build attempt — FINAL GATE VERIFIED
+Fresh named volumes were initially created as root-owned and could not be
+written by the non-root application user. A later manual probe also applied an
+API-style read-only root filesystem to the report command, even though report
+generation intentionally writes disposable figures and README blocks.
 
-- `docker compose build` failed with the named-pipe error
-  (`dockerDesktopLinuxEngine: The system cannot find the file specified`)
-  because Docker Desktop was not started. Resolved by starting Docker Desktop;
-  no repo change was needed. The final 2026-08-12 CPU release gate then built
-  the API image successfully, completed both container health checks, exercised
-  model-absent and synthetic-bundle API/UI paths, and removed all temporary
-  runtime resources. This entry records the earlier operational failure; it is
-  not an outstanding release blocker.
+The accepted orchestration initializes only the explicitly named temporary
+volume for the non-root UID, runs the synthetic pipeline with networking and
+GPU visibility disabled, and uses read-only filesystems only for API
+containers. Disposable containers, networks, and volumes are removed after the
+gate. No host dataset, model, request, response, or repository path is mounted
+writable during the smoke run.
 
-## 8. Dockerfile layer-cache anti-pattern: README.md coupled to the dependency-install layer — FIXED
+## Reproducibility boundary
 
-- **Symptom**: `COPY pyproject.toml uv.lock README.md LICENSE ./` put a
-  frequently-changing file (README.md, rewritten by every `report` run) in the
-  same layer as the rarely-changing dependency manifests. Any byte of drift in
-  README.md invalidated that layer *and* the subsequent `RUN uv sync
-  --no-install-project` (installs numpy/pandas/sklearn/shap/lightgbm/
-  interpret-core/gradio — several minutes), even though no dependency had
-  changed. Confirmed empirically: a build with zero changes took ~1m43s (all
-  layers `CACHED`); appending one blank line to README.md and rebuilding forced
-  a ~5 minute full dependency reinstall.
-- **Root cause, part 2**: separately, the project's own `credit_xai` package
-  was `uv sync --no-editable`-installed *into* the same venv as every
-  third-party dependency. Any change under `src/` (even a one-line comment)
-  invalidated that install step, which invalidated the venv layer, which
-  forced `COPY --from=builder /app/.venv /app/.venv` to re-copy the entire
-  venv (measured: 1.2 GB, 23,166 files) across the build-stage boundary —
-  costly even when the dependency-install step itself stayed cached, and
-  especially slow on Windows/WSL2 filesystem I/O.
-- **Fix**: (1) builder stage now copies only `pyproject.toml`, `uv.lock`, and
-  `LICENSE`, and writes a content-stable placeholder `README.md` via `RUN echo`
-  purely to satisfy hatchling's `readme = "README.md"` existence check before
-  `uv sync --no-install-project` — the real README's churn no longer touches
-  this layer at all. (2) the project's own package is no longer installed into
-  the venv; the builder stops after installing third-party dependencies only,
-  and the runtime stage adds `COPY src ./src` plus `ENV PYTHONPATH=/app/src` so
-  `python -m credit_xai.cli` resolves the package from raw source instead.
-  Verified after the fix: a source-only change leaves `COPY pyproject.toml
-  uv.lock LICENSE` and `uv sync --no-install-project` both `CACHED`; a clean
-  from-scratch build succeeds (`docker builder prune -af` then rebuild, exit
-  0); `credit_xai.__file__` resolves to `/app/src/credit_xai/__init__.py`
-  (confirms PYTHONPATH resolution, not a site-packages install); all four API
-  endpoints and the containerized synthetic smoke pipeline were re-verified
-  end-to-end after the change.
-
-## 9. Colab's `MPLBACKEND` breaks lightgbm and shap imports in subprocesses — FIXED
-
-- **Environment**: Google Colab, Python 3.11 via uv, project venv at
-  `/content/venv` (VM-local, outside Drive).
-- **Symptom**: `uv run python -c "import lightgbm, shap"` from a notebook cell
-  fails with `ValueError: Key backend:
-  'module://matplotlib_inline.backend_inline' is not a valid value for
-  backend`. `credit_xai`, `interpret`, and `sklearn` import fine — only the
-  packages that pull in matplotlib at import time are affected.
-- **Cause**: Colab exports `MPLBACKEND=module://matplotlib_inline.backend_inline`
-  for its own inline plotting. Subprocesses inherit the variable, but the
-  project venv does not contain `matplotlib_inline` (it is not a dependency),
-  so matplotlib rejects the backend during rcParams initialisation and the
-  import chain dies.
-- **Fix**: set `os.environ["MPLBACKEND"] = "Agg"` in the notebook's environment
-  cell, before any subprocess runs. `Agg` is headless and is exactly what
-  `reporting/figures.py` selects anyway, so nothing else changes. Reproduced
-  and verified locally: `MPLBACKEND="module://matplotlib_inline.backend_inline"
-  uv run python -c "import lightgbm, shap"` raises the identical error, while
-  `MPLBACKEND=Agg` imports both cleanly (lightgbm 4.6.0, shap 0.48.0, backend
-  `Agg`).
-- **Note**: this is a Colab-vs-subprocess environment issue, not a package
-  incompatibility; no dependency pin changed and no fallback was needed.
-
-## 10. Windows non-ASCII checkout × editable `.pth` decoding — FIXED
-
-- **Environment**: Windows, Python 3.11, Traditional Chinese system locale,
-  repository path containing non-ASCII characters.
-- **Symptom**: the default editable `uv sync` succeeds, but Python then fails
-  during `site` initialization with `UnicodeDecodeError` before project code can
-  run. The editable `.pth` contains a UTF-8 source path while Python 3.11 reads
-  it with the active legacy locale codec.
-- **Fix**: `scripts/setup_environment.py` performs a pinned non-editable wheel
-  install (`uv sync --frozen --no-editable`) and verifies import. The release
-  test copies the project to a Unicode checkout, confirms no source-path `.pth`
-  exists, and imports the installed package from outside the repository.
-- **Scope**: no user name, drive, or machine path is hard-coded. Development
-  commands use `uv run --no-sync`; source-tree tests explicitly set a relative
-  `PYTHONPATH=src`, while isolated wheel tests exercise the installed artifact.
-
-## 11. Fresh Docker named volume was root-owned — FIXED IN GATE ORCHESTRATION
-
-- **Symptom**: the first isolated synthetic smoke attempt failed before data
-  generation with `PermissionError` while creating `tmp/ci/manifests`.
-- **Root cause**: Docker created the new named-volume mountpoint as UID/GID
-  `0:0`, mode `0755`; mounting it over `/app/tmp/ci` hid the image's writable
-  parent directory from the non-root `appuser`.
-- **Fix and verification**: a one-shot, network-disabled initializer changed
-  only the explicitly named temporary volume to UID/GID `1000:1000`. A direct
-  `appuser` write/delete probe passed, then the unchanged Compose smoke command
-  completed as non-root with `network_mode=none`. The volume was mounted
-  read-only for the API smoke and removed during cleanup. No Dockerfile,
-  application, accepted metric, or public artifact changed.
-
-## 12. Over-strict manual pipeline runner blocked report-owned files — RESOLVED IN GATE ORCHESTRATION
-
-- **Symptoms**: the first field-ledger container probe used `bash -lc`, whose
-  login-shell path selected system Python instead of `/app/.venv/bin/python`.
-  Subsequent read-only probes completed the synthetic modeling stages but
-  correctly rejected report writes to `/app/assets` and the generated README
-  blocks; the first assets tmpfs was also root-owned and rejected `appuser`.
-- **Cause**: these probes imposed an API-style read-only root filesystem on the
-  existing full smoke command even though `report` intentionally writes figures
-  and generated README blocks into the disposable container layer. This was a
-  verification-runner mismatch, not a model, package, or Dockerfile defect.
-- **Resolution and evidence**: the accepted run invoked the image venv
-  explicitly, retained `network=none`, two CPUs, two GB of memory, non-root UID
-  1000, disabled GPU visibility, and stored `tmp/ci` in a clean named volume.
-  Report-owned files stayed in the disposable writable container layer, which
-  was deleted at exit. The complete pipeline passed in 19.587 seconds. Both API
-  containers separately retained read-only root filesystems and the synthetic
-  volume was mounted read-only. No host dataset, model, accepted result, or
-  repository file was mounted writable.
-
-## Residual nondeterminism notes
-
-- LightGBM runs with `deterministic=true, force_row_wise=true` and a fixed
-  thread count; sklearn and EBM get derived `random_state` values; every
-  bootstrap iteration derives its own seed. Reproducibility is claimed **given
-  the committed uv.lock and the same platform/BLAS**, not bitwise across
-  operating systems.
-- Latency numbers depend on the host CPU and thread environment; the
-  measurement records platform details and is not comparable across machines.
+- LightGBM uses deterministic row-wise execution and fixed thread counts;
+  sklearn, EBM, bootstrap iterations, refits, and resamples receive derived
+  seeds.
+- Reproducibility is claimed for the committed lockfile and equivalent
+  platform/BLAS behavior, not bitwise identity across operating systems.
+- Latency is host- and thread-dependent and must not be compared across
+  machines without matching the recorded environment.
+- Faithfulness perturbations are model sanity checks, not causal evidence.

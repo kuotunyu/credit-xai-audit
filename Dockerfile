@@ -31,7 +31,7 @@ COPY src ./src
 COPY app ./app
 COPY configs ./configs
 COPY manifests ./manifests
-COPY MODEL_CARD.md DATA_CARD.md README.md README_zh-TW.md LICENSE ./
+COPY MODEL_CARD.md DATA_CARD.md README.md README_en.md LICENSE ./
 RUN mkdir -p models results assets tmp data && chown -R appuser:appuser /app
 ENV PATH="/app/.venv/bin:$PATH" \
     PYTHONPATH="/app/src" \

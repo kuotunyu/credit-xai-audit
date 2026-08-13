@@ -239,7 +239,7 @@ def _verify_generated_outputs(root: Path, errors: list[str]) -> None:
                 errors.append(f"{table_relative.as_posix()}: content differs from summary")
 
         run_label = f"{summary['run']['name']} / config {summary['run']['config_hash'][:12]}"
-        for readme_name in ("README.md", "README_zh-TW.md"):
+        for readme_name in ("README.md", "README_en.md"):
             text = (root / readme_name).read_text(encoding="utf-8")
             for section in SECTIONS:
                 match = _marker_pattern(section).search(text)
