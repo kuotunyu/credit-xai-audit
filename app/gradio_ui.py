@@ -359,13 +359,13 @@ def build_ui(cfg: Config) -> gr.Blocks:
                 return (*[gr.skip() for _ in FEATURES], note)
             return (*values, note)
 
-        analyze_btn.click(
+        cast(Any, analyze_btn).click(
             analyze,
             inputs=ordered_controls,
             outputs=[result_html, attribution_table],
             show_progress="minimal",
         )
-        load_btn.click(
+        cast(Any, load_btn).click(
             load_case,
             inputs=[case_index],
             outputs=[*ordered_controls, case_note],

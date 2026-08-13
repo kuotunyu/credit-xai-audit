@@ -16,9 +16,15 @@ rewriting the historical candidate gates.
 - GitHub's dependency graph then identified vulnerable transitive versions held
   by Gradio 5. The optional UI constraint was migrated to Gradio 6 and the lock
   now resolves Gradio 6.24.0, Pillow 12.3.0, and Starlette 1.6.0.
+- After the refreshed graph completed, GitHub reclassified all 29 original
+  alerts as `fixed`; none was dismissed or accepted as tolerable risk.
 - App-level theme and stylesheet parameters moved from `Blocks` to the mounted
   Gradio boundary. Regression tests verify that construction emits no moved-
   parameter warning and that the mounted HTTP config retains the audit CSS.
+- Gradio 6's Linux type surface omits `Button.click` although the runtime method
+  remains present. The two callback registration points use narrow `Any` casts;
+  strict Mypy still covers every other source path and passes in an isolated
+  Linux Python 3.11/uv environment as well as the Windows release environment.
 - The refreshed local source gate passed Ruff check/format, strict Mypy for 65
   source files, and 159 tests. Four third-party warnings remain: three SHAP/
   Matplotlib pending deprecations and one Starlette test-client migration notice.

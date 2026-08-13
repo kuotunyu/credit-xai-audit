@@ -134,8 +134,8 @@
     },
     {
       "path": "app/gradio_ui.py",
-      "bytes": 14731,
-      "sha256": "2b23972b0be30cdcde36aaa5823bb10485ce51507a4369688fd7cd24de7e72f1"
+      "bytes": 14753,
+      "sha256": "28281a6833a17aa8c27981cca2e02f45a22f27546637df537770d340c0a98309"
     },
     {
       "path": "app/main.py",
@@ -209,8 +209,8 @@
     },
     {
       "path": "docs/release/VERIFICATION.md",
-      "bytes": 49378,
-      "sha256": "5e00ed32137ff699c343c10813cf57301d1f58b339108ae07910dec3a46cc201"
+      "bytes": 49841,
+      "sha256": "0414073606670250d06539b6fd74d66c7d906d8991be5acf7112679d2a57e0ff"
     },
     {
       "path": "docs/superpowers/plans/2026-08-12-credit-xai-release-candidate.md",
