@@ -2,6 +2,29 @@
 
 > **Historical 2005 educational audit. Not for lending decisions. Not financial advice.**
 
+This repository audits whether model probabilities and explanations are
+trustworthy enough to inspect—not merely whether a model can emit a prediction.
+[繁體中文版](README_zh-TW.md)
+
+![Credit XAI Audit canonical model-absent console](assets/ui_audit_console.png)
+
+*The public candidate excludes model bundles. This canonical screenshot shows
+the explicit model-absent state and contains no fabricated prediction.*
+
+## 30-second portfolio summary
+
+| Capability | What this repository demonstrates |
+|---|---|
+| Model comparison | Logistic regression, EBM, and LightGBM under one frozen split and evaluation contract. |
+| Probability quality | Validation-only calibration selection plus bootstrap uncertainty for discrimination and calibration metrics. |
+| Explainability | Model-appropriate attribution methods tested for stability and perturbation faithfulness. |
+| Delivery | Typed Python package, FastAPI and Gradio surfaces, CPU-only container, CI gates, privacy scan, and reproducible evidence. |
+
+Review the [methodology](#methodology-in-one-page),
+[limitations](#limitations-and-intended-use), and
+[release verification](docs/release/VERIFICATION.md) before interpreting the
+reported results.
+
 An educational, reproducible explainability (XAI) audit of the
 [UCI Default of Credit Card Clients](https://archive.ics.uci.edu/dataset/350/default+of+credit+card+clients)
 dataset (Taiwan, 2005; 30,000 clients, 23 features). Three model families —

@@ -3,6 +3,26 @@
 > **Historical 2005 educational audit. Not for lending decisions. Not financial advice.**
 > （2005 年歷史資料之教育用途稽核。不得用於授信決策。非財務建議。）
 
+這個 Repository 要檢驗的不是「模型能不能吐出預測」，而是其機率與解釋是否有
+足夠證據可供審查。[English version](README.md)
+
+![Credit XAI Audit canonical model-absent console](assets/ui_audit_console.png)
+
+*公開候選版本不包含 model bundle。這張 canonical 截圖刻意呈現模型尚未載入的
+狀態，不含任何虛構預測。*
+
+## 30 秒作品摘要
+
+| Capability | 這個 Repository 證明什麼 |
+|---|---|
+| Model comparison | 在同一份凍結切分與評估契約下比較 logistic regression、EBM 與 LightGBM。 |
+| Probability quality | 只用 validation set 選擇校準方法，並用 bootstrap 區間呈現辨識與校準指標的不確定性。 |
+| Explainability | 依模型選用合適歸因方法，並檢驗解釋穩定性與 perturbation faithfulness。 |
+| Delivery | Typed Python package、FastAPI、Gradio、CPU-only container、CI、隱私掃描與可重現證據。 |
+
+解讀結果前請先看[方法摘要](#方法摘要)、[限制與使用範圍](#限制與使用範圍)與
+[發布驗證紀錄](docs/release/VERIFICATION.md)。
+
 本專案是對 [UCI Default of Credit Card Clients](https://archive.ics.uci.edu/dataset/350/default+of+credit+card+clients)
 資料集（台灣，2005 年，30,000 筆、23 個特徵）進行的教育用途、可完整重現的
 可解釋性（XAI）稽核。三個模型家族 — logistic regression、Explainable Boosting
