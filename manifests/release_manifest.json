@@ -44,8 +44,8 @@
     },
     {
       "path": ".gitignore",
-      "bytes": 519,
-      "sha256": "49433df15e7f4d8b368065ddcbb5dcd68253e04b4b44802b62993196e365854e"
+      "bytes": 667,
+      "sha256": "8e3c37a73cbc7d4e137e22be63e20df3493a128b218b21577dbcbb76bc2856e1"
     },
     {
       "path": ".impeccable/design.json",
@@ -109,13 +109,13 @@
     },
     {
       "path": "README.md",
-      "bytes": 15404,
-      "sha256": "12dd1412ef2d23a51b81d333e4e4d78feae8291dbd85896c681d1762eb161437"
+      "bytes": 18931,
+      "sha256": "902b53345fa60fe7d9612d89f6d2cfcc0edcf8e5734a637a0af4aa53ef37328d"
     },
     {
       "path": "README_zh-TW.md",
-      "bytes": 14348,
-      "sha256": "6441b1935a3211d6ff2261325e40599c812b7f4a87087bd139ddad51e9e9f596"
+      "bytes": 18488,
+      "sha256": "472011614cac8f7f4e6ecdfef2453567a12ba2bdc6a11a23b863ce45576e1f00"
     },
     {
       "path": "SECURITY.md",
