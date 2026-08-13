@@ -35,6 +35,17 @@ Thumbs.db
 .vscode/
 .idea/
 
+# Maintainer notes & local workspaces
+.agents/
+.claude/
+CLAUDE.md
+PLAN.md
+PROGRESS.md
+PROJECT_PLAN.md
+interview*.md
+INTERVIEW_PREP.md
+*.private.md
+
 # scratch
 *.log
 tmp/

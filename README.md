@@ -1,15 +1,20 @@
 # credit-xai-audit
 
+[![CI](https://github.com/kuotunyu/credit-xai-audit/actions/workflows/ci.yml/badge.svg)](https://github.com/kuotunyu/credit-xai-audit/actions/workflows/ci.yml)
+![Python](https://img.shields.io/badge/Python-3.11%2B-3776AB?logo=python&logoColor=white)
+![FastAPI](https://img.shields.io/badge/FastAPI-0.110%2B-009688?logo=fastapi&logoColor=white)
+![Gradio](https://img.shields.io/badge/UI-Gradio-orange?logo=gradio&logoColor=white)
+[![License: MIT](https://img.shields.io/badge/License-MIT-2EA44F.svg)](LICENSE)
+
 > **Historical 2005 educational audit. Not for lending decisions. Not financial advice.**
 
-This repository audits whether model probabilities and explanations are
-trustworthy enough to inspect—not merely whether a model can emit a prediction.
-[繁體中文版](README_zh-TW.md)
+This repository audits whether model probabilities and explanations are trustworthy enough to inspect—not merely whether a model can emit a prediction. [繁體中文版](README_zh-TW.md)
 
 ![Credit XAI Audit canonical model-absent console](assets/ui_audit_console.png)
 
-*The public candidate excludes model bundles. This canonical screenshot shows
-the explicit model-absent state and contains no fabricated prediction.*
+*The public candidate excludes model bundles. This canonical screenshot shows the explicit model-absent state and contains no fabricated prediction.*
+
+---
 
 ## 30-second portfolio summary
 
@@ -20,31 +25,88 @@ the explicit model-absent state and contains no fabricated prediction.*
 | Explainability | Model-appropriate attribution methods tested for stability and perturbation faithfulness. |
 | Delivery | Typed Python package, FastAPI and Gradio surfaces, CPU-only container, CI gates, privacy scan, and reproducible evidence. |
 
-Review the [methodology](#methodology-in-one-page),
-[limitations](#limitations-and-intended-use), and
-[release verification](docs/release/VERIFICATION.md) before interpreting the
-reported results.
+Review the [methodology](#methodology-in-one-page), [limitations](#limitations-and-intended-use), and [release verification](docs/release/VERIFICATION.md) before interpreting the reported results.
 
-An educational, reproducible explainability (XAI) audit of the
-[UCI Default of Credit Card Clients](https://archive.ics.uci.edu/dataset/350/default+of+credit+card+clients)
-dataset (Taiwan, 2005; 30,000 clients, 23 features). Three model families —
-logistic regression, Explainable Boosting Machine (EBM), and LightGBM — are
-trained, calibrated, and audited for:
+An educational, reproducible explainability (XAI) audit of the [UCI Default of Credit Card Clients](https://archive.ics.uci.edu/dataset/350/default+of+credit+card+clients) dataset (Taiwan, 2005; 30,000 clients, 23 features). Three model families — logistic regression, Explainable Boosting Machine (EBM), and LightGBM — are trained, calibrated, and audited for:
 
-- **probability quality** (ROC-AUC, PR-AUC, log loss, Brier, ECE, latency, all
-  with 95% bootstrap confidence intervals),
-- **explanation stability** (bootstrap top-k rank stability and fixed-case local
-  attribution stability),
-- **explanation faithfulness** (top-attributed vs matched-random feature
-  replacement),
+- **probability quality** (ROC-AUC, PR-AUC, log loss, Brier, ECE, latency, all with 95% bootstrap confidence intervals),
+- **explanation stability** (bootstrap top-k rank stability and fixed-case local attribution stability),
+- **explanation faithfulness** (top-attributed vs matched-random feature replacement),
 - a **descriptive group-metric snapshot** by sex and predeclared age bins.
 
-This repository makes **no causal claims** and **no discrimination claims**, and
-provides **no advice on obtaining credit**. It is a methods showcase on a
-20-year-old public dataset. Every number below is generated from
-[`results/derived/summary.json`](results/derived/summary.json) by
-`python -m credit_xai.cli report` — never edited by hand. 繁體中文版:
-[README_zh-TW.md](README_zh-TW.md).
+This repository makes **no causal claims** and **no discrimination claims**, and provides **no advice on obtaining credit**. It is a methods showcase on a 20-year-old public dataset. Every number below is generated from [`results/derived/summary.json`](results/derived/summary.json) by `python -m credit_xai.cli report` — never edited by hand. 繁體中文版: [README_zh-TW.md](README_zh-TW.md).
+
+---
+
+## System Architecture & Pipeline
+
+### 1. Credit Model XAI Audit & Evaluation Pipeline
+
+```mermaid
+%%{init: {'themeVariables': {'fontSize': '18px'}}}%%
+flowchart TD
+    subgraph DataStage ["Phase 1: Deterministic Data Engineering & Frozen Split"]
+        direction LR
+        UCI[("UCI Credit Card Clients Dataset<br/>(30,000 clients · 23 features)")] --> Clean["Data Cleaning & Encoding<br/>(EDUCATION/MARRIAGE mapping)"] --> Split[("Stratified Frozen Split (70/15/15)<br/>(21k Train · 4.5k Val · 4.5k Test)")]
+    end
+
+    subgraph ModelStage ["Phase 2: Model Training & Validation Calibration"]
+        direction LR
+        Split --> Models["Three Model Families<br/>(Logistic · EBM · LightGBM)"] --> Calib["Validation Calibration Selection<br/>(Platt Sigmoid vs Isotonic Regression)"] --> Frozen["Frozen Decision Threshold<br/>(1 - Validation Base Rate)"]
+    end
+
+    subgraph AuditStage ["Phase 3: Four Audit & XAI Dimensions"]
+        direction LR
+        Frozen --> D1["1. Probability Quality<br/>(ROC/PR-AUC · ECE · Brier)"] & D2["2. Exact Attributions<br/>(Linear SHAP · EBM · TreeSHAP)"] & D3["3. Stability & Faithfulness<br/>(Refit Jaccard · Perturbation Ratio)"]
+        D1 & D2 & D3 --> Rep[("Immutable Audit Report<br/>(results/derived/summary.json)")]
+    end
+
+    DataStage --> ModelStage --> AuditStage
+
+    classDef srcStyle fill:#e7f5ff,stroke:#1971c2,stroke-width:2px,color:#212529
+    classDef procStyle fill:#f3e5f5,stroke:#7b1fa2,stroke-width:2px,color:#212529
+    classDef evalStyle fill:#e6fcf5,stroke:#0ca678,stroke-width:2px,color:#212529
+
+    class UCI,Split,Frozen,Rep srcStyle
+    class Clean,Models,Calib,D1,D2,D3 procStyle
+
+    style DataStage fill:#f8f9fa,stroke:#1971c2,stroke-width:2px,color:#1971c2,stroke-dasharray: 4 4
+    style ModelStage fill:#faf5ff,stroke:#7b1fa2,stroke-width:2px,color:#7b1fa2,stroke-dasharray: 4 4
+    style AuditStage fill:#f4fbf7,stroke:#0ca678,stroke-width:2px,color:#0ca678,stroke-dasharray: 4 4
+```
+
+### 2. Serving Architecture & Release Verification
+
+```mermaid
+%%{init: {'themeVariables': {'fontSize': '18px'}}}%%
+flowchart TD
+    subgraph ServStage ["Phase 1: API Serving & UI Console"]
+        direction LR
+        Bundle[("Trained Model Bundles<br/>(Local artifact store)")] --> API["FastAPI Backend<br/>(Explicit 503 model-absent fallback)"] --> WebUI(["Gradio Audit Console<br/>(Historical model replay & attributions)"])
+    end
+
+    subgraph GateStage ["Phase 2: Multi-gate Release Verification"]
+        direction LR
+        Artifacts[("Audit Evidence & Metrics<br/>(results/ · manifests/)")] --> Verify{"Release Gates Verifier<br/>(Claims · Privacy · Manifest)"} --> Public(["Verified Public Candidate<br/>(Clean Publication)"])
+    end
+
+    ServStage --> GateStage
+
+    classDef srcStyle fill:#e7f5ff,stroke:#1971c2,stroke-width:2px,color:#212529
+    classDef procStyle fill:#f3e5f5,stroke:#7b1fa2,stroke-width:2px,color:#212529
+    classDef condStyle fill:#fff9db,stroke:#f59f00,stroke-width:2px,color:#212529
+    classDef safeStyle fill:#e6fcf5,stroke:#0ca678,stroke-width:2px,color:#212529
+
+    class Bundle,Artifacts srcStyle
+    class API,WebUI procStyle
+    class Verify condStyle
+    class Public safeStyle
+
+    style ServStage fill:#faf5ff,stroke:#7b1fa2,stroke-width:2px,color:#7b1fa2,stroke-dasharray: 4 4
+    style GateStage fill:#f4fbf7,stroke:#0ca678,stroke-width:2px,color:#0ca678,stroke-dasharray: 4 4
+```
+
+---
 
 ## Results
 
@@ -85,11 +147,7 @@ Calibration method selected on validation log loss only; the test set never part
 
 ### Explainability
 
-Each model gets the exact/analytic attribution method appropriate to its class:
-TreeSHAP for LightGBM, exact linear SHAP for logistic regression (one-hot
-attributions summed back to parent features), and EBM's own additive term
-contributions. Attributions are compared qualitatively, never numerically,
-across models.
+Each model gets the exact/analytic attribution method appropriate to its class: TreeSHAP for LightGBM, exact linear SHAP for logistic regression (one-hot attributions summed back to parent features), and EBM's own additive term contributions. Attributions are compared qualitatively, never numerically, across models.
 
 <!-- AUTOGEN:XAI:START -->
 <!-- generated by `credit-xai report` from results/derived/summary.json (run: full / config 187eaca76743); do not edit by hand -->
@@ -172,6 +230,8 @@ Descriptive snapshot of model behavior on 2005 historical data, by SEX (UCI codi
 
 ![Group AUC](assets/group_auc.png)
 
+---
+
 ## Quickstart
 
 Requires Python 3.11+ and [uv](https://docs.astral.sh/uv/).
@@ -191,12 +251,7 @@ uv run --no-sync python -m credit_xai.cli report    --config configs/smoke.yaml
 uv run --no-sync python -m credit_xai.cli serve     --config configs/smoke.yaml  # API + /ui
 ```
 
-`configs/smoke.yaml` finishes in minutes on a laptop CPU; `configs/full.yaml`
-raises every budget (1,000 bootstrap replicates, 20 refits, full-test SHAP).
-The accepted full run took approximately 4.5 hours on Colab CPU; hardware and
-BLAS differences change runtime. Long steps checkpoint each iteration and support
-`--resume` after interruption; partial results without `--resume` fail fast.
-No GPU is used anywhere.
+`configs/smoke.yaml` finishes in minutes on a laptop CPU; `configs/full.yaml` raises every budget (1,000 bootstrap replicates, 20 refits, full-test SHAP). The accepted full run took approximately 4.5 hours on Colab CPU. Long steps checkpoint each iteration and support `--resume` after interruption. No GPU is used anywhere.
 
 Docker (CPU-only):
 
@@ -205,14 +260,13 @@ docker compose up api                      # serves the API on :8000 (mount your
 docker compose --profile smoke run smoke   # full pipeline on synthetic data inside the container
 ```
 
-No model bundle is published. Without a locally trained, hash-checked bundle,
-the API remains healthy but prediction/explanation endpoints return 503. When a
-bundle is present, outputs are labeled as a historical educational model replay,
-not a decision or real-world risk assessment.
+No model bundle is published. Without a locally trained, hash-checked bundle, the API remains healthy but prediction/explanation endpoints return 503.
+
+---
 
 ## Repository layout
 
-```
+```text
 configs/          smoke.yaml / full.yaml (only budgets differ)
 manifests/        committed provenance: dataset fingerprint, frozen split, schema, fixed cases
 src/credit_xai/   all logic (data, models, calibration, metrics, explain, fairness, reporting, serving)
@@ -223,62 +277,35 @@ app/              FastAPI app + Gradio UI
 notebooks/        thin wrappers only — logic lives in src/
 ```
 
+---
+
 ## Methodology in one page
 
-- **Data**: UCI id=350, fetched from the official archive (sha256-pinned in
-  `manifests/dataset_fingerprint.json`). `ID` dropped. Undocumented codes
-  collapsed into documented catch-alls (EDUCATION {0,5,6}→4, MARRIAGE {0}→3);
-  exact counts in [DATA_CARD.md](DATA_CARD.md). PAY_* kept ordinal-numeric.
-- **Split**: stratified 70/15/15 (21,000/4,500/4,500), frozen as explicit row
-  indices in `manifests/split_manifest.json`; downstream code loads the
-  manifest and never re-splits.
-- **Calibration**: Platt and isotonic fit on validation predictions only;
-  winner selected by validation log loss; decision threshold = validation
-  quantile at (1 − base rate). Both frozen before any test evaluation.
-- **CIs**: stratified test-set bootstrap (class counts preserved), percentile
-  intervals; per-iteration seeds derived from a single root seed, so runs are
-  reproducible and resumable, and replicate *i* is identical across models
-  (paired comparisons possible).
-- **Stability**: `refit` = retrain on bootstrap resamples of train and re-derive
-  global importances (pipeline stability); `resample` = resample only the
-  explained rows (estimator noise floor). Fixed local cases are predeclared,
-  label-stratified validation rows.
-- **Faithfulness**: replace the top-attributed feature with validation donor
-  values vs a uniformly chosen other feature under the identical mechanism;
-  report mean |Δp| ratio with a paired bootstrap CI. A sanity check on the
-  explainer-model pair — not causal evidence.
-- **Group snapshot**: descriptive only, at the frozen threshold, with
-  small-cell CIs suppressed. See the wording constraints in
-  [MODEL_CARD.md](MODEL_CARD.md).
+- **Data**: UCI id=350, fetched from the official archive (sha256-pinned in `manifests/dataset_fingerprint.json`). `ID` dropped. Undocumented codes collapsed into documented catch-alls (EDUCATION {0,5,6}→4, MARRIAGE {0}→3); exact counts in [DATA_CARD.md](DATA_CARD.md). PAY_* kept ordinal-numeric.
+- **Split**: stratified 70/15/15 (21,000/4,500/4,500), frozen as explicit row indices in `manifests/split_manifest.json`; downstream code loads the manifest and never re-splits.
+- **Calibration**: Platt and isotonic fit on validation predictions only; winner selected by validation log loss; decision threshold = validation quantile at (1 − base rate). Both frozen before any test evaluation.
+- **CIs**: stratified test-set bootstrap (class counts preserved), percentile intervals; per-iteration seeds derived from a single root seed, so runs are reproducible and resumable, and replicate *i* is identical across models (paired comparisons possible).
+- **Stability**: `refit` = retrain on bootstrap resamples of train and re-derive global importances (pipeline stability); `resample` = resample only the explained rows (estimator noise floor). Fixed local cases are predeclared, label-stratified validation rows.
+- **Faithfulness**: replace the top-attributed feature with validation donor values vs a uniformly chosen other feature under the identical mechanism; report mean |Δp| ratio with a paired bootstrap CI. A sanity check on the explainer-model pair — not causal evidence.
+- **Group snapshot**: descriptive only, at the frozen threshold, with small-cell CIs suppressed. See the wording constraints in [MODEL_CARD.md](MODEL_CARD.md).
+
+---
 
 ## Limitations and intended use
 
-- Taiwan, 2005, one bank's credit-card portfolio: the data is historical and
-  unrepresentative of any current population. **Do not** use these models or
-  numbers for any real decision.
-- Attribution values depend on the explainer's assumptions (independence for
-  linear SHAP, path-dependent expectations for TreeSHAP fallback, additive
-  decomposition for EBM); they describe model behavior, not real-world causes.
-- Known environment fallbacks and deviations are logged in
-  [FAILURES.md](FAILURES.md).
-- Reproducibility is tied to the committed lockfile, seed derivation, and
-  platform/BLAS. Latency is host-specific; bitwise equivalence across operating
-  systems is not claimed.
+- Taiwan, 2005, one bank's credit-card portfolio: the data is historical and unrepresentative of any current population. **Do not** use these models or numbers for any real decision.
+- Attribution values depend on the explainer's assumptions (independence for linear SHAP, path-dependent expectations for TreeSHAP fallback, additive decomposition for EBM); they describe model behavior, not real-world causes.
+- Known environment fallbacks and deviations are logged in [FAILURES.md](FAILURES.md).
+- Reproducibility is tied to the committed lockfile, seed derivation, and platform/BLAS.
+
+---
 
 ## Release verification and public boundary
 
-The candidate retains compact machine-produced evidence but excludes the raw
-UCI rows, serialized models, environments, private progress/handoff material,
-and the private archive's Git history. See
-[PUBLIC_BOUNDARY.md](docs/release/PUBLIC_BOUNDARY.md) and the generated
-[`release_manifest.json`](manifests/release_manifest.json). Claim, privacy,
-package, API, and archive gates are described in
-[VERIFICATION.md](docs/release/VERIFICATION.md).
+The candidate retains compact machine-produced evidence but excludes the raw UCI rows, serialized models, environments, private progress/handoff material, and the private archive's Git history. See [PUBLIC_BOUNDARY.md](docs/release/PUBLIC_BOUNDARY.md) and the generated [`release_manifest.json`](manifests/release_manifest.json). Claim, privacy, package, API, and archive gates are described in [VERIFICATION.md](docs/release/VERIFICATION.md).
+
+---
 
 ## License
 
-Code: MIT — see [LICENSE](LICENSE). The underlying UCI dataset is distributed
-under CC BY 4.0: Yeh, I. (2009), *Default of Credit Card Clients*, UCI Machine
-Learning Repository, [doi:10.24432/C55S3H](https://doi.org/10.24432/C55S3H).
-The repository received the dataset in 2016; the observations are from 2005.
-The dataset itself is never committed to this repository. See [CITATION.cff](CITATION.cff).
+Code: MIT — see [LICENSE](LICENSE). The underlying UCI dataset is distributed under CC BY 4.0: Yeh, I. (2009), *Default of Credit Card Clients*, UCI Machine Learning Repository, [doi:10.24432/C55S3H](https://doi.org/10.24432/C55S3H). The dataset itself is never committed to this repository. See [CITATION.cff](CITATION.cff).
