@@ -13,6 +13,7 @@ def test_release_manifest_is_sorted_complete_and_self_excluding() -> None:
     manifest = build_release_manifest(PROJECT_ROOT)
     paths = [entry["path"] for entry in manifest["files"]]
 
+    assert manifest["candidate_state"] == "published"
     assert paths == sorted(paths)
     assert "manifests/release_manifest.json" not in paths
     assert manifest["source"]["commit"] == SOURCE_SNAPSHOT
@@ -42,6 +43,21 @@ def test_release_manifest_contains_no_excluded_paths() -> None:
     assert not any("progress" in path or path.startswith("notebooks/") for path in paths)
     assert not any(path.startswith("data/") for path in paths)
     assert not any(path.startswith("models/") and path != "models/.gitkeep" for path in paths)
+
+
+def test_release_manifest_excludes_internal_agent_and_design_artifacts() -> None:
+    paths = {entry["path"] for entry in build_release_manifest(PROJECT_ROOT)["files"]}
+
+    forbidden_files = {
+        ".impeccable/design.json",
+        "AGENTS.md",
+        "DESIGN.md",
+        "PRODUCT.md",
+        "docs/release/OWNER_ACTIONS.md",
+    }
+
+    assert paths.isdisjoint(forbidden_files)
+    assert not any(path.startswith("docs/superpowers/") for path in paths)
 
 
 def test_release_manifest_builds_without_git_metadata(tmp_path: Path) -> None:

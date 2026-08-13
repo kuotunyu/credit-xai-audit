@@ -16,7 +16,7 @@ def test_non_editable_install_imports_from_unicode_checkout(tmp_path: Path) -> N
     checkout.mkdir()
     for directory in ("src",):
         shutil.copytree(PROJECT_ROOT / directory, checkout / directory)
-    for filename in ("pyproject.toml", "uv.lock", "README.md", "LICENSE"):
+    for filename in ("pyproject.toml", "uv.lock", "README.md", "README_en.md", "LICENSE"):
         shutil.copy2(PROJECT_ROOT / filename, checkout / filename)
 
     setup_script = PROJECT_ROOT / "scripts" / "setup_environment.py"

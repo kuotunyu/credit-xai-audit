@@ -16,7 +16,7 @@ owner; never mount downloaded or third-party model directories.
 
 ## Data and privacy
 
-The public candidate contains aggregate/derived evidence and selected
+The public release contains aggregate/derived evidence and selected
 attribution rows, but no raw UCI dataset, serialized model, credential, or
 private progress/handoff material. The original public dataset is historical
 and contains no direct identifier after `ID` is dropped; it must still remain
@@ -24,7 +24,5 @@ outside version control.
 
 ## Reporting a vulnerability
 
-After publication, use the repository's private security-advisory channel.
-Before publication, report issues directly to the repository owner through the
-existing private collaboration channel. Do not include real credentials,
-private data, or an untrusted pickle in an issue.
+Use the repository's private security-advisory channel. Do not include real
+credentials, private data, or an untrusted pickle in a public issue.

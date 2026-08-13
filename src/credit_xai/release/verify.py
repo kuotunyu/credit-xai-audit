@@ -1,4 +1,4 @@
-"""Command-line release gates for the unpublished public candidate."""
+"""Command-line release gates for the public repository."""
 
 from __future__ import annotations
 

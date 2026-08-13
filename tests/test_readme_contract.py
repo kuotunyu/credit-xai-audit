@@ -7,13 +7,17 @@ IMAGE = PROJECT_ROOT / "assets" / "ui_audit_console.png"
 
 
 def test_readmes_open_with_recruiter_summary_and_canonical_ui_image() -> None:
-    english = (PROJECT_ROOT / "README.md").read_text(encoding="utf-8")
-    chinese = (PROJECT_ROOT / "README_zh-TW.md").read_text(encoding="utf-8")
+    chinese = (PROJECT_ROOT / "README.md").read_text(encoding="utf-8")
+    english = (PROJECT_ROOT / "README_en.md").read_text(encoding="utf-8")
 
     assert "## 30-second portfolio summary" in english
     assert "## 30 秒作品摘要" in chinese
+    assert "[正體中文](README.md)" in english
+    assert "[English](README_en.md)" in chinese
     for text in (english, chinese):
         assert "assets/ui_audit_console.png" in text
+        assert text.count("```mermaid") == 1
+        assert "Group metrics" in text
         for capability in (
             "Model comparison",
             "Probability quality",

@@ -2,7 +2,7 @@
 name = "credit-xai-audit"
 version = "0.1.0"
 description = "Historical 2005 educational XAI audit of the UCI Default of Credit Card Clients dataset. Not for lending decisions. Not financial advice."
-readme = "README.md"
+readme = "README_en.md"
 license = { file = "LICENSE" }
 requires-python = ">=3.11,<3.13"
 dependencies = [
@@ -63,7 +63,7 @@ include = [
     "/LICENSE",
     "/MODEL_CARD.md",
     "/README.md",
-    "/README_zh-TW.md",
+    "/README_en.md",
     "/SECURITY.md",
     "/pyproject.toml",
     "/uv.lock",

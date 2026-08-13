@@ -30,7 +30,7 @@ _CSS_PATH = Path(__file__).with_name("gradio_theme.css")
 _ATTRIBUTION_COLUMNS = ["特徵", "影響值 (link scale)", "方向"]
 _FINISH_CONTRACT = (
     "unreviewed and undocumented is unfinished; this build ends with the finish "
-    "review, the verdict, and DESIGN.md"
+    "review, the verdict, and traceable public evidence"
 )
 _EXAMPLE = {
     "LIMIT_BAL": 200000,

@@ -1,6 +1,6 @@
-# Credit XAI Audit｜信用模型 XAI 稽核
+# Credit XAI Audit
 
-[English](README_en.md)
+[正體中文](README.md)
 
 [![CI](https://github.com/kuotunyu/credit-xai-audit/actions/workflows/ci.yml/badge.svg)](https://github.com/kuotunyu/credit-xai-audit/actions/workflows/ci.yml)
 ![Python](https://img.shields.io/badge/Python-3.11%2B-3776AB?logo=python&logoColor=white)
@@ -9,60 +9,59 @@
 [![License: MIT](https://img.shields.io/badge/License-MIT-2EA44F.svg)](LICENSE)
 
 > **Historical 2005 educational audit. Not for lending decisions. Not financial advice.**
-> （2005 年歷史資料之教育用途稽核。不得用於授信決策。非財務建議。）
 
-這個 Repository 要檢驗的不是「模型能不能吐出預測」，而是其機率與解釋是否有足夠證據可供審查。
+This repository audits whether model probabilities and explanations are trustworthy enough to inspect—not merely whether a model can emit a prediction.
 
 ![Credit XAI Audit canonical model-absent console](assets/ui_audit_console.png)
 
-*公開版本不包含 model bundle。這張截圖刻意呈現模型尚未載入的安全狀態，不含任何虛構預測。*
+*The public release excludes model bundles. This screenshot deliberately shows the safe model-absent state and contains no fabricated prediction.*
 
 ---
 
-## 30 秒作品摘要
+## 30-second portfolio summary
 
-| Capability | 這個 Repository 證明什麼 |
+| Capability | What this repository demonstrates |
 |---|---|
-| Model comparison | 在同一份凍結切分與評估契約下比較 Logistic Regression、EBM 與 LightGBM。 |
-| Probability quality | 只用 Validation set 選擇校準方法，並用 Bootstrap 區間呈現辨識與校準指標的不確定性。 |
-| Explainability | 依模型選用合適歸因方法，並檢驗解釋穩定性與 Perturbation Faithfulness。 |
-| Delivery | Typed Python package、FastAPI、Gradio、CPU-only container、CI、隱私掃描與可重現證據。 |
+| Model comparison | Logistic regression, EBM, and LightGBM under one frozen split and evaluation contract. |
+| Probability quality | Validation-only calibration selection plus bootstrap uncertainty for discrimination and calibration metrics. |
+| Explainability | Model-appropriate attribution methods tested for stability and perturbation faithfulness. |
+| Delivery | Typed Python package, FastAPI and Gradio surfaces, CPU-only container, CI gates, privacy scan, and reproducible evidence. |
 
-解讀結果前請先看[方法摘要](#方法摘要)、[限制與使用範圍](#限制與使用範圍)與[發布驗證紀錄](docs/release/VERIFICATION.md)。
+Review the [methodology](#methodology-in-one-page), [limitations](#limitations-and-intended-use), and [release verification](docs/release/VERIFICATION.md) before interpreting the reported results.
 
-本專案是對 [UCI Default of Credit Card Clients](https://archive.ics.uci.edu/dataset/350/default+of+credit+card+clients) 資料集（台灣，2005 年，30,000 筆、23 個特徵）進行的教育用途、可完整重現的可解釋性（XAI）稽核。三個模型家族 — Logistic Regression、Explainable Boosting Machine (EBM)、LightGBM — 依序完成訓練、機率校準與稽核：
+An educational, reproducible explainability (XAI) audit of the [UCI Default of Credit Card Clients](https://archive.ics.uci.edu/dataset/350/default+of+credit+card+clients) dataset (Taiwan, 2005; 30,000 clients, 23 features). Three model families — logistic regression, Explainable Boosting Machine (EBM), and LightGBM — are trained, calibrated, and audited for:
 
-- **機率品質**：ROC-AUC、PR-AUC、Log Loss、Brier、ECE、Latency，皆附 95% Bootstrap 信賴區間；
-- **解釋穩定性**：Bootstrap Top-k 排名穩定性與固定案例的 Local Attribution 穩定性；
-- **解釋忠實度 (Faithfulness)**：Top-attributed 特徵替換 vs Matched-random 替換；
-- **族群指標快照**：依 SEX 與預先宣告的年齡分箱，僅作描述性報告。
+- **probability quality** (ROC-AUC, PR-AUC, log loss, Brier, ECE, latency, all with 95% bootstrap confidence intervals),
+- **explanation stability** (bootstrap top-k rank stability and fixed-case local attribution stability),
+- **explanation faithfulness** (top-attributed vs matched-random feature replacement),
+- a **descriptive group-metric snapshot** by sex and predeclared age bins.
 
-本專案**不做因果宣稱**、**不做歧視認定**，也**不提供任何取得授信的建議**。它是在 20 年前公開資料上的方法展示。以下所有數字皆由 [`results/derived/summary.json`](results/derived/summary.json) 經 `python -m credit_xai.cli report` 自動產生，絕不手動編輯。
+This repository makes **no causal claims** and **no discrimination claims**, and provides **no advice on obtaining credit**. It is a methods showcase on a 20-year-old public dataset. Every number below is generated from [`results/derived/summary.json`](results/derived/summary.json) by `python -m credit_xai.cli report` — never edited by hand.
 
 ---
 
-## 系統架構
+## System architecture
 
 ```mermaid
 flowchart TD
-    Data["UCI 2005 公開資料<br/>30,000 筆 · 23 特徵"] --> Split["凍結分層切分<br/>70 / 15 / 15"]
+    Data["UCI 2005 public dataset<br/>30,000 rows · 23 features"] --> Split["Frozen stratified split<br/>70 / 15 / 15"]
     Split --> Models["Logistic · EBM · LightGBM"]
-    Models --> Calib["僅以 Validation 選擇校準方法<br/>並凍結決策門檻"]
-    Calib --> Audit{"四項模型稽核"}
-    Audit --> A1["1. Probability quality<br/>校準與 Bootstrap CI"]
+    Models --> Calib["Validation-only calibration selection<br/>and frozen decision threshold"]
+    Calib --> Audit{"Four model-audit outputs"}
+    Audit --> A1["1. Probability quality<br/>Calibration · Bootstrap CI"]
     Audit --> A2["2. Explainability<br/>Linear SHAP · EBM · TreeSHAP"]
     Audit --> A3["3. Stability & faithfulness<br/>Refit · Resample · Perturbation"]
-    Audit --> A4["4. Group metrics<br/>描述性族群快照"]
-    A1 & A2 & A3 & A4 --> Evidence["可追溯公開證據<br/>results/ · manifests/"]
-    Evidence --> Serve["FastAPI + Gradio<br/>未載入模型時安全回傳 503"]
+    Audit --> A4["4. Group metrics<br/>Descriptive behavior snapshot"]
+    A1 & A2 & A3 & A4 --> Evidence["Traceable public evidence<br/>results/ · manifests/"]
+    Evidence --> Serve["FastAPI + Gradio<br/>Safe 503 without a local bundle"]
     Evidence --> Gates["CI release gates<br/>Claims · Privacy · Package · Docker"]
 ```
 
 ---
 
-## 結果
+## Results
 
-### 測試集指標
+### Test metrics
 
 <!-- AUTOGEN:METRICS:START -->
 <!-- generated by `credit-xai report` from results/derived/summary.json (run: full / config 187eaca76743); do not edit by hand -->
@@ -80,9 +79,7 @@ Test-set metrics, calibrated model (mean and 95% bootstrap CI over 1000 stratifi
 
 ![ROC and PR curves](assets/roc_pr_curves.png)
 
-### 機率校準
-
-校準方法（Platt sigmoid / isotonic）只用 validation set 選擇（validation log loss），test set 完全不參與選擇；決策 threshold 亦於 validation 凍結。
+### Calibration
 
 <!-- AUTOGEN:CALIBRATION:START -->
 <!-- generated by `credit-xai report` from results/derived/summary.json (run: full / config 187eaca76743); do not edit by hand -->
@@ -99,9 +96,9 @@ Calibration method selected on validation log loss only; the test set never part
 
 ![Reliability diagram](assets/reliability_diagram.png)
 
-### 可解釋性
+### Explainability
 
-每個模型使用其類別對應的精確／解析式歸因方法：LightGBM 用 TreeSHAP、logistic regression 用精確 linear SHAP（one-hot 歸因加總回母特徵）、EBM 用其原生的可加 term 貢獻。跨模型只做定性比較，不做數值比較。
+Each model gets the exact/analytic attribution method appropriate to its class: TreeSHAP for LightGBM, exact linear SHAP for logistic regression (one-hot attributions summed back to parent features), and EBM's own additive term contributions. Attributions are compared qualitatively, never numerically, across models.
 
 <!-- AUTOGEN:XAI:START -->
 <!-- generated by `credit-xai report` from results/derived/summary.json (run: full / config 187eaca76743); do not edit by hand -->
@@ -138,9 +135,7 @@ Calibration method selected on validation log loss only; the test set never part
 
 ![Faithfulness perturbation](assets/faithfulness.png)
 
-### 族群指標快照
-
-以下為模型在 2005 年歷史資料上行為的描述性快照（凍結 threshold 下計算），不構成對任何個人或授信實務的結論；小樣本格的信賴區間予以抑制。
+### Group snapshot
 
 <!-- AUTOGEN:GROUPS:START -->
 <!-- generated by `credit-xai report` from results/derived/summary.json (run: full / config 187eaca76743); do not edit by hand -->
@@ -188,14 +183,14 @@ Descriptive snapshot of model behavior on 2005 historical data, by SEX (UCI codi
 
 ---
 
-## 快速開始
+## Quickstart
 
-需要 Python 3.11+ 與 [uv](https://docs.astral.sh/uv/)。
+Requires Python 3.11+ and [uv](https://docs.astral.sh/uv/).
 
 ```bash
-python scripts/setup_environment.py  # 鎖定 CPU-only 非可編輯安裝
+python scripts/setup_environment.py  # pinned, CPU-only, non-editable install
 
-# 完整 pipeline（自動下載 UCI 資料集至 data/raw/，不進 git）
+# full pipeline (downloads the UCI dataset to data/raw/, gitignored)
 uv run --no-sync python -m credit_xai.cli data prepare --config configs/smoke.yaml
 uv run --no-sync python -m credit_xai.cli train --model logistic --config configs/smoke.yaml
 uv run --no-sync python -m credit_xai.cli train --model ebm      --config configs/smoke.yaml
@@ -207,59 +202,60 @@ uv run --no-sync python -m credit_xai.cli report    --config configs/smoke.yaml
 uv run --no-sync python -m credit_xai.cli serve     --config configs/smoke.yaml  # API + /ui
 ```
 
-`configs/smoke.yaml` 可以在一般筆電 CPU 上數分鐘內跑完；`configs/full.yaml` 提高所有預算（1,000 次 Bootstrap 重抽樣、20 次 Refit、完整測試集 SHAP）。被接受的 Full run 在 Colab CPU 上約需 4.5 小時。長任務在每次迭代皆存有 Checkpoint，支援 `--resume` 斷點續跑。全流程不依賴 GPU。
+`configs/smoke.yaml` finishes in minutes on a laptop CPU; `configs/full.yaml` raises every budget (1,000 bootstrap replicates, 20 refits, full-test SHAP). The accepted full run took approximately 4.5 hours on Colab CPU. Long steps checkpoint each iteration and support `--resume` after interruption. No GPU is used anywhere.
 
-Docker 容器化（CPU-only）：
+Docker (CPU-only):
 
 ```bash
-docker compose up api                      # 啟動 API 於 :8000
-docker compose --profile smoke run smoke   # 於容器內對合成資料執行完整 pipeline
+docker compose up api                      # serves the API on :8000 (mount your trained models/)
+docker compose --profile smoke run smoke   # full pipeline on synthetic data inside the container
 ```
 
-公開發布版本不包含 Model bundle。在沒有本地訓練模型的情況下，API 維持健康但推論端點回傳 503。
+No model bundle is published. Without a locally trained, hash-checked bundle, the API remains healthy but prediction/explanation endpoints return 503.
 
 ---
 
-## 專案結構
+## Repository layout
 
 ```text
-configs/          smoke.yaml / full.yaml（僅預算與樣本數不同）
-manifests/        凍結資料指紋、切分索引、結構契約與固定案例
-src/credit_xai/   核心邏輯（data, models, calibration, metrics, explain, fairness, reporting, serving）
-results/raw/      機器產生的步驟輸出（不可變審計追蹤）
-results/derived/  summary.json 與 Markdown 表格（README 數據之唯一來源）
-assets/           圖表與展示截圖
-app/              FastAPI 應用程式與 Gradio 審計控制台 UI
+configs/          smoke.yaml / full.yaml (only budgets differ)
+manifests/        committed provenance: dataset fingerprint, frozen split, schema, fixed cases
+src/credit_xai/   all logic (data, models, calibration, metrics, explain, fairness, reporting, serving)
+results/raw/      machine-written step outputs (committed audit trail)
+results/derived/  summary.json + markdown tables (single source of README numbers)
+assets/           figures generated from raw results
+app/              FastAPI app + Gradio UI
 ```
 
 ---
 
-## 方法摘要
+## Methodology in one page
 
-- **資料**：UCI id=350，官方典藏庫下載（SHA-256 鎖定於 `manifests/dataset_fingerprint.json`）。移除 `ID`，未記載代碼收斂至既有類別（EDUCATION {0,5,6}→4, MARRIAGE {0}→3），詳見 [DATA_CARD.md](DATA_CARD.md)。
-- **切分**：分層 70/15/15（21,000 / 4,500 / 4,500），以明確索引凍結於 `manifests/split_manifest.json`，下游代碼絕不重新隨機切分。
-- **校準**：Platt sigmoid 與 Isotonic 回歸僅於 Validation 預測上擬合；以 Validation Log Loss 擇優；決策門檻凍結於 Validation 之 (1 − Base Rate) 分位數。
-- **信賴區間**：分層 Test-set Bootstrap（保持類別比例），固定種子生成，支援重現與成對比較。
-- **穩定度**：`refit` = 重新訓練於 Bootstrap 訓練重抽樣（流程穩定度）；`resample` = 僅重抽樣解釋樣本（估計器雜訊底限）。
-- **忠實度**：將 Top-attributed 特徵替換為 Validation 供體值，對比隨機替換特徵之 |Δp| 比值。此為 Explainer-model 配對之 Sanity check，非因果推論。
-- **族群快照**：僅作描述性快照，小樣本格抑制 CI，詳見 [MODEL_CARD.md](MODEL_CARD.md)。
-
----
-
-## 限制與使用範圍
-
-- 2005 年台灣單一銀行之歷史資料，不代表任何現代人口母體。**不得**將這些模型或數字用於任何真實授信決策。
-- 歸因值依賴各解釋器之數學假設（Linear SHAP 之特徵獨立性、TreeSHAP 之路徑條件期望值、EBM 之可加分解）；它們描述的是模型行為，而非真實世界因果。
-- 已知環境降級與偏差記錄於 [FAILURES.md](FAILURES.md)。
+- **Data**: UCI id=350, fetched from the official archive (sha256-pinned in `manifests/dataset_fingerprint.json`). `ID` dropped. Undocumented codes collapsed into documented catch-alls (EDUCATION {0,5,6}→4, MARRIAGE {0}→3); exact counts in [DATA_CARD.md](DATA_CARD.md). PAY_* kept ordinal-numeric.
+- **Split**: stratified 70/15/15 (21,000/4,500/4,500), frozen as explicit row indices in `manifests/split_manifest.json`; downstream code loads the manifest and never re-splits.
+- **Calibration**: Platt and isotonic fit on validation predictions only; winner selected by validation log loss; decision threshold = validation quantile at (1 − base rate). Both frozen before any test evaluation.
+- **CIs**: stratified test-set bootstrap (class counts preserved), percentile intervals; per-iteration seeds derived from a single root seed, so runs are reproducible and resumable, and replicate *i* is identical across models (paired comparisons possible).
+- **Stability**: `refit` = retrain on bootstrap resamples of train and re-derive global importances (pipeline stability); `resample` = resample only the explained rows (estimator noise floor). Fixed local cases are predeclared, label-stratified validation rows.
+- **Faithfulness**: replace the top-attributed feature with validation donor values vs a uniformly chosen other feature under the identical mechanism; report mean |Δp| ratio with a paired bootstrap CI. A sanity check on the explainer-model pair — not causal evidence.
+- **Group snapshot**: descriptive only, at the frozen threshold, with small-cell CIs suppressed. See the wording constraints in [MODEL_CARD.md](MODEL_CARD.md).
 
 ---
 
-## 發布驗證與公開邊界
+## Limitations and intended use
 
-公開版本保留精簡機器證據，排除未處理之原始個資、序列化模型、內部筆記與私人 Git 歷史。詳見 [PUBLIC_BOUNDARY.md](docs/release/PUBLIC_BOUNDARY.md) 與 [`release_manifest.json`](manifests/release_manifest.json)。
+- Taiwan, 2005, one bank's credit-card portfolio: the data is historical and unrepresentative of any current population. **Do not** use these models or numbers for any real decision.
+- Attribution values depend on the explainer's assumptions (independence for linear SHAP, path-dependent expectations for TreeSHAP fallback, additive decomposition for EBM); they describe model behavior, not real-world causes.
+- Known environment fallbacks and deviations are logged in [FAILURES.md](FAILURES.md).
+- Reproducibility is tied to the committed lockfile, seed derivation, and platform/BLAS.
 
 ---
 
-## 授權與引用
+## Release verification and public boundary
 
-程式碼採 [MIT License](LICENSE) 授權。UCI 資料集遵循 CC BY 4.0：Yeh, I. (2009), *Default of Credit Card Clients*, UCI Machine Learning Repository, [doi:10.24432/C55S3H](https://doi.org/10.24432/C55S3H)。資料集不隨本 Repository 散布。詳見 [CITATION.cff](CITATION.cff)。
+The public release retains compact machine-produced evidence but excludes the raw UCI rows, serialized models, environments, private progress/handoff material, and the private archive's Git history. See [PUBLIC_BOUNDARY.md](docs/release/PUBLIC_BOUNDARY.md) and the generated [`release_manifest.json`](manifests/release_manifest.json). Claim, privacy, package, API, and archive gates are described in [VERIFICATION.md](docs/release/VERIFICATION.md).
+
+---
+
+## License
+
+Code: MIT — see [LICENSE](LICENSE). The underlying UCI dataset is distributed under CC BY 4.0: Yeh, I. (2009), *Default of Credit Card Clients*, UCI Machine Learning Repository, [doi:10.24432/C55S3H](https://doi.org/10.24432/C55S3H). The dataset itself is never committed to this repository. See [CITATION.cff](CITATION.cff).

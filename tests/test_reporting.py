@@ -65,7 +65,7 @@ def test_summary_is_deterministic_for_identical_raw_artifacts(full_run_config) -
 def test_report_writes_summary_tables_figures_and_injects(full_run_config, tmp_path) -> None:
     readme_dir = tmp_path / "docs"
     readme_dir.mkdir()
-    for name in ("README.md", "README_zh-TW.md"):
+    for name in ("README.md", "README_en.md"):
         (readme_dir / name).write_text(f"# t\n{_MARKERS}\n", encoding="utf-8")
     assets_dir = tmp_path / "assets"
 

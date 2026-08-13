@@ -51,6 +51,7 @@ def test_gradio_uses_approved_zh_tw_historical_language(test_config) -> None:
     for forbidden in (
         "Predict + explain",
         "Run historical audit",
+        "DESIGN.md",
         "approval",
         "eligibility",
     ):

@@ -14,7 +14,7 @@ from credit_xai.utils.io import atomic_write_json, ensure_dir
 
 logger = logging.getLogger(__name__)
 
-README_FILES = ("README.md", "README_zh-TW.md")
+README_FILES = ("README.md", "README_en.md")
 
 
 def run(cfg: Config, readme_dir: str | Path = ".", assets_dir: str | Path = "assets") -> None:

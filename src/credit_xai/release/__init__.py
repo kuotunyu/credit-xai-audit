@@ -1,1 +1,1 @@
-"""Publication gates for the unpublished portfolio candidate."""
+"""Publication gates for the public portfolio release."""
