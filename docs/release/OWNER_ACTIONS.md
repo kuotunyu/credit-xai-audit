@@ -1,33 +1,36 @@
-# Owner actions after local candidate verification
+# Owner publication record
 
-No action in this file has been performed by the release-hardening workflow.
+Version 0.1.0 was owner-authorized for public release on 2026-08-13. This
+record supersedes the pre-publication checklist while preserving the ongoing
+public-boundary responsibilities below.
 
-## Suggested GitHub metadata
+## Completed for v0.1.0
 
-**Description:** Reproducible CPU-only audit of calibration, bootstrap
-uncertainty, SHAP/EBM faithfulness, stability, and descriptive group metrics on
-the 2005 UCI credit-default dataset.
+- Reviewed the bilingual README, model/data cards, security policy, citation,
+  limitations, and public artifact boundary.
+- Created the owner-controlled public repository at
+  <https://github.com/kuotunyu/credit-xai-audit> without unrelated history.
+- Recorded the canonical repository URL and release date in `CITATION.cff`.
+- Published `main` only from owner-authored commits under
+  `kuotunyu <61350295+kuotunyu@users.noreply.github.com>`.
+- Verified the product-code SHA with GitHub Actions lint, strict Mypy, release
+  and package gates, 159 tests, and the CPU-only Docker pipeline:
+  <https://github.com/kuotunyu/credit-xai-audit/actions/runs/31681831572>.
+- Enabled Dependabot alerts/security updates, secret scanning, push protection,
+  and private vulnerability reporting. All 29 alerts found in the initial
+  dependency graph were fixed by the published Gradio 6 lock refresh; none was
+  dismissed.
+- Added the approved repository description and ten capability topics.
+- Protected `main` with required `lint`, `test`, and `docker` checks, disabled
+  force pushes and deletion, and published the annotated `v0.1.0` tag and
+  GitHub Release from the final verified commit.
 
-**Topics:** `machine-learning`, `explainable-ai`, `trustworthy-ai`,
-`model-calibration`, `shap`, `interpretability`, `group-metrics`, `fastapi`,
-`reproducibility`, `uci-machine-learning`.
+## Ongoing owner responsibilities
 
-## Tomorrow's owner checklist
-
-1. Read `docs/release/VERIFICATION.md`, unresolved limitations, and the final
-   Git identity/trailer/privacy audits.
-2. Review the bilingual README, cards, security policy, citation, and public
-   artifact boundary. Confirm that attribution-row artifacts are acceptable for
-   public release under the dataset license.
-3. Create an empty owner-controlled GitHub repository. Do not initialize it
-   with a README, license, or `.gitignore`.
-4. Add the remote and push `main` manually only after the local candidate is
-   accepted. The hardening workflow deliberately creates no remote, tag,
-   release, pull request, deployment, or model upload.
-5. Add the final repository URL to `CITATION.cff`, rerun the manifest and all
-   gates, and commit that owner-authored metadata change before publishing.
-6. Enable secret scanning, dependency alerts, private vulnerability reporting,
-   branch protection, and required CI checks.
-7. Keep raw data and joblib bundles local. If demonstrating the API, train a
-   local bundle and bind the service to localhost; do not deploy this demo as a
-   decision service.
+- Keep raw UCI rows, archives, serialized bundles, credentials, and runtime
+  request/response data outside the public repository.
+- Treat the API and Gradio UI as a localhost historical replay demonstration,
+  not as a lending service or public decision endpoint.
+- Reopen Feature Freeze only for a real bug, security/dependency update,
+  incorrect public claim, or an explicitly approved release-maintenance task.
+- Require fresh release/privacy gates and exact-SHA CI before any future tag.
