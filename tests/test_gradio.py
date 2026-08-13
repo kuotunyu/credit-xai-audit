@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import json
+import warnings
 from pathlib import Path
 
 from app.gradio_presenter import FEATURE_GROUPS, FEATURE_LABELS
@@ -12,6 +13,28 @@ from credit_xai.constants import DEMO_SCOPE, FEATURES
 def _config(test_config) -> tuple[dict, str]:
     config = build_ui(test_config).get_config_file()
     return config, json.dumps(config, ensure_ascii=False)
+
+
+def test_gradio_build_avoids_gradio6_moved_parameter_warnings(test_config) -> None:
+    with warnings.catch_warnings():
+        warnings.filterwarnings(
+            "error",
+            message="The parameters have been moved from the Blocks constructor.*",
+            category=UserWarning,
+        )
+        build_ui(test_config)
+
+
+def test_mounted_gradio_keeps_the_audit_stylesheet(test_config) -> None:
+    from app.gradio_ui import mount_ui
+
+    from credit_xai.serving.api import create_app
+
+    app = mount_ui(create_app(test_config), test_config, path="/ui")
+    mounted_ui = next(route.app for route in app.routes if getattr(route, "path", None) == "/ui")
+    config = mounted_ui.get_blocks().config
+
+    assert "--audit-field: #f6f3ec" in config["css"].lower()
 
 
 def test_gradio_uses_approved_zh_tw_historical_language(test_config) -> None:

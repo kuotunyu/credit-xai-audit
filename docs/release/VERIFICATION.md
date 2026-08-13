@@ -2,8 +2,40 @@
 
 Verification date: 2026-08-12 (Asia/Taipei)
 
-Candidate state: **unpublished**. No remote, push, pull request, tag, release,
-deployment, or model upload was created.
+Initial candidate state on 2026-08-12: **unpublished**. At that verification
+point no remote, push, pull request, tag, release, deployment, or model upload
+had been created. Publication-specific evidence is recorded below without
+rewriting the historical candidate gates.
+
+## Publication dependency and CI gate — 2026-08-13
+
+- The first public GitHub run exposed a Linux-only portability-test defect: the
+  test looked only for Windows `Lib/site-packages` after a successful install.
+  The gate now asks the installed interpreter for its `purelib` path and passes
+  on Windows and Linux.
+- GitHub's dependency graph then identified vulnerable transitive versions held
+  by Gradio 5. The optional UI constraint was migrated to Gradio 6 and the lock
+  now resolves Gradio 6.24.0, Pillow 12.3.0, and Starlette 1.6.0.
+- App-level theme and stylesheet parameters moved from `Blocks` to the mounted
+  Gradio boundary. Regression tests verify that construction emits no moved-
+  parameter warning and that the mounted HTTP config retains the audit CSS.
+- The refreshed local source gate passed Ruff check/format, strict Mypy for 65
+  source files, and 159 tests. Four third-party warnings remain: three SHAP/
+  Matplotlib pending deprecations and one Starlette test-client migration notice.
+- `pip-audit 2.10.1` reported no known vulnerability in the refreshed local
+  environment; the unpublished local project package itself is not on PyPI and
+  was the sole unaudited entry.
+- The refreshed Linux/amd64 CPU image is
+  `sha256:d1e559ef26eb35f43105663241f2e7ff1f6186fd157ffbcecc63fb804a76d2fe`
+  at 728,257,445 bytes. It became healthy; `/health`, `/ui/`, and `/ui/config`
+  returned HTTP 200, and the raw mounted config contained the audit stylesheet.
+- The same image completed the network-disabled 2,000-row synthetic pipeline
+  across data preparation, all three training/calibration/evaluation/explanation
+  paths, and report generation. Disposable containers and the project network
+  were removed; the tested image was retained.
+
+This publication hardening changes no dataset, accepted result, formal metric,
+model, explanation method, API schema, or historical non-decision boundary.
 
 ## Environment
 

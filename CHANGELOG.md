@@ -67,6 +67,10 @@ All notable changes to this project are documented here.
   unrelated history or private artifacts.
 - The non-editable Unicode-checkout installation gate now discovers the active
   environment's `site-packages` path portably on Windows and Linux.
+- The optional UI stack now requires Gradio 6.20 or newer; the mounted app passes
+  theme and stylesheet settings at the Gradio 6 mount boundary.
+- The refreshed lock resolves Gradio 6.24.0, Pillow 12.3.0, and Starlette 1.6.0,
+  replacing the vulnerable transitive versions found during GitHub publication.
 
 The interface renewal does not change any model, accepted metric, API schema,
 explanation method, pipeline, or non-decision boundary.

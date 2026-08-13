@@ -16,10 +16,9 @@ def run(cfg: Config, host: str | None = None, port: int | None = None) -> None:
 
     app = create_app(cfg)
     try:
-        import gradio as gr
-        from app.gradio_ui import build_ui
+        from app.gradio_ui import mount_ui
 
-        app = gr.mount_gradio_app(app, build_ui(cfg), path="/ui")
+        app = mount_ui(app, cfg, path="/ui")
         logger.info("Gradio UI mounted at /ui")
     except Exception as exc:
         logger.warning(

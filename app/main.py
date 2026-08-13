@@ -17,9 +17,8 @@ _cfg = load_config(os.environ.get("CREDIT_XAI_CONFIG", "configs/smoke.yaml"))
 app = create_app(_cfg)
 
 try:  # optional UI; the API works without gradio installed
-    import gradio as gr
-    from app.gradio_ui import build_ui
+    from app.gradio_ui import mount_ui
 
-    app = gr.mount_gradio_app(app, build_ui(_cfg), path="/ui")
+    app = mount_ui(app, _cfg, path="/ui")
 except Exception:  # pragma: no cover - UI is best-effort here
     pass

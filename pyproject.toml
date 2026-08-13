@@ -26,7 +26,7 @@ lightgbm = ["lightgbm>=4.3,<5"]
 serve = [
     "fastapi>=0.115,<1",
     "uvicorn[standard]>=0.29",
-    "gradio>=4.44,<6",
+    "gradio>=6.20,<7",
 ]
 
 [dependency-groups]

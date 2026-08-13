@@ -18,6 +18,7 @@ from app.gradio_presenter import (
     render_empty_result,
     render_public_evidence,
 )
+from fastapi import FastAPI
 
 from credit_xai.config import Config
 from credit_xai.constants import FEATURES
@@ -254,9 +255,7 @@ def build_ui(cfg: Config) -> gr.Blocks:
 
     with gr.Blocks(
         title="Credit XAI Audit",
-        css_paths=_CSS_PATH,
         fill_width=True,
-        theme=_theme(),
     ) as demo:
         gr.HTML(
             _header_and_hero_html(evidence),
@@ -373,3 +372,17 @@ def build_ui(cfg: Config) -> gr.Blocks:
             show_progress="minimal",
         )
     return cast(gr.Blocks, demo)
+
+
+def mount_ui(app: FastAPI, cfg: Config, path: str = "/ui") -> FastAPI:
+    """Mount the audit console with Gradio 6 app-level presentation options."""
+    return cast(
+        FastAPI,
+        gr.mount_gradio_app(
+            app,
+            build_ui(cfg),
+            path=path,
+            theme=_theme(),
+            css_paths=_CSS_PATH,
+        ),
+    )

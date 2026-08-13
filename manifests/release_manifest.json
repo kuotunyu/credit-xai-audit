@@ -64,8 +64,8 @@
     },
     {
       "path": "CHANGELOG.md",
-      "bytes": 4301,
-      "sha256": "b2235d946aae952ae2c8850b4c0e27cf279255ac233fddbb93f62458888e4c14"
+      "bytes": 4608,
+      "sha256": "197af4b3d0bb3354a4369e79062422c820585283719e52573ca375782dbfe331"
     },
     {
       "path": "CITATION.cff",
@@ -134,13 +134,13 @@
     },
     {
       "path": "app/gradio_ui.py",
-      "bytes": 14395,
-      "sha256": "6859081ee1b0e5cce367045d6133975bf0e7a487f3ad1b3484f2787826c4b3df"
+      "bytes": 14731,
+      "sha256": "2b23972b0be30cdcde36aaa5823bb10485ce51507a4369688fd7cd24de7e72f1"
     },
     {
       "path": "app/main.py",
-      "bytes": 807,
-      "sha256": "d8895985f3c968942afb684553b06e7c57636fa13aecd82ae3ee6a0862aec10d"
+      "bytes": 762,
+      "sha256": "7f94a257a34700cc805fa3718a5ba63f6ce83d26a67e5d6083bc35f42ff23250"
     },
     {
       "path": "assets/ebm_shapes_top.png",
@@ -209,8 +209,8 @@
     },
     {
       "path": "docs/release/VERIFICATION.md",
-      "bytes": 47310,
-      "sha256": "992784661bd045fbe8ee55bc8b7eafbaa3f9e7893878d32e1eeb0f4b3f04adaa"
+      "bytes": 49378,
+      "sha256": "5e00ed32137ff699c343c10813cf57301d1f58b339108ae07910dec3a46cc201"
     },
     {
       "path": "docs/superpowers/plans/2026-08-12-credit-xai-release-candidate.md",
@@ -370,7 +370,7 @@
     {
       "path": "pyproject.toml",
       "bytes": 2210,
-      "sha256": "61becbf4bc0053d700f3ca7f51f2c7059da331c0e912668a470fab7cb72898f5"
+      "sha256": "a753450e83b953f3fdebc91e3544283635a51411281c158dce615edf39aa4244"
     },
     {
       "path": "results/derived/summary.json",
@@ -919,8 +919,8 @@
     },
     {
       "path": "src/credit_xai/serving/launch.py",
-      "bytes": 864,
-      "sha256": "5aa042572bfde7dc3d9cf3467dea224153a774fd13198d51aebcfc43a6e824a2"
+      "bytes": 815,
+      "sha256": "73a9a8254ab2ccc60eaed8ceb39e4a34dc0337e2c497641d715127317c9cf813"
     },
     {
       "path": "src/credit_xai/serving/service.py",
@@ -1039,8 +1039,8 @@
     },
     {
       "path": "tests/test_gradio.py",
-      "bytes": 11348,
-      "sha256": "93539cd291a8de3cca94912a0b3343f8233ce6133c13dadaf9faa7fcebf0ae8c"
+      "bytes": 12137,
+      "sha256": "7d02d39c9ce2c9aa9cb2f2912c644ddde5bf3c858f723702a35d5607cdcbb62b"
     },
     {
       "path": "tests/test_gradio_presenter.py",
@@ -1109,8 +1109,8 @@
     },
     {
       "path": "uv.lock",
-      "bytes": 245035,
-      "sha256": "a0d0d81c08772ead183e3666290f9aa564bce55082d8a07d04e075086d930aba"
+      "bytes": 242906,
+      "sha256": "29bc09eafb1fb8e0c93e6299607296543a63d195f28e721ddf8a2f726df8e862"
     }
   ]
 }
