@@ -1,9 +1,8 @@
 # Changelog
 
-All notable changes to this project are documented here. The candidate has not
-been published or tagged.
+All notable changes to this project are documented here.
 
-## Unreleased — 0.1.0 release candidate
+## 0.1.0 — 2026-08-13
 
 ### Added
 

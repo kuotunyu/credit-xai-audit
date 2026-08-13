@@ -6,6 +6,8 @@ authors:
   - name: "kuotunyu"
 version: 0.1.0
 license: MIT
+repository-code: "https://github.com/kuotunyu/credit-xai-audit"
+date-released: 2026-08-13
 abstract: >-
   CPU-only portfolio audit of calibration, bootstrap uncertainty, explanation
   stability, faithfulness, and descriptive group metrics on a historical 2005

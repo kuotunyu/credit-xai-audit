@@ -64,13 +64,13 @@
     },
     {
       "path": "CHANGELOG.md",
-      "bytes": 4220,
-      "sha256": "9033cb7dda27f8ff973e8390aafa190629d7392edca02687a77c94a153c58bae"
+      "bytes": 4154,
+      "sha256": "c54dd197f7d5c8182757f01e689edc567d734b473a6e54fd732f1ca472f28cf8"
     },
     {
       "path": "CITATION.cff",
-      "bytes": 810,
-      "sha256": "4de8cc777df164c7ebb23f97c4a9d87dbd605f34154d7c0e2d67f5f3514c36cf"
+      "bytes": 900,
+      "sha256": "d22eb61a2428a45ff5a4da98b935604fc6977b099160d817edd9acd331fd2d44"
     },
     {
       "path": "DATA_CARD.md",
