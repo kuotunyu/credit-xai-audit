@@ -3,7 +3,7 @@
 [正體中文](README.md)
 
 [![CI](https://github.com/kuotunyu/credit-xai-audit/actions/workflows/ci.yml/badge.svg)](https://github.com/kuotunyu/credit-xai-audit/actions/workflows/ci.yml)
-![Python](https://img.shields.io/badge/Python-3.11%2B-3776AB?logo=python&logoColor=white)
+![Python](https://img.shields.io/badge/Python-3.11%E2%80%933.12-3776AB?logo=python&logoColor=white)
 ![FastAPI](https://img.shields.io/badge/FastAPI-0.115%2B-009688?logo=fastapi&logoColor=white)
 ![Gradio](https://img.shields.io/badge/UI-Gradio-orange?logo=gradio&logoColor=white)
 [![License: MIT](https://img.shields.io/badge/License-MIT-2EA44F.svg)](LICENSE)
@@ -185,7 +185,7 @@ Descriptive snapshot of model behavior on 2005 historical data, by SEX (UCI codi
 
 ## Quickstart
 
-Requires Python 3.11+ and [uv](https://docs.astral.sh/uv/).
+Requires Python 3.11–3.12 and [uv](https://docs.astral.sh/uv/).
 
 ```bash
 python scripts/setup_environment.py  # pinned, CPU-only, non-editable install
