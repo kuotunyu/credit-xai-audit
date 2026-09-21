@@ -3,7 +3,7 @@
 [English](README_en.md)
 
 [![CI](https://github.com/kuotunyu/credit-xai-audit/actions/workflows/ci.yml/badge.svg)](https://github.com/kuotunyu/credit-xai-audit/actions/workflows/ci.yml)
-![Python](https://img.shields.io/badge/Python-3.11%2B-3776AB?logo=python&logoColor=white)
+![Python](https://img.shields.io/badge/Python-3.11%E2%80%933.12-3776AB?logo=python&logoColor=white)
 ![FastAPI](https://img.shields.io/badge/FastAPI-0.115%2B-009688?logo=fastapi&logoColor=white)
 ![Gradio](https://img.shields.io/badge/UI-Gradio-orange?logo=gradio&logoColor=white)
 [![License: MIT](https://img.shields.io/badge/License-MIT-2EA44F.svg)](LICENSE)
@@ -190,7 +190,7 @@ Descriptive snapshot of model behavior on 2005 historical data, by SEX (UCI codi
 
 ## 快速開始
 
-需要 Python 3.11+ 與 [uv](https://docs.astral.sh/uv/)。
+需要 Python 3.11–3.12 與 [uv](https://docs.astral.sh/uv/)。
 
 ```bash
 python scripts/setup_environment.py  # 鎖定 CPU-only 非可編輯安裝
