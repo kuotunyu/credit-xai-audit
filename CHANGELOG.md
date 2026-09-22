@@ -16,6 +16,14 @@ All notable public changes are documented here.
   evidence rather than chronological UI iteration logs.
 - Updated the deterministic public manifest from `unpublished` to `published`.
 
+### Fixed
+
+- The release claim gate no longer compares the `environment` block of
+  `results/derived/summary.json` (aggregation-time interpreter and package
+  versions) against the rebuild; an unpinned Python patch release on the CI
+  runner (3.11.15 to 3.11.16) had failed the gate although every number
+  rebuilt identically. The gate now also names the differing top-level keys.
+
 No accepted model, metric, dataset artifact, explanation method, API schema, or
 non-decision boundary changed.
 

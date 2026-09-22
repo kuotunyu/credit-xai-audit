@@ -186,3 +186,13 @@ def test_claim_verifier_rejects_summary_not_rebuilt_from_raw_artifacts(tmp_path:
     errors = verify_claims(root)
 
     assert any("summary.json" in error and "rebuilt raw artifacts" in error for error in errors)
+
+
+def test_claim_verifier_ignores_aggregation_runtime_descriptor(tmp_path: Path) -> None:
+    root = _candidate_copy(tmp_path)
+    summary_path = root / "results" / "derived" / "summary.json"
+    summary = _read_json(summary_path)
+    summary["environment"]["python"] = "3.11.99"
+    _write_json(summary_path, summary)
+
+    assert verify_claims(root) == []

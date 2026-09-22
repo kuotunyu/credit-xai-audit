@@ -219,9 +219,20 @@ def _verify_generated_outputs(root: Path, errors: list[str]) -> None:
             rebuilt = build_summary(load_config("configs/full.yaml"))
         finally:
             os.chdir(previous_directory)
-        if summary != rebuilt:
+        # ``environment`` records the interpreter and package versions of the
+        # aggregation run. It is not derived from results/raw, and the Python
+        # patch level is not pinned, so it is excluded from the equality check.
+        committed_content = {key: value for key, value in summary.items() if key != "environment"}
+        rebuilt_content = {key: value for key, value in rebuilt.items() if key != "environment"}
+        if committed_content != rebuilt_content:
+            differing = sorted(
+                key
+                for key in committed_content.keys() | rebuilt_content.keys()
+                if committed_content.get(key) != rebuilt_content.get(key)
+            )
             errors.append(
-                f"{summary_relative.as_posix()}: content differs from rebuilt raw artifacts"
+                f"{summary_relative.as_posix()}: content differs from rebuilt raw artifacts "
+                f"(keys: {', '.join(differing)})"
             )
         for record in summary["provenance"]:
             artifact_relative = Path(record["path"])
