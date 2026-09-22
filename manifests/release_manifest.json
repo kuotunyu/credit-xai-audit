@@ -54,8 +54,8 @@
     },
     {
       "path": "CHANGELOG.md",
-      "bytes": 2260,
-      "sha256": "73478dbfcca8b383f546cdc28ce92a7dee767e4c762a6fcfa1105436ea4f767d"
+      "bytes": 2643,
+      "sha256": "704f52e2f3c75031299b62308924179a4f4205c83c98f1a841728b2e85aeb5da"
     },
     {
       "path": "CITATION.cff",
@@ -89,13 +89,13 @@
     },
     {
       "path": "README.md",
-      "bytes": 15768,
-      "sha256": "65b7cd74f4ea1d6802b89931d7a9a0b40a27a3e5d697b23d5b4ddafb6c40e635"
+      "bytes": 15784,
+      "sha256": "17be496d8343975ecbb1a8813e8864136e0d8412bcc833cf5b505db1b294b2bd"
     },
     {
       "path": "README_en.md",
-      "bytes": 16328,
-      "sha256": "5f0ac156984e5431ab1ec3de566f4c7b08e4f04a33d7ddca90fcbcf7c3cdab93"
+      "bytes": 16344,
+      "sha256": "cb5ffe2c652d183632a83df54f4297e260f403ed4520b1a41aecedb75b9e4f0d"
     },
     {
       "path": "SECURITY.md",
@@ -704,8 +704,8 @@
     },
     {
       "path": "src/credit_xai/release/claims.py",
-      "bytes": 11787,
-      "sha256": "f159c41b085475c245091d1e072731abfa770372216fd9ad8af41bc56b7ce716"
+      "bytes": 12505,
+      "sha256": "dc1c8ce0bcfac8f6c9367a02a383e1dab51a91560ed0163e0b91c0fc1cbe0897"
     },
     {
       "path": "src/credit_xai/release/manifest.py",
@@ -919,8 +919,8 @@
     },
     {
       "path": "tests/test_release_claims.py",
-      "bytes": 6949,
-      "sha256": "95fe55d2e71b9f6f99860708f0465fdfad7b2def340f9d9042841fc4f96425c8"
+      "bytes": 7306,
+      "sha256": "99587c588d7fab682b7bd8583da93a182999c233fe9e9c8ec8f5661c428a48cf"
     },
     {
       "path": "tests/test_release_manifest.py",
