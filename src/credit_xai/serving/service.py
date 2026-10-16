@@ -25,6 +25,15 @@ from credit_xai.models.registry import get_adapter
 
 logger = logging.getLogger(__name__)
 
+# Casting to int64 is unsafe: a value outside the int64 range either wraps
+# silently (when pandas infers uint64) or raises OverflowError (when it infers
+# object), and OverflowError is not one of the exceptions the API turns into a
+# 422. Representability is therefore checked before the cast. This is a
+# representability bound, not a feature-domain bound: observed_min/max stay
+# reference-only and numeric ranges remain unenforced.
+_INT64_MIN = int(np.iinfo(np.int64).min)
+_INT64_MAX = int(np.iinfo(np.int64).max)
+
 
 class ServiceError(RuntimeError):
     pass
@@ -63,6 +72,12 @@ class PredictionService:
             row = {f: int(features[f]) for f in FEATURES}
         except (TypeError, ValueError) as exc:
             raise ServiceError(f"all features must be integers: {exc}") from exc
+        unrepresentable = [f for f in FEATURES if not _INT64_MIN <= row[f] <= _INT64_MAX]
+        if unrepresentable:
+            raise ServiceError(
+                f"features outside the representable int64 range "
+                f"[{_INT64_MIN}, {_INT64_MAX}]: {unrepresentable}"
+            )
         frame = pd.DataFrame([row], columns=FEATURES).astype(np.int64)
         if self.schema is not None:
             validate_frame(frame, self.schema, require_target=False)
