@@ -769,8 +769,8 @@
     },
     {
       "path": "src/credit_xai/serving/service.py",
-      "bytes": 4013,
-      "sha256": "3c4b3ab9ffad81a2c3adfb0e7ee451b8ba1a008a47c592d1d8046fca0c142bd9"
+      "bytes": 4830,
+      "sha256": "7985720b4d7f7739abe112e66cade4d0995542aabb7554f84bcf253ff8ce125c"
     },
     {
       "path": "src/credit_xai/training/__init__.py",
@@ -946,6 +946,11 @@
       "path": "tests/test_seeding.py",
       "bytes": 980,
       "sha256": "7fc31f5d03a48f6b4788d268f30ab7abbb2e99393fdb40be7a8eff5cb5f369ae"
+    },
+    {
+      "path": "tests/test_serving_int64_bounds.py",
+      "bytes": 8415,
+      "sha256": "f45deefb2ac3d518b2bbf090268af168f51cd9d5b1bf784a1332a0d98669e436"
     },
     {
       "path": "tests/test_split.py",
