@@ -959,8 +959,8 @@
     },
     {
       "path": "uv.lock",
-      "bytes": 242906,
-      "sha256": "29bc09eafb1fb8e0c93e6299607296543a63d195f28e721ddf8a2f726df8e862"
+      "bytes": 248128,
+      "sha256": "72391d69f42daf6a360c97d98ec7502f58bc770333dbcda0ccc1a254cc377674"
     }
   ]
 }
